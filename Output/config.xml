@@ -1,0 +1,66 @@
+<!-- Config file for the game -->
+<!-- L01: DONE 1: Create configuration file-->
+<config>
+  <app>
+    <title>Game Development Testbed</title>
+    <organization>UPC</organization>
+  </app>
+
+  <renderer>
+    <vsync value="false"/>
+  </renderer>
+
+  <window>
+    <resolution width="1280" height="720" scale="1"/>
+    <fullscreen value="false"/>
+    <borderless value="false"/>
+    <resizable value="false"/>
+    <fullscreen_window value="false"/>
+  </window>
+
+  <textures>
+    <!-- Characters -->
+    <virtualGuyIdle width = "32" height = "32" layer = "1" orderInLayer = "3.0" scale = "0.5" path="Assets/textures/MainCharacters/VirtualGuy/Idle(32x32).png"/>
+    <virtualGuyRun width = "32" height = "32" layer = "1" orderInLayer = "3.0" scale = "0.5" path="Assets/textures/MainCharacters/VirtualGuy/Run(32x32).png"/>
+    <virtualGuyJump width = "32" height = "32" layer = "1" orderInLayer = "3.0" scale = "0.5" path="Assets/textures/MainCharacters/VirtualGuy/Jump(32x32).png"/>
+    <virtualGuyFall width = "32" height = "32" layer = "1" orderInLayer = "3.0" scale = "0.5" path="Assets/textures/MainCharacters/VirtualGuy/Fall(32x32).png"/>
+    <virtualGuyDoubleJump width = "32" height = "32" layer = "1" orderInLayer = "3.0" scale = "0.5" path="Assets/textures/MainCharacters/VirtualGuy/DoubleJump(32x32).png"/>
+    <characterAppearing width = "96" height = "96" layer = "1" orderInLayer = "3.0" scale = "0.5" path="Assets/textures/MainCharacters/Appearing(96x96).png"/>
+    <!-- Fruits -->
+    <apple width = "32" height = "32" layer = "1" scale = "0.5" path = "Assets/textures/Items/Fruits/Apple.png"/>
+    <bananas width = "32" height = "32" layer = "1" scale = "0.5" path = "Assets/textures/Items/Fruits/Bananas.png"/>
+    <cherries width = "32" height = "32" layer = "1" scale = "0.5" path = "Assets/textures/Items/Fruits/Cherries.png"/>
+    <kiwi width = "32" height = "32" layer = "1" scale = "0.5" path = "Assets/textures/Items/Fruits/Kiwi.png"/>
+    <melon width = "32" height = "32" layer = "1" scale = "0.5" path = "Assets/textures/Items/Fruits/Melon.png"/>
+    <orange width = "32" height = "32" layer = "1" scale = "0.5" path = "Assets/textures/Items/Fruits/Orange.png"/>
+    <pineapple width = "32" height = "32" layer = "1" scale = "0.5" path = "Assets/textures/Items/Fruits/Pineapple.png"/>
+    <strawberry width = "32" height = "32" layer = "1" scale = "0.5" path = "Assets/textures/Items/Fruits/Strawberry.png"/>
+    <collected width = "32" height = "32" layer = "1" scale = "0.5" path = "Assets/textures/Items/Fruits/Collected.png"/>
+    <!-- CheckPoint -->
+    <checkPointNoFlag width = "64" height = "64" layer = "1" scale = "0.5" path="Assets/textures/Items/Checkpoints/Checkpoint/Checkpoint(NoFlag).png"/>
+    <checkPointFlagOut width = "64" height = "64" layer = "1" scale = "0.5" path="Assets/textures/Items/Checkpoints/Checkpoint/Checkpoint(FlagOut)(64x64).png"/>
+    <checkPointFlagIdle width = "64" height = "64" layer = "1" scale = "0.5" path="Assets/textures/Items/Checkpoints/Checkpoint/Checkpoint(FlagIdle)(64x64).png"/>
+
+    <backGround1 width = "64" height = "64" layer = "0" path="Assets/textures/Background/Blue.png"/>
+    <menuBackGround width = "64" height = "64" layer = "0" path="Assets/textures/Background/Brown.png"/>
+    <saw width = "38" height = "38" layer = "1" path = "Assets/textures/Traps/Saw/On(38x38).png"/>
+    <spike width = "16" height = "8" layer = "1" path = "Assets/textures/Traps/Spikes/Idle.png"/>
+    <fireTrampFlash width = "16" height = "32" layer = "0" orderInLayer = "0.3" path = "Assets/textures/Traps/Fire/Flash.png"/>
+    <fireTrampOn width = "16" height = "32" layer = "0" orderInLayer = "0.3" path = "Assets/textures/Traps/Fire/On(16x32).png"/>
+    <mobilePlatform width = "16" height = "16" layer = "0" orderInLayer = "0.4" sectionX = "272" sectionY = "11" path = "Assets/textures/Terrain/Terrain(16x16).png"/>
+    <specialPlatform width = "16" height = "16" layer = "0" orderInLayer = "0.4" sectionX = "272" sectionY = "42" path = "Assets/textures/Terrain/Terrain(16x16).png"/>
+    <platform width = "16" height = "16" layer = "1" sectionX = "272" sectionY = "32" path = "Assets/textures/Terrain/Terrain(16x16).png"/>
+
+  </textures>
+
+  <scenes>
+    <sceneGame1>
+    </sceneGame1>
+  </scenes>
+
+  <!-- L03: Added maps folder as config option -->
+  <map>
+    <folder>Assets/maps/</folder>
+  </map>
+
+</config>

@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2AF9969B-F202-497B-AF30-7BEF9CE8005E}</ProjectGuid>
+    <RootNamespace>Development</RootNamespace>
+    <ProjectName>Pirates</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IntDir>$(SolutionDir)Build\$(Configuration)\Obj\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\Obj\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ShowIncludes>false</ShowIncludes>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;OptickCore.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\SDL\libx86;$(ProjectDir)Source\External\SDL_image\libx86;$(ProjectDir)Source\External\SDL_mixer\libx86;$(ProjectDir)Source\External\Optick\lib\debug</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <UseFullPaths>false</UseFullPaths>
+      <ShowIncludes>false</ShowIncludes>
+      <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;OptickCore.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\SDL\libx86;$(ProjectDir)Source\External\SDL_image\libx86;$(ProjectDir)Source\External\SDL_mixer\libx86;$(ProjectDir)Source\External\Optick\lib\release</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\GameObject.cpp" />
+    <ClCompile Include="Source\Log.cpp" />
+    <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\ModuleMap.cpp" />
+    <ClCompile Include="Source\ModuleAudio.cpp" />
+    <ClCompile Include="Source\ModuleInput.cpp" />
+    <ClCompile Include="Source\ModuleRender.cpp" />
+    <ClCompile Include="Source\ModuleScene.cpp" />
+    <ClCompile Include="Source\ModuleTextures.cpp" />
+    <ClCompile Include="Source\ModuleUI.cpp" />
+    <ClCompile Include="Source\ModuleWindow.cpp" />
+    <ClCompile Include="Source\PhysCore.cpp" />
+    <ClCompile Include="Source\PlayerSettings.cpp" />
+    <ClCompile Include="Source\RigidBody.cpp" />
+    <ClCompile Include="Source\Scene.cpp" />
+    <ClCompile Include="Source\SceneGameOver.cpp" />
+    <ClCompile Include="Source\SceneIntro.cpp" />
+    <ClCompile Include="Source\SceneMainMenu.cpp" />
+    <ClInclude Include="Source\Animation.h" />
+    <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\External\PugiXml\src\pugiconfig.hpp" />
+    <ClInclude Include="Source\External\PugiXml\src\pugixml.hpp" />
+    <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp" />
+    <ClInclude Include="Source\GameObject.h" />
+    <ClInclude Include="Source\Globals.h" />
+    <ClInclude Include="Source\List.h" />
+    <ClInclude Include="Source\ModuleMap.h" />
+    <ClInclude Include="Source\MemLeaks.h" />
+    <ClInclude Include="Source\Module.h" />
+    <ClInclude Include="Source\ModuleAudio.h" />
+    <ClInclude Include="Source\ModuleInput.h" />
+    <ClInclude Include="Source\ModuleRender.h" />
+    <ClInclude Include="Source\ModuleScene.h" />
+    <ClInclude Include="Source\ModuleTextures.h" />
+    <ClInclude Include="Source\ModuleUI.h" />
+    <ClInclude Include="Source\ModuleWindow.h" />
+    <ClInclude Include="Source\p2DynArray.h" />
+    <ClInclude Include="Source\p2List.h" />
+    <ClInclude Include="Source\p2Point.h" />
+    <ClInclude Include="Source\PhysCore.h" />
+    <ClInclude Include="Source\PlayerSettings.h" />
+    <ClInclude Include="Source\Point.h" />
+    <ClInclude Include="Source\RenderObject.h" />
+    <ClInclude Include="Source\RigidBody.h" />
+    <ClInclude Include="Source\Scene.h" />
+    <ClInclude Include="Source\SceneGameOver.h" />
+    <ClInclude Include="Source\SceneIntro.h" />
+    <ClInclude Include="Source\SceneMainMenu.h" />
+    <ClInclude Include="Source\SString.h" />
+    <ClInclude Include="Source\Timer.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
