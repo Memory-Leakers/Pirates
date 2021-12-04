@@ -1,0 +1,237 @@
+#include "TurnsManager.h"
+
+
+TurnsManager::TurnsManager(Application* app)
+{
+	_app = app;
+}
+
+/// <summary>
+/// Se encarga de gestionar la lógica de selección de items, aplicado de fuerza sobre estos y los turnos de cada jugador
+/// </summary>
+void TurnsManager::UpdateGameLogic()
+{
+	// Fase de Check Interaction
+	// Si el juegador no puede interactuar en este frame, se termina la función
+
+	if (!CheckInteraction()) return;
+
+	// Fase de selección de Bomba
+	// Donde se mira que opcion ha elegido el jugador
+	GetCurrentOption();
+
+	// Fase de selección
+	// Donde el jugador activo escoge con qué item interactuar
+
+	SelectItem();
+
+	// Fase de Dibujo
+	// Donde se dibuja la linea entre el objeto seleccionado y el mouse.
+
+	DrawMouseItemLine();
+
+	// Fase de Movimiento
+	// Donde se aplican fuerzas en los items seleccionados que han sido soltados
+
+	ApplyForces();
+
+	// Fase de comprobación de turno
+	// Donde se determina si el turno actual del jugador ha terminado o no
+
+	CheckPlayerTurn();
+}
+
+bool TurnsManager::CheckInteraction()
+{
+	return true;
+}
+
+void TurnsManager::GetCurrentOption()
+{
+	if (_app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+	{
+		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB1;
+	}
+	if (_app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	{
+		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB2;
+	}
+	if (_app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+	{
+		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB3;
+	}
+	if (_app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		playerCurrentOption[currentPlayer] = ThrowOptions::CURRENT_ITEM;
+	}
+}
+
+void TurnsManager::SelectItem()
+{
+	for (int i = 0; i < playerItems[currentPlayer].count(); i++)
+	{
+		if (playerItems[currentPlayer][i] == nullptr) return;
+		
+		if (_app->input->GetMouseButton(0) == KEY_DOWN) //&& // Encontrar si el mouse está dentro de la hitbox del item) 
+		{													// Se puede hacer usando la posición del GameObject y añadiendole
+															// Un area determinada (20 pixeles por ejemplo)
+															// Si el ratón está dentro de ese area, se selecciona el item
+															// Si Hemos hecho click en un item que nos pertenece
+															// Sin embargo de esta manera dos items del mismo jugador NO puedes compartir espacio
+															// Porque no sabriamos que espacio estamos seleccionando (estariamos seleccionando dos espacios a la vez)
+
+			if (currentItem != nullptr) currentItem->isSelected = false;	// El Item que estaba seleccionado pasa a no estarlo
+
+			playerItems[currentPlayer][i]->isSelected = true;	// Seleccionamos nuestro item
+
+			currentItem = playerItems[currentPlayer][i];	// Lo guardamos como item seleccionado actualmente
+		}
+	}
+}
+
+void TurnsManager::DrawMouseItemLine()
+{
+	if (currentItem == nullptr) return;	// Si no hay nignun objeto seleccionado no ejecutamos
+
+	if (_app->input->GetMouseButton(0) == KEY_REPEAT)	// Si estamos manteniendo el boton del ratón, dibujamos la linea
+	{
+		iPoint itemPos = currentItem->gameObject->GetPosition();
+		iPoint mousePos;
+		mousePos.x = _app->input->GetMouseX();
+		mousePos.y = _app->input->GetMouseX();
+
+		_app->renderer->DrawLine(mousePos.x, mousePos.y, itemPos.x, itemPos.y, 255, 0, 0);
+	}
+}
+
+void TurnsManager::ApplyForces()
+{
+	if (currentItem == nullptr) return;
+
+	if (_app->input->GetMouseButton(0) == KEY_UP) // Si soltamos el boton del raton
+	{
+		iPoint itemPos = currentItem->gameObject->GetPosition();
+		iPoint mousePos;
+		mousePos.x = _app->input->GetMouseX();
+		mousePos.y = _app->input->GetMouseX();
+
+		// Si la posición del ratón está cerca de la del item, no aplicamos fuerza y cancelamos el lanzamiento
+		if (abs(mousePos.x - itemPos.x) < 10 && abs(mousePos.y - itemPos.y) < 10)
+		{
+			currentItem = nullptr;
+		}
+
+		fPoint dir = { itemPos.x - mousePos.x, itemPos.y - mousePos.y };	// El vector que determina hacia donde estamos apuntando
+
+		float throwForce = 1.0f;
+
+		dir *= throwForce;
+
+		ApplyForceOnOption(dir); // Aplicamos la fuerza usando el vector que hemos determinado. 
+	}
+}
+
+void TurnsManager::ApplyForceOnOption(fPoint dir)
+{
+	switch (playerCurrentOption[currentPlayer])
+	{
+	case 0:
+		// Create bomb of type "Bomb 1"
+		// Apply force to created Bomb
+		// Example:
+
+		//Bomb bomb = new Bomb(itemPos, 0)
+
+		//bomb.AddForceToCenter(dir)
+
+		//Where Bomb(iPoint pos, int bombType)
+
+		playerThrowedBomb[currentPlayer] = true;
+		break;
+	case 1:
+		// Create bomb of type "Bomb 2"
+		// Apply force to created Bomb
+		// Example:
+
+		//Bomb bomb = new Bomb(itemPos, 1)
+
+		//bomb.AddForceToCenter(dir)
+
+		//Where Bomb(iPoint pos, int bombType)
+
+		playerThrowedBomb[currentPlayer] = true;
+		break;
+	case 2:
+		// Create bomb of type "Bomb 3"
+		// Apply force to created Bomb
+		// Example:
+
+		//Bomb bomb = new Bomb(itemPos, 2)
+
+		//bomb.AddForceToCenter(dir)
+
+		//Where Bomb(iPoint pos, int bombType)
+
+		playerThrowedBomb[currentPlayer] = true;
+		break;
+	case 3:
+		currentItem->gameObject->rBody->AddForceToCenter(dir);	// Aplicamos fuerza en la dirección que hemos determinado
+
+		playerMovedItem[currentPlayer] = true;
+		break;
+	}
+}
+
+void TurnsManager::CheckPlayerTurn()
+{
+	// Next turn if player throwed a bomb or pressed Space
+	if (playerThrowedBomb[currentPlayer] || _app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		// Reset variables from current player
+		ResetCurrentPlayerVariables();
+
+		// Change to the other player
+		currentPlayer = currentPlayer == 0 ? 1 : 0;
+	}
+}
+
+void TurnsManager::ResetCurrentPlayerVariables()
+{
+	playerMovedItem[currentPlayer] = false;
+	playerThrowedBomb[currentPlayer] = false;
+	currentItem = nullptr;
+}
+
+
+void TurnsManager::AddItem(Item* item, int player)
+{
+	if (player > 1) return;
+
+	playerItems[player].add(item);
+}
+
+void TurnsManager::AddGameObjectAsItem(GameObject* g, int player)
+{
+	if (player > 1) return;
+
+	Item* item = new Item();
+	item->gameObject = g;
+
+	playerItems[player].add(item);
+}
+
+void TurnsManager::CleanUp()
+{
+	// delete all items
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < playerItems[i].count(); j++)
+		{
+			if (playerItems[i][j] != nullptr)
+			{
+				delete playerItems[i][j];
+				playerItems[i][j] = nullptr;
+			}
+		}
+	}
+}

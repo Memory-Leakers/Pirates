@@ -108,6 +108,7 @@
     <ClCompile Include="Source\SceneGameOver.cpp" />
     <ClCompile Include="Source\SceneIntro.cpp" />
     <ClCompile Include="Source\SceneMainMenu.cpp" />
+    <ClCompile Include="Source\TurnsManager.cpp" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Camera.h" />
@@ -142,6 +143,7 @@
     <ClInclude Include="Source\SceneMainMenu.h" />
     <ClInclude Include="Source\SString.h" />
     <ClInclude Include="Source\Timer.h" />
+    <ClInclude Include="Source\TurnsManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

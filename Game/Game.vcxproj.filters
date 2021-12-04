@@ -64,6 +64,9 @@
     <ClCompile Include="Source\SceneIntro.cpp">
       <Filter>SourceFiles\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\TurnsManager.cpp">
+      <Filter>SourceFiles\BaseClass</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\External\PugiXml\src\pugiconfig.hpp">
@@ -161,6 +164,9 @@
     </ClInclude>
     <ClInclude Include="Source\Point.h">
       <Filter>HeaderFiles\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TurnsManager.h">
+      <Filter>HeaderFiles\BaseClass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

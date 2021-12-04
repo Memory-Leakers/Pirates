@@ -4,6 +4,7 @@
 #include <string>
 #include "Point.h"
 #include "Application.h"
+#include "RigidBody.h"
 struct SDL_Texture;
 
 #define MAX_GAMEOBJECT_TEXTURES 6
@@ -91,6 +92,8 @@ public:
 	std::string name;
 
 	std::string tag;
+
+	RigidBody* rBody = nullptr;
 
 	RenderObject renderObjects[MAX_GAMEOBJECT_TEXTURES];
 
