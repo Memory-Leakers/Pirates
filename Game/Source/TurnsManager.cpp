@@ -72,6 +72,8 @@ void TurnsManager::SelectItem()
 	{
 		if (playerItems[currentPlayer][i] == nullptr) return;
 
+		//printf("%f\n", GetMouseModule(playerItems[currentPlayer][i]));
+
 		if (_app->input->GetMouseButton(1) == KEY_DOWN && GetMouseModule(playerItems[currentPlayer][i]) < 20 ) //&& // Encontrar si el mouse está dentro de la hitbox del item) 
 		{													// Se puede hacer usando la posición del GameObject y añadiendole
 															// Un area determinada (20 pixeles por ejemplo)
@@ -95,7 +97,7 @@ void TurnsManager::DrawMouseItemLine()
 
 	if (_app->input->GetMouseButton(1) == KEY_REPEAT)	// Si estamos manteniendo el boton del ratón, dibujamos la linea
 	{
-		iPoint itemPos = { (int)currentItem->gameObject->rBody->GetPosition().x, (int)currentItem->gameObject->rBody->GetPosition().y };
+		iPoint itemPos = { (int)currentItem->gameObject->GetScreenPosition().x, (int)currentItem->gameObject->GetScreenPosition().y };
 		iPoint mousePos;
 		mousePos.x = _app->input->GetMouseX();
 		mousePos.y = _app->input->GetMouseY();
@@ -108,9 +110,10 @@ void TurnsManager::ApplyForces()
 {
 	if (currentItem == nullptr) return;
 
+
 	if (_app->input->GetMouseButton(1) == KEY_UP) // Si soltamos el boton del raton
 	{
-		fPoint itemPos = currentItem->gameObject->rBody->GetPosition();
+		iPoint itemPos = currentItem->gameObject->GetScreenPosition();
 		iPoint mousePos;
 		mousePos.x = _app->input->GetMouseX();
 		mousePos.y = _app->input->GetMouseY();
@@ -184,6 +187,8 @@ void TurnsManager::ApplyForceOnOption(fPoint dir)
 		if (!playerMovedItem[currentPlayer])
 		currentItem->gameObject->rBody->AddForceToCenter(dir);	// Aplicamos fuerza en la dirección que hemos determinado
 
+		throwedGameObj = currentItem->gameObject;
+
 		playerMovedItem[currentPlayer] = true;
 		break;
 	}
@@ -209,12 +214,13 @@ void TurnsManager::ResetCurrentPlayerVariables()
 	playerMovedItem[currentPlayer] = false;
 	playerThrowedBomb[currentPlayer] = false;
 	currentItem = nullptr;
+	throwedGameObj = nullptr;
 }
 
 float TurnsManager::GetMouseModule(Item* item)
 {
-	float itemX = item->gameObject->rBody->GetPosition().x;
-	float itemY = item->gameObject->rBody->GetPosition().y;
+	float itemX = item->gameObject->GetScreenPosition().x;
+	float itemY = item->gameObject->GetScreenPosition().y;
 
 	fPoint mouseDistance = { (float)abs(_app->input->GetMouseX() - itemX),
 							(float)abs(_app->input->GetMouseY() - itemY) };

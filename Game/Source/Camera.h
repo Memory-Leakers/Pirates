@@ -40,7 +40,7 @@ public:
 
 	int cameraDelay = 20;
 
-	int moveX = 0, moveY = 1;
+	int moveX = 1, moveY = 1;
 
 	int mapHeight, mapWidth;
 

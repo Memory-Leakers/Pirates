@@ -45,25 +45,25 @@ void Camera::UpdatePosition()
 	if (target != nullptr && !App->scene->isChangingScene)
 	{
 		// Update Y
-		int targetPosY = target->GetPosition().y * App->window->scale;
+		int targetPosY = target->GetWorldPosition().y; //* App->window->scale;
 		targetPosY = (targetPosY - pivotY) * moveY;
 
 		int distance = abs(targetPosY - y);
 
-		targetPosY > y ? y += distance / cameraDelay : targetPosY <y ? y -= distance / cameraDelay : y = y;
+		targetPosY > y ? y += distance / cameraDelay : targetPosY < y ? y -= distance / cameraDelay : y = y;
 
-		y < 0 ? y = 0 : y > mapHeight ? y = mapHeight : y = y;
+		//y < 0 ? y = 0 : y > mapHeight ? y = mapHeight : y = y;
 
 		// Update X
 
-		int targetPosX = target->GetPosition().x * App->window->scale;
+		int targetPosX = target->GetWorldPosition().x; //* App->window->scale;
 		targetPosX = (targetPosX - pivotX) * moveX;
 	
 		distance = abs(targetPosX - x);
 
 		targetPosX > x ? x += distance / cameraDelay : targetPosX < x ? x -= distance / cameraDelay : x = x;
 
-		x < 0 ? x = 0 : x > mapHeight ? x = mapHeight : x = x;
+		//x < 0 ? x = 0 : x > mapHeight ? x = mapHeight : x = x;
 	}
 	
 }

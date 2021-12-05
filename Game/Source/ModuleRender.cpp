@@ -57,9 +57,7 @@ UpdateStatus ModuleRender::PreUpdate()
 // Update: debug camera
 UpdateStatus ModuleRender::Update()
 {	
-
 	camera->Update();
-
 	return UPDATE_CONTINUE;
 }
 
@@ -168,6 +166,9 @@ void ModuleRender::AddRectRenderQueue(const SDL_Rect& rect, Uint8 r, Uint8 g, Ui
 	RenderObject renderR;
 
 	renderR.InitAsRect(rect, { r,g,b,a }, filled, layer, orderInlayer, speed);
+
+	//renderR.destRect.x = (int)(-camera->x * renderR.speedRegardCamera) + renderR.destRect.x * App->window->scale;
+	//renderR.destRect.y = (int)(-camera->y * renderR.speedRegardCamera) + renderR.destRect.y * App->window->scale;
 
 	renderLayers[layer].push_back(renderR);
 }

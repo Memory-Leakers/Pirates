@@ -112,6 +112,18 @@ UpdateStatus ModuleInput::PreUpdate()
 	return UPDATE_CONTINUE;
 }
 
+int ModuleInput::GetMouseX()
+{
+	return mouse_x;
+	//return ((int)(mouse_x - App->renderer->camera->x) * App->window->scale);
+}
+
+int ModuleInput::GetMouseY()
+{
+	return mouse_y;
+	//return ((int)(mouse_y - App->renderer->camera->y) * App->window->scale);
+}
+
 // Called before quitting
 bool ModuleInput::CleanUp()
 {

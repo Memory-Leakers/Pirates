@@ -93,11 +93,20 @@ float GameObject::GetDegreeAngle()
 	return this->rotation;
 }
 
-iPoint GameObject::GetPosition()
+iPoint GameObject::GetWorldPosition()
 {
-
-	return this->position;
+	iPoint pos = { (int)rBody->GetPosition().x, (int)rBody->GetPosition().y };
+	return pos;
 }
+
+iPoint GameObject::GetScreenPosition()
+{
+	iPoint pos = { (int)rBody->GetPosition().x, (int)rBody->GetPosition().y };
+	pos.x = (int)(-_app->renderer->camera->x + pos.x) * _app->window->scale;
+	pos.y = (int)(-_app->renderer->camera->y + pos.y) * _app->window->scale;
+	return pos;
+}
+
 
 fPoint GameObject::GetLinearVelocity()
 {

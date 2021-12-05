@@ -39,6 +39,8 @@ public:
 
 	Item* currentItem = nullptr;
 
+	GameObject* throwedGameObj = nullptr;
+
 	List<Item*> playerItems[2];	// Total Items
 
 	int playerCurrentOption[2] = {3,3};

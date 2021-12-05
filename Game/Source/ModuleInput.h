@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 
+
 #define MAX_MOUSE_BUTTONS 5
 #define MAX_KEYS 300
 
@@ -35,16 +36,9 @@ public:
 		return (id < MAX_MOUSE_BUTTONS) ? mouse_buttons[id] : KEY_ERROR;
 	}
 
+	int GetMouseX();
 
-	int GetMouseX() const
-	{
-		return mouse_x;
-	}
-
-	int GetMouseY() const
-	{
-		return mouse_y;
-	}
+	int GetMouseY();
 
 private:
 	KEY_STATE* keyboard;

@@ -4,8 +4,6 @@
 #include "PhysCore.h"
 #include "TurnsManager.h"
 
-iPoint position;
-
 SceneIntro::SceneIntro(Application* app) : Scene(app)
 {}
 
@@ -80,21 +78,49 @@ bool SceneIntro::Update()
 
 	turnsManager->UpdateGameLogic();
 
+	// Camera Follow Logic
+	if (turnsManager->throwedGameObj != nullptr)		// Follow throwed Game Object
+	{
+		_app->renderer->camera->SetTarget(turnsManager->throwedGameObj);
+	}
+	else if (turnsManager->currentItem != nullptr)		// Follow current selected Item
+	{
+		_app->renderer->camera->SetTarget(turnsManager->currentItem->gameObject);
+	}
+ 	else                                               // Follow first item of the current player
+	{				
+		_app->renderer->camera->SetTarget(turnsManager->playerItems[turnsManager->currentPlayer][0]->gameObject);
+	}
+
 	return true;
 }
 
 bool SceneIntro::PostUpdate()
 {
-	rect.x = testGO->rBody->GetPosition().x;
-	rect.y = testGO->rBody->GetPosition().y;
+	
+	rect.x = testGO->GetScreenPosition().x;
+	rect.y = testGO->GetScreenPosition().y;
 
-	_app->renderer->DrawQuad(rect, 255, 0,0, 255);
+	if (_app->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+	{
+		printf("ItemX = %d\n", rect.x);
+		printf("ItemY = %d\n", rect.y);
+		printf("MouseX = %d\n", _app->input->GetMouseX());
+		printf("MouseY = %d\n", _app->input->GetMouseY());
+	}
 
-	rect2.x = testGO2->rBody->GetPosition().x;
-	rect2.y = testGO2->rBody->GetPosition().y;
 
-	_app->renderer->DrawQuad(rect2, 255, 255, 0, 255);
+	_app->renderer->AddRectRenderQueue(rect, 255, 0, 0);
 
+	rect2.x = testGO2->GetScreenPosition().x;
+	rect2.y = testGO2->GetScreenPosition().y;
+
+	_app->renderer->AddRectRenderQueue(rect2, 255, 255, 0);
+
+	rect3.x = _app->renderer->camera->x;
+	rect3.y = _app->renderer->camera->y;
+
+	_app->renderer->AddRectRenderQueue(rect3, 0, 0, 0);
 
 	return true;
 }

@@ -50,7 +50,9 @@ public:
 	/// Si exixte pBody devuelve position de pBody, si no el de GameObject (px)
 	/// </summary>
 	/// <returns>position en pixel</returns>
-	iPoint GetPosition();
+	iPoint GetWorldPosition();
+
+	iPoint GetScreenPosition();
 
 	/// <summary>
 	/// Si exixte pBody devuelve position de pBody, si no {0,0}
