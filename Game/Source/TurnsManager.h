@@ -61,6 +61,8 @@ private:
 
 	void ResetCurrentPlayerVariables();
 
+	float GetMouseModule(Item* item);
+
 	Application* _app;
 
 	bool canInteract = true;	// Determina si se puede interactuar con los items o no

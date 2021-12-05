@@ -23,16 +23,16 @@ GameObject::~GameObject()
 
 }
 
-void GameObject::OnCollisionEnter(PhysBody* col)
+void GameObject::OnCollisionEnter(RigidBody* col)
 {
 }
 
-void GameObject::OnCollisionExit(PhysBody* col)
+void GameObject::OnCollisionExit(RigidBody* col)
 {
 
 }
 
-void GameObject::OnTriggerEnter(PhysBody* col)
+void GameObject::OnTriggerEnter(RigidBody* col)
 {
 }
 

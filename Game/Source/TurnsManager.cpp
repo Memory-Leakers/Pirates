@@ -71,16 +71,8 @@ void TurnsManager::SelectItem()
 	for (int i = 0; i < playerItems[currentPlayer].count(); i++)
 	{
 		if (playerItems[currentPlayer][i] == nullptr) return;
-		
-		float itemX = playerItems[currentPlayer][i]->gameObject->rBody->GetPosition().x;
-		float itemY = playerItems[currentPlayer][i]->gameObject->rBody->GetPosition().y;
 
-		fPoint mouseDistance = { (float)abs(_app->input->GetMouseX() - itemX),
-								(float)abs(_app->input->GetMouseY() - itemY) };
-
-		float mouseModule = mouseDistance.Module();
-
-		if (_app->input->GetMouseButton(1) == KEY_DOWN && mouseModule < 20 ) //&& // Encontrar si el mouse está dentro de la hitbox del item) 
+		if (_app->input->GetMouseButton(1) == KEY_DOWN && GetMouseModule(playerItems[currentPlayer][i]) < 20 ) //&& // Encontrar si el mouse está dentro de la hitbox del item) 
 		{													// Se puede hacer usando la posición del GameObject y añadiendole
 															// Un area determinada (20 pixeles por ejemplo)
 															// Si el ratón está dentro de ese area, se selecciona el item
@@ -121,21 +113,27 @@ void TurnsManager::ApplyForces()
 		fPoint itemPos = currentItem->gameObject->rBody->GetPosition();
 		iPoint mousePos;
 		mousePos.x = _app->input->GetMouseX();
-		mousePos.y = _app->input->GetMouseX();
+		mousePos.y = _app->input->GetMouseY();
 
 		// Si la posición del ratón está cerca de la del item, no aplicamos fuerza y cancelamos el lanzamiento
-		if (abs(mousePos.x - itemPos.x) < 10 && abs(mousePos.y - itemPos.y) < 10)
+		if (GetMouseModule(currentItem) < 50)
 		{
 			currentItem = nullptr;
+			return;
 		}
 
+		// Aplicamos fuerza
 		fPoint dir = { (float)(itemPos.x - mousePos.x), (float)(itemPos.y - mousePos.y) };	// El vector que determina hacia donde estamos apuntando
 
 		float throwForce = 3.0f;
 
 		dir *= throwForce;
 
+		//dir.y *= -1;
+
 		ApplyForceOnOption(dir); // Aplicamos la fuerza usando el vector que hemos determinado. 
+
+		currentItem = nullptr;
 	}
 }
 
@@ -211,6 +209,18 @@ void TurnsManager::ResetCurrentPlayerVariables()
 	playerMovedItem[currentPlayer] = false;
 	playerThrowedBomb[currentPlayer] = false;
 	currentItem = nullptr;
+}
+
+float TurnsManager::GetMouseModule(Item* item)
+{
+	float itemX = item->gameObject->rBody->GetPosition().x;
+	float itemY = item->gameObject->rBody->GetPosition().y;
+
+	fPoint mouseDistance = { (float)abs(_app->input->GetMouseX() - itemX),
+							(float)abs(_app->input->GetMouseY() - itemY) };
+
+	float mouseModule = mouseDistance.Module();
+	return mouseModule;
 }
 
 

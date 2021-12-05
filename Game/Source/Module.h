@@ -4,7 +4,6 @@
 #include "External/PugiXml/src/pugixml.hpp"
 
 class Application;
-class PhysBody;
 
 
 class Module
@@ -77,11 +76,6 @@ public:
 	virtual bool CleanUp() 
 	{ 
 		return true; 
-	}
-
-	virtual void OnCollisionEnter(PhysBody* body1, PhysBody* body2)
-	{
-	
 	}
 
 	virtual void GetSaveData(pugi::xml_document& save)
