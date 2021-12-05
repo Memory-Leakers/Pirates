@@ -14,27 +14,46 @@ bool ModuleUI::Init(pugi::xml_node& config)
 
 bool ModuleUI::Start()
 {
-	texture = App->textures->Load("Assets/Images/Fonts/font1.png");
+	texture = App->textures->Load("Assets/fonts/font36x52.png");
 
 	for (int i = 0; i < 10; i++)
 	{
-		numSection[i].x = 26 * i;
-		numSection[i].y = 10;
-		numSection[i].w = 26;
-		numSection[i].h = 42;
+		numSection[i].x = 36 * i;
+		numSection[i].y = 0;
+		numSection[i].w = 36;
+		numSection[i].h = 52;
 	}
 
-    return true;
+	return true;
 }
 
 UpdateStatus ModuleUI::Update()
 {
+	for (int i = 0; i < MAX_UI_ITEMS; i++)
+	{
+		if (uiArray[i] == nullptr) continue;
+
+		if (uiArray[i]->isDynamic)
+		{
+			if (uiArray[i]->lifeFrames > 0)
+			{
+				uiArray[i]->lifeFrames--;
+				uiArray[i]->x += uiArray[i]->speed.x;
+				uiArray[i]->y += uiArray[i]->speed.y;
+			}
+			else
+			{
+				DestroyUI(i);
+			}
+		}
+	}
+
     return UpdateStatus::UPDATE_CONTINUE;
 }
 
 UpdateStatus ModuleUI::PostUpdate()
 {
-    //Draw all current UIs
+	//Draw all current UIs
 	for (int i = 0; i < MAX_UI_ITEMS; i++)
 	{
 		if (uiArray[i] != nullptr)
@@ -42,13 +61,13 @@ UpdateStatus ModuleUI::PostUpdate()
 			for (int j = 0; j < uiArray[i]->totalDigits; j++)
 			{
 				iPoint tempPos = iPoint(uiArray[i]->x, uiArray[i]->y);
-				tempPos.x += (int)(26 * uiArray[i]->digitScale * j); // Spacing between digits
+				tempPos.x += (int)(37 * uiArray[i]->digitScale * j); // Spacing between digits
 				//App->renderer->Blit(texture, tempPos, uiArray[i]->y,uiArray[i]->digitScale, &numSection[uiArray[i]->digitVec.at(j)]);
-				App->renderer->AddTextureRenderQueue(texture, tempPos, numSection[uiArray[i]->digitVec.at(j)], uiArray[i]->digitScale, uiArray[i]->layer, 0.1f);
+				App->renderer->AddTextureRenderQueue(texture, tempPos, numSection[uiArray[i]->digitVec.at(j)], uiArray[i]->digitScale, uiArray[i]->layer, uiArray[i]->orderInLayer);
 			}
 		}
 	}
-    return UpdateStatus::UPDATE_CONTINUE;
+	return UpdateStatus::UPDATE_CONTINUE;
 }
 
 /// <summary>
@@ -61,7 +80,7 @@ UpdateStatus ModuleUI::PostUpdate()
 /// <param name="x"></param>
 /// <param name="y"></param>
 /// <returns></returns>
-uint ModuleUI::CreateUI(int num, int x, int y, float scale, int layer)
+uint ModuleUI::CreateUI(int num, int x, int y, float scale, int layer, float orderInLayer, bool isDynamic, int lifeFrames, iPoint speed)
 {
 	//  Get position of the UI
 	itemUI* item = new itemUI();
@@ -69,6 +88,10 @@ uint ModuleUI::CreateUI(int num, int x, int y, float scale, int layer)
 	item->y = y;
 	item->digitScale = scale;
 	item->layer = layer;
+	item->orderInLayer = orderInLayer;
+	item->isDynamic = isDynamic;
+	item->lifeFrames = lifeFrames;
+	item->speed = speed;
 
 	//Make the number into an array of digits
 	//	Declare Variables
@@ -99,14 +122,14 @@ uint ModuleUI::CreateUI(int num, int x, int y, float scale, int layer)
 	}
 
 
-    for (int i = 0; i < MAX_UI_ITEMS; i++)
-    {
+	for (int i = 0; i < MAX_UI_ITEMS; i++)
+	{
 		if (uiArray[i] == nullptr)
 		{
 			uiArray[i] = item;
 			return (uint)i;
 		}
-    }
+	}
 }
 
 void ModuleUI::DestroyUI(uint index)

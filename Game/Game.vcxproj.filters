@@ -34,9 +34,6 @@
     <ClCompile Include="Source\ModuleTextures.cpp">
       <Filter>SourceFiles\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleUI.cpp">
-      <Filter>SourceFiles\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ModuleWindow.cpp">
       <Filter>SourceFiles\Modules</Filter>
     </ClCompile>
@@ -67,6 +64,9 @@
     <ClCompile Include="Source\TurnsManager.cpp">
       <Filter>SourceFiles\BaseClass</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ModuleUI.cpp">
+      <Filter>SourceFiles\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\External\PugiXml\src\pugiconfig.hpp">
@@ -91,9 +91,6 @@
       <Filter>HeaderFiles\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleTextures.h">
-      <Filter>HeaderFiles\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleUI.h">
       <Filter>HeaderFiles\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleWindow.h">
@@ -167,6 +164,9 @@
     </ClInclude>
     <ClInclude Include="Source\TurnsManager.h">
       <Filter>HeaderFiles\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleUI.h">
+      <Filter>HeaderFiles\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

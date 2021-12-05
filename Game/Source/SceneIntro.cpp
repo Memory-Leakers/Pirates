@@ -68,6 +68,8 @@ bool SceneIntro::Start()
 	gameObjects.add(testGO);
 	gameObjects.add(testGO2);
 
+	_app->ui->CreateUI(1234567890, 500, 500, 3.0f);
+
 	return ret;
 }
 
