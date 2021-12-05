@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "SceneIntro.h"
 #include "PhysCore.h"
+#include "TurnsManager.h"
 
 iPoint position;
 
@@ -16,12 +17,6 @@ bool SceneIntro::Start()
 {
 	LOG("Loading Intro assets");
 	bool ret = true;
-
-	fPoint test = { 2.0,2.0 };
-
-	fPoint temp = test * test;
-
-	printf("%f %f", temp.x, temp.y);
 
 	// Test
 	plant.x = 500;
@@ -48,11 +43,31 @@ bool SceneIntro::Start()
 
 	body2 = new RigidBody({ 400, 300 }, RigidBodyType::DYNAMIC, 10, 10);
 
+	testGO = new GameObject("test", "test", _app);
+	testGO->rBody = new RigidBody({ 500, 300 }, RigidBodyType::DYNAMIC, 10, 10);
+	testGO->rBody->SetGravityScale(0);
+
+	testGO2 = new GameObject("test", "test", _app);
+	testGO2->rBody = new RigidBody({ 400, 300 }, RigidBodyType::DYNAMIC, 10, 10);
+	testGO2->rBody->SetGravityScale(0);
+
+	turnsManager = new TurnsManager(_app);
+
 	body2->SetGravityScale(2.0f);
 
 	world->AddRigidBody(body);
 	
 	world->AddRigidBody(body2);
+
+	world->AddRigidBody(testGO->rBody);
+	world->AddRigidBody(testGO2->rBody);
+
+	turnsManager->AddGameObjectAsItem(testGO, PLAYER1);
+	turnsManager->AddGameObjectAsItem(testGO2, PLAYER2);
+
+	gameObjects.add(testGO);
+	gameObjects.add(testGO2);
+
 	return ret;
 }
 
@@ -63,6 +78,15 @@ bool SceneIntro::CleanUp()
 
 	RELEASE(world);
 
+	if (turnsManager != nullptr)
+	{
+		turnsManager->CleanUp();
+		delete turnsManager;
+		turnsManager = nullptr;
+	}
+
+	Scene::CleanUp();
+
 	return true;
 }
 
@@ -70,6 +94,8 @@ bool SceneIntro::CleanUp()
 bool SceneIntro::Update()
 {
 	world->Update(1.0/60);
+
+	turnsManager->UpdateGameLogic();
 
 	//printf_s("Position: %f\t %f\n", body->GetPosition().x, body->GetPosition().y);
 
@@ -121,13 +147,13 @@ bool SceneIntro::PostUpdate()
 	_app->renderer->DrawLine(1250, 510, 1250, 300, 255, 0, 0);
 	_app->renderer->DrawLine(-50, 510, -50, 300, 0, 255, 0);*/
 	
-	rect.x = body->GetPosition().x;
-	rect.y = body->GetPosition().y;
+	rect.x = testGO->rBody->GetPosition().x;
+	rect.y = testGO->rBody->GetPosition().y;
 
 	_app->renderer->DrawQuad(rect, 255, 0,0, 255);
 
-	rect2.x = body2->GetPosition().x;
-	rect2.y = body2->GetPosition().y;
+	rect2.x = testGO2->rBody->GetPosition().x;
+	rect2.y = testGO2->rBody->GetPosition().y;
 
 	_app->renderer->DrawQuad(rect2, 255, 255, 0, 255);
 

@@ -32,6 +32,8 @@ public:
 	void AddItem(Item* item, int player);
 
 	void AddGameObjectAsItem(GameObject* g, int player);
+
+	void CleanUp();
 	
 	int currentPlayer;	// 0 = player1; 1 = player2
 
@@ -58,9 +60,6 @@ private:
 	void CheckPlayerTurn();
 
 	void ResetCurrentPlayerVariables();
-
-
-	void CleanUp();
 
 	Application* _app;
 

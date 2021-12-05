@@ -6,6 +6,7 @@
 
 class PhysCore;
 class RigidBody;
+class TurnsManager;
 
 #define BOUNCER_TIME 200
 
@@ -92,4 +93,9 @@ public:
 	uint player_lose_fx;
 
 	PhysCore* world;
+
+	GameObject* testGO = nullptr;
+	GameObject* testGO2 = nullptr;
+
+	TurnsManager* turnsManager;
 };

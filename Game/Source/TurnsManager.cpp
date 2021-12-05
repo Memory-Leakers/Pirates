@@ -72,7 +72,15 @@ void TurnsManager::SelectItem()
 	{
 		if (playerItems[currentPlayer][i] == nullptr) return;
 		
-		if (_app->input->GetMouseButton(0) == KEY_DOWN) //&& // Encontrar si el mouse está dentro de la hitbox del item) 
+		float itemX = playerItems[currentPlayer][i]->gameObject->rBody->GetPosition().x;
+		float itemY = playerItems[currentPlayer][i]->gameObject->rBody->GetPosition().y;
+
+		fPoint mouseDistance = { (float)abs(_app->input->GetMouseX() - itemX),
+								(float)abs(_app->input->GetMouseY() - itemY) };
+
+		float mouseModule = mouseDistance.Module();
+
+		if (_app->input->GetMouseButton(1) == KEY_DOWN && mouseModule < 20 ) //&& // Encontrar si el mouse está dentro de la hitbox del item) 
 		{													// Se puede hacer usando la posición del GameObject y añadiendole
 															// Un area determinada (20 pixeles por ejemplo)
 															// Si el ratón está dentro de ese area, se selecciona el item
@@ -93,12 +101,12 @@ void TurnsManager::DrawMouseItemLine()
 {
 	if (currentItem == nullptr) return;	// Si no hay nignun objeto seleccionado no ejecutamos
 
-	if (_app->input->GetMouseButton(0) == KEY_REPEAT)	// Si estamos manteniendo el boton del ratón, dibujamos la linea
+	if (_app->input->GetMouseButton(1) == KEY_REPEAT)	// Si estamos manteniendo el boton del ratón, dibujamos la linea
 	{
-		iPoint itemPos = currentItem->gameObject->GetPosition();
+		iPoint itemPos = { (int)currentItem->gameObject->rBody->GetPosition().x, (int)currentItem->gameObject->rBody->GetPosition().y };
 		iPoint mousePos;
 		mousePos.x = _app->input->GetMouseX();
-		mousePos.y = _app->input->GetMouseX();
+		mousePos.y = _app->input->GetMouseY();
 
 		_app->renderer->DrawLine(mousePos.x, mousePos.y, itemPos.x, itemPos.y, 255, 0, 0);
 	}
@@ -108,9 +116,9 @@ void TurnsManager::ApplyForces()
 {
 	if (currentItem == nullptr) return;
 
-	if (_app->input->GetMouseButton(0) == KEY_UP) // Si soltamos el boton del raton
+	if (_app->input->GetMouseButton(1) == KEY_UP) // Si soltamos el boton del raton
 	{
-		iPoint itemPos = currentItem->gameObject->GetPosition();
+		fPoint itemPos = currentItem->gameObject->rBody->GetPosition();
 		iPoint mousePos;
 		mousePos.x = _app->input->GetMouseX();
 		mousePos.y = _app->input->GetMouseX();
@@ -121,9 +129,9 @@ void TurnsManager::ApplyForces()
 			currentItem = nullptr;
 		}
 
-		fPoint dir = { itemPos.x - mousePos.x, itemPos.y - mousePos.y };	// El vector que determina hacia donde estamos apuntando
+		fPoint dir = { (float)(itemPos.x - mousePos.x), (float)(itemPos.y - mousePos.y) };	// El vector que determina hacia donde estamos apuntando
 
-		float throwForce = 1.0f;
+		float throwForce = 3.0f;
 
 		dir *= throwForce;
 
@@ -175,6 +183,7 @@ void TurnsManager::ApplyForceOnOption(fPoint dir)
 		playerThrowedBomb[currentPlayer] = true;
 		break;
 	case 3:
+		if (!playerMovedItem[currentPlayer])
 		currentItem->gameObject->rBody->AddForceToCenter(dir);	// Aplicamos fuerza en la dirección que hemos determinado
 
 		playerMovedItem[currentPlayer] = true;
@@ -192,6 +201,8 @@ void TurnsManager::CheckPlayerTurn()
 
 		// Change to the other player
 		currentPlayer = currentPlayer == 0 ? 1 : 0;
+
+		printf("Turno player %d", currentPlayer);
 	}
 }
 
