@@ -79,6 +79,37 @@ void Camera::ReleaseTarget()
 	x = y = 0;
 }
 
+void Camera::MoveCameraWithMouse()
+{
+	if (target != nullptr) return;
+	
+	int leftBorder = App->window->width / 8; //	160
+	int rightBorder = App->window->width - leftBorder; // 1280 - 160
+	int upBorder = App->window->height / 8;
+	int downBorder = App->window->height - upBorder;
+
+	if (App->input->GetMouseX() < leftBorder)
+	{
+		//Move camera left
+		x -= 5;
+	}
+	if (App->input->GetMouseX() > rightBorder)
+	{
+		x += 5;
+	}
+	if (App->input->GetMouseY() < upBorder)
+	{
+		//Move camera left
+		y -= 5;
+	}
+	if (App->input->GetMouseY() > downBorder)
+	{
+		y += 5;
+	}
+
+
+}
+
 
 iPoint Camera::GetCenter()
 {

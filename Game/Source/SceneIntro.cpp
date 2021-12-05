@@ -83,14 +83,17 @@ bool SceneIntro::Update()
 	{
 		_app->renderer->camera->SetTarget(turnsManager->throwedGameObj);
 	}
-	else if (turnsManager->currentItem != nullptr)		// Follow current selected Item
+	else 
 	{
-		_app->renderer->camera->SetTarget(turnsManager->currentItem->gameObject);
+		_app->renderer->camera->SetTarget(nullptr);
 	}
- 	else                                               // Follow first item of the current player
-	{				
-		_app->renderer->camera->SetTarget(turnsManager->playerItems[turnsManager->currentPlayer][0]->gameObject);
+
+	if (_app->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+	{
+		testGO->rBody->SetLinearVelocity({ 0,0 });
 	}
+
+	_app->renderer->camera->MoveCameraWithMouse();
 
 	return true;
 }

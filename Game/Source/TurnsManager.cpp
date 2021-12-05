@@ -11,6 +11,15 @@ TurnsManager::TurnsManager(Application* app)
 /// </summary>
 void TurnsManager::UpdateGameLogic()
 {
+	// Comprobar que el objeto tirado (si lo hay) aún está en movimiento
+	if (throwedGameObj != nullptr)
+	{
+		if (throwedGameObj->rBody->GetLinearVelocity().Module() < 0.5f)
+		{
+			throwedGameObj = nullptr;
+		}
+	}
+
 	// Fase de Check Interaction
 	// Si el juegador no puede interactuar en este frame, se termina la función
 
@@ -132,8 +141,6 @@ void TurnsManager::ApplyForces()
 
 		dir *= throwForce;
 
-		//dir.y *= -1;
-
 		ApplyForceOnOption(dir); // Aplicamos la fuerza usando el vector que hemos determinado. 
 
 		currentItem = nullptr;
@@ -184,7 +191,8 @@ void TurnsManager::ApplyForceOnOption(fPoint dir)
 		playerThrowedBomb[currentPlayer] = true;
 		break;
 	case 3:
-		if (!playerMovedItem[currentPlayer])
+		if (playerMovedItem[currentPlayer]) return;
+	
 		currentItem->gameObject->rBody->AddForceToCenter(dir);	// Aplicamos fuerza en la dirección que hemos determinado
 
 		throwedGameObj = currentItem->gameObject;

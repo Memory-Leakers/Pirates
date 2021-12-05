@@ -18,6 +18,8 @@ public:
 
 	void ReleaseTarget();
 
+	void MoveCameraWithMouse();
+
 private:
 
 	iPoint GetCenter();
