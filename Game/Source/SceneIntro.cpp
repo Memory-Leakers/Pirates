@@ -18,25 +18,22 @@ bool SceneIntro::Start()
 
 	world = new PhysCore({ 0,10 });
 
-	body = new RigidBody({ 300, 300 }, RigidBodyType::DYNAMIC,10,10);
-
-	body2 = new RigidBody({ 400, 300 }, RigidBodyType::DYNAMIC, 10, 10);
-
 	testGO = new GameObject("test", "test", _app);
-	testGO->rBody = new RigidBody({ 500, 300 }, RigidBodyType::DYNAMIC, 10, 10);
-	testGO->rBody->SetGravityScale(0);
+	testGO->rBody = new RigidBody({ 300, 180 }, RigidBodyType::DYNAMIC, 10);
+	testGO->rBody->SetGravityScale(1.0f);
+	testGO->rBody->SetRestitution(0.6f);
+	testGO->rBody->SetDragCoeficient(0.01f);
 
 	testGO2 = new GameObject("test", "test", _app);
-	testGO2->rBody = new RigidBody({ 400, 300 }, RigidBodyType::DYNAMIC, 10, 10);
-	testGO2->rBody->SetGravityScale(0);
+	testGO2->rBody = new RigidBody({ 400, 180 }, RigidBodyType::DYNAMIC, 10);
+	testGO2->rBody->SetGravityScale(1.0f);
+
+	floor = new GameObject("test", "test", _app);
+	floor->rBody = new RigidBody({ 0, 600 }, RigidBodyType::STATIC, 1280, 300);
 
 	turnsManager = new TurnsManager(_app);
 
-	body2->SetGravityScale(2.0f);
-
-	world->AddRigidBody(body);
-	
-	world->AddRigidBody(body2);
+	world->AddRigidBody(floor->rBody);
 
 	world->AddRigidBody(testGO->rBody);
 	world->AddRigidBody(testGO2->rBody);
@@ -46,6 +43,7 @@ bool SceneIntro::Start()
 
 	gameObjects.add(testGO);
 	gameObjects.add(testGO2);
+	gameObjects.add(floor);
 
 	_app->ui->CreateUI(1234567890, 500, 500, 3.0f);
 
@@ -101,6 +99,13 @@ bool SceneIntro::Update()
 bool SceneIntro::PostUpdate()
 {
 	
+	rect3.x = floor->GetScreenPosition().x;
+	rect3.y = floor->GetScreenPosition().y -150;
+	rect3.w = 1280;
+	rect3.h = 300;
+
+	_app->renderer->AddRectRenderQueue(rect3, 0, 255, 255);
+
 	rect.x = testGO->GetScreenPosition().x;
 	rect.y = testGO->GetScreenPosition().y;
 
@@ -108,8 +113,8 @@ bool SceneIntro::PostUpdate()
 	{
 		printf("ItemX = %d\n", rect.x);
 		printf("ItemY = %d\n", rect.y);
-		printf("MouseX = %d\n", _app->input->GetMouseX());
-		printf("MouseY = %d\n", _app->input->GetMouseY());
+		//printf("MouseX = %d\n", _app->input->GetMouseX());
+		//printf("MouseY = %d\n", _app->input->GetMouseY());
 	}
 
 
@@ -119,11 +124,6 @@ bool SceneIntro::PostUpdate()
 	rect2.y = testGO2->GetScreenPosition().y;
 
 	_app->renderer->AddRectRenderQueue(rect2, 255, 255, 0);
-
-	rect3.x = _app->renderer->camera->x;
-	rect3.y = _app->renderer->camera->y;
-
-	_app->renderer->AddRectRenderQueue(rect3, 0, 0, 0);
 
 	return true;
 }

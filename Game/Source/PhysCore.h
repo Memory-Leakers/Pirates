@@ -1,6 +1,15 @@
 #pragma once
 #include "RigidBody.h"
 #include "List.h"
+
+enum COL_TYPE
+{
+	NONE = 0,
+	COLLISION,
+	TRIGGER
+};
+
+
 class PhysCore
 {
 public:
@@ -16,13 +25,17 @@ public:
 
 	void DeleteRigidBody(RigidBody* body);
 
-	bool BoxCOlBox(RigidBody& b1, RigidBody& b2);
+	COL_TYPE BoxColBox(RigidBody& b1, RigidBody& b2, bool trigger = false);
 
-	bool CircleCOlCircle(RigidBody& b1, RigidBody& b2);
+	COL_TYPE CircleColCircle(RigidBody& b1, RigidBody& b2, bool trigger = false);
 
-	bool BoxCOlCircle(RigidBody& b1, RigidBody& b2);
+	COL_TYPE BoxColCircle(RigidBody& b1, RigidBody& b2, bool trigger = false);
 
-	void SetWind(fPoint windforce) 
+	void ResolveColForce(RigidBody& b1, RigidBody& b2, fPoint colPoint);
+
+	float submergedVolume(RigidBody* body, RigidBody* water);
+
+	void SetWind(fPoint windforce)
 	{
 		wind = windforce;
 	}
@@ -32,7 +45,7 @@ public:
 		gravity = gravityforce;
 	}
 
-	fPoint GetWind() 
+	fPoint GetWind()
 	{
 		return wind;
 	}
@@ -42,6 +55,10 @@ public:
 		return gravity;
 	}
 
+	fPoint CollisionPoint(RigidBody& b1, RigidBody& b2);
+
+	fPoint CollisionDir(RigidBody& b1, fPoint colPoint);
+
 private:
 
 	fPoint gravity;
@@ -50,8 +67,9 @@ private:
 
 	fPoint wind = { 0,0 };
 
+	int resolveColForce = 5;
+
 public:
 
 	List<RigidBody*> rigidBodies;
 };
-

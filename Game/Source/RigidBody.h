@@ -1,20 +1,22 @@
 #pragma once
 #include "Point.h"
+#include "List.h"
 
 enum RigidBodyType
 {
 	STATIC,
 	DYNAMIC,
 	KINEMATIC,
+	WATER,
 };
 
 enum class ShapeType
 {
 	CIRCLE,
 	RECT,
-};	
+};
 
-class RigidBody 
+class RigidBody
 {
 private:
 	// Position
@@ -23,7 +25,8 @@ private:
 	//Properties
 	float restitution = 0.0f;
 	float friction = 0.0f;
-	float drag = 0.0f;
+	float coefficientDrag = 0.0f;
+	float hydrodynamicDrag = 0.3f;
 	float mass = 1.0f;
 	fPoint velocity = { 0.0f, 0.0f };
 	fPoint acceleration = { 0.0, 0.0 };
@@ -33,6 +36,7 @@ private:
 	float width = 1.0f;
 	float height = 1.0f;
 	float radius = 1.0f;
+
 	RigidBodyType type = STATIC;
 	ShapeType shape = ShapeType::RECT;
 
@@ -41,26 +45,41 @@ private:
 	fPoint totalForce = { 0.0, 0.0 };
 	fPoint additionalForce = { 0.0, 0.0 };
 
-	//List<RigidBody*> collisionList;
+	List<RigidBody*> collisionList;
+
+	iPoint ColDir = { 0, 0 };
 
 public:
 	RigidBody();
 
-	RigidBody(fPoint pos, RigidBodyType type,float width,float height);
+	~RigidBody();
 
-	RigidBody(fPoint pos, RigidBodyType type, float radius);
+	RigidBody(iPoint pos, RigidBodyType type, float width, float height);
+
+	RigidBody(iPoint pos, RigidBodyType type, float radius);
 
 	RigidBody(RigidBody& copy);
 
+	void OnCollisionEnter(RigidBody* col);
+
+	void OnCollisionStay(RigidBody* col);
+
+	void OnCollisionExit(RigidBody* col);
+
 	void AddForceToCenter(fPoint force);
 
-	fPoint GetPosition()
+	iPoint GetPosition()
 	{
-		return position;
+		int x = (int)METERS_TO_PIXELS(position.x);
+		int y = (int)METERS_TO_PIXELS(position.y);
+
+		iPoint pos = { (int)(METERS_TO_PIXELS(position.x)), (int)(METERS_TO_PIXELS(position.y)) };
+		return pos;
 	}
-	void SetPosition(fPoint pos)
+	void SetPosition(iPoint pos)
 	{
-		this->position = pos;
+		this->position.x = PIXELS_TO_METERS(pos.x);
+		this->position.y = PIXELS_TO_METERS(pos.y);
 	}
 	float GetRestitution()
 	{
@@ -89,13 +108,22 @@ public:
 		this->mass = mass;
 	}
 
-	float GetDragCoheficient()
+	float GetDragCoeficient()
 	{
-		return drag;
+		return coefficientDrag;
 	}
-	void SetDragCoheficient(float drag)
+	void SetDragCoeficient(float drag)
 	{
-		this->drag = drag;
+		this->coefficientDrag = drag;
+	}
+
+	float GetHydrodynamicDragCoeficient()
+	{
+		return hydrodynamicDrag;
+	}
+	void SetHydrodynamicDragCoeficient(float hydrodrag)
+	{
+		this->hydrodynamicDrag = hydrodrag;
 	}
 
 	fPoint GetLinearVelocity()
@@ -128,11 +156,35 @@ public:
 	{
 		this->rotation = rotation;
 	}
+	int GetRadius()
+	{
+		return radius;
+	}
+
+	bool Contains(fPoint pos)
+	{
+		if (shape == ShapeType::RECT)
+		{
+			if (pos.x >= position.x - width / 2 && pos.x <= position.x + width / 2 &&
+				pos.y >= position.y - height / 2 && pos.y <= position.y + height / 2)
+			{
+				return true;
+			}
+		}
+		else
+		{
+			if (sqrt(pow(position.x - pos.x, 2) + pow(position.y - pos.y, 2)) <= radius)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 private:
-	
+
 	void ResetForces();
 
 	friend class PhysCore;
 };
-

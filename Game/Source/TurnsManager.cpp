@@ -137,7 +137,7 @@ void TurnsManager::ApplyForces()
 		// Aplicamos fuerza
 		fPoint dir = { (float)(itemPos.x - mousePos.x), (float)(itemPos.y - mousePos.y) };	// El vector que determina hacia donde estamos apuntando
 
-		float throwForce = 3.0f;
+		float throwForce = 100.0f;
 
 		dir *= throwForce;
 

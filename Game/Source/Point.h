@@ -95,7 +95,6 @@ public:
 
 	Point Normalize()
 	{
-
 		//DEBUG
 		TYPE m = Module();
 
@@ -142,7 +141,7 @@ public:
 		x *= num;
 		y *= num;
 
-			return(*this);
+		return(*this);
 	}
 
 	const Point& operator *=(const float num)
@@ -150,7 +149,7 @@ public:
 		x *= num;
 		y *= num;
 
-			return(*this);
+		return(*this);
 	}
 
 	const Point& operator *=(const Point& num)
@@ -226,6 +225,12 @@ public:
 	{
 		return abs(v.x - v2.x) + abs(v.y - v2.y);
 	}
+
+	TYPE magnitude()
+	{
+		return sqrt(x * x + y * y);
+	}
+
 };
 
 typedef Point<int> iPoint;

@@ -5,21 +5,27 @@ RigidBody::RigidBody()
 
 }
 
-RigidBody::RigidBody(fPoint pos, RigidBodyType type,float width,float height)
+RigidBody::~RigidBody()
 {
-	this->position = pos;
-	this->type = type;
-	this->shape = ShapeType::RECT;
-	this->width = width;
-	this->height = height;
 }
 
-RigidBody::RigidBody(fPoint pos, RigidBodyType type, float radius)
+RigidBody::RigidBody(iPoint pos, RigidBodyType type, float width, float height)
 {
-	this->position = pos;
+	this->position.x = PIXELS_TO_METERS(pos.x);
+	this->position.y = PIXELS_TO_METERS(pos.y);
+	this->type = type;
+	this->shape = ShapeType::RECT;
+	this->width = PIXELS_TO_METERS(width);
+	this->height = PIXELS_TO_METERS(height);
+}
+
+RigidBody::RigidBody(iPoint pos, RigidBodyType type, float radius)
+{
+	this->position.x = PIXELS_TO_METERS(pos.x);
+	this->position.y = PIXELS_TO_METERS(pos.y);
 	this->type = type;
 	this->shape = ShapeType::CIRCLE;
-	this->radius = radius;
+	this->radius = PIXELS_TO_METERS(radius);
 }
 
 RigidBody::RigidBody(RigidBody& copy)
@@ -28,7 +34,7 @@ RigidBody::RigidBody(RigidBody& copy)
 	this->acceleration = copy.acceleration;
 	this->velocity = copy.velocity;
 	this->friction = copy.friction;
-	this->drag = copy.drag;
+	this->coefficientDrag = copy.coefficientDrag;
 	this->mass = copy.mass;
 	this->restitution = copy.restitution;
 	this->rotation = copy.rotation;
@@ -38,6 +44,21 @@ RigidBody::RigidBody(RigidBody& copy)
 	this->radius = copy.radius;
 	this->shape = copy.shape;
 	this->gravityScale = copy.gravityScale;
+}
+
+void RigidBody::OnCollisionEnter(RigidBody* col)
+{
+	printf("Col enter\n");
+}
+
+void RigidBody::OnCollisionStay(RigidBody* col)
+{
+	//printf("Col stay\n");
+}
+
+void RigidBody::OnCollisionExit(RigidBody* col)
+{
+	//printf("Col exit\n");
 }
 
 void RigidBody::AddForceToCenter(fPoint force)

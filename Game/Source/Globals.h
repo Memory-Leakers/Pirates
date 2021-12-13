@@ -11,6 +11,13 @@ void log(const char file[], int line, const char* format, ...);
 
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
+#define SQUARETOCIRCLE 0.7853981f
+
+#define PIXELS_PER_METERS 10.0f
+#define METERS_PER_PIXELS 1.0f/PIXELS_PER_METERS
+
+#define METERS_TO_PIXELS(x) ((int) floor(x * PIXELS_PER_METERS))
+#define PIXELS_TO_METERS(x) ((float)(x * METERS_PER_PIXELS))
 
 #define IN_RANGE( value, min, max ) ( ((value) >= (min) && (value) <= (max)) ? 1 : 0 )
 #define MIN( a, b ) ( ((a) < (b)) ? (a) : (b) )
