@@ -156,7 +156,7 @@ public:
 	{
 		this->rotation = rotation;
 	}
-	int GetRadius()
+	float GetRadius()
 	{
 		return radius;
 	}

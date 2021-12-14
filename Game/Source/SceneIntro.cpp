@@ -23,22 +23,26 @@ bool SceneIntro::Start()
 	InitScene();
 
 	testGO = new GameObject("test", "test", _app);
-	testGO->rBody = new RigidBody({ 300, 180 }, RigidBodyType::DYNAMIC, 10);
+	testGO->rBody = new RigidBody({ 300, 180 }, RigidBodyType::DYNAMIC, 5);
 	testGO->rBody->SetGravityScale(1.0f);
 	testGO->rBody->SetRestitution(0.6f);
 	testGO->rBody->SetDragCoeficient(0.01f);
 
 	testGO2 = new GameObject("test", "test", _app);
-	testGO2->rBody = new RigidBody({ 400, 180 }, RigidBodyType::DYNAMIC, 10);
+	testGO2->rBody = new RigidBody({ 400, 180 }, RigidBodyType::DYNAMIC, 5);
 	testGO2->rBody->SetGravityScale(1.0f);
 
-	floor = new GameObject("test", "test", _app);
-	floor->rBody = new RigidBody({ 0, 600 }, RigidBodyType::STATIC, 1280, 300);
+	walls[0] = new RigidBody({ 0,0 }, RigidBodyType::STATIC, 3200, 5);
+	walls[1] = new RigidBody({ 0,0 }, RigidBodyType::STATIC, 5, 1440);
+	walls[2] = new RigidBody({1550,0 }, RigidBodyType::STATIC, 5, 1440);
 
 	turnsManager = new TurnsManager(_app);
 
-	world->AddRigidBody(floor->rBody);
-
+	for (int i = 0; i < 3; i++)
+	{
+		world->AddRigidBody(walls[i]);
+	}
+	
 	world->AddRigidBody(testGO->rBody);
 	world->AddRigidBody(testGO2->rBody);
 
@@ -47,11 +51,6 @@ bool SceneIntro::Start()
 
 	gameObjects.add(testGO);
 	gameObjects.add(testGO2);
-	gameObjects.add(floor);
-
-	//_app->ui->CreateUI(1234567890, 500, 500, 3.0f);
-
-
 
 	return ret;
 }
@@ -65,7 +64,7 @@ void SceneIntro::InitScene()
 		{
 			GameObject* g = new GameObject("wall", "Wall", _app);
 			// +8 = offset, porque pivot de b2Body es el centro, y de tectura es izquierda superior.
-			g->rBody = new RigidBody({ _app->map->mapObjects[i].position.x + 16, _app->map->mapObjects[i].position.y + 16 }, RigidBodyType::STATIC, 32, 32);
+			g->rBody = new RigidBody({ _app->map->mapObjects[i].position.x +8, _app->map->mapObjects[i].position.y +8 }, RigidBodyType::STATIC, 16, 16);
 			world->AddRigidBody(g->rBody);
 			gameObjects.add(g);
 		}
@@ -140,21 +139,23 @@ bool SceneIntro::PostUpdate()
 	}
 
 
-	_app->renderer->AddRectRenderQueue(rect, 255, 0, 0);
+	_app->renderer->DrawCircle(rect.x, rect.y, (int)(std::floor(testGO->rBody->GetRadius() * PIXELS_PER_METERS)), 0,255, 0);
 
 	rect2.x = testGO2->GetWorldPosition().x;
 	rect2.y = testGO2->GetWorldPosition().y;
 
 	_app->renderer->DrawCircle(rect2.x, rect2.y, (int)(std::floor(testGO2->rBody->GetRadius() * PIXELS_PER_METERS)), 255, 0, 0);
 
-	for (int i = 0 ; i < gameObjects.count(); i++)
+	for (int i = 0; i < gameObjects.count(); i++)
 	{
 		if (gameObjects[i]->rBody->GetType() == RigidBodyType::STATIC)
 		{
-			_app->renderer->AddRectRenderQueue({gameObjects[i]->rBody->GetPosition().x-16, gameObjects[i]->rBody->GetPosition().y-16, 32, 32}, 255, 255, 0);
+			_app->renderer->AddRectRenderQueue({gameObjects[i]->rBody->GetPosition().x-8, gameObjects[i]->rBody->GetPosition().y-8, 32, 32}, 255, 255, 0);
 		}
 	}
-
+	
+	_app->renderer->AddRectRenderQueue({ 0,0,3200,5 }, 255, 0, 0);
+	_app->renderer->AddRectRenderQueue({ 1550,0,5,1440 }, 255, 0, 0);
 
 	return true;
 }
