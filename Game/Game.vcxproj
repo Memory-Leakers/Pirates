@@ -102,6 +102,7 @@
     <ClCompile Include="Source\ModuleUI.cpp" />
     <ClCompile Include="Source\ModuleWindow.cpp" />
     <ClCompile Include="Source\PhysCore.cpp" />
+    <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\PlayerSettings.cpp" />
     <ClCompile Include="Source\RigidBody.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="Source\p2List.h" />
     <ClInclude Include="Source\p2Point.h" />
     <ClInclude Include="Source\PhysCore.h" />
+    <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\PlayerSettings.h" />
     <ClInclude Include="Source\Point.h" />
     <ClInclude Include="Source\RenderObject.h" />

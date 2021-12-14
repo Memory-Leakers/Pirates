@@ -102,6 +102,7 @@ public:
 	bool pendingToDelete = false;
 
 	bool adjustToGrid = false;
+
 };
 
 #endif // !GAMEOBJECT_H
