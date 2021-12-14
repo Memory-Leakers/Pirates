@@ -8,9 +8,9 @@ SceneMainMenu::SceneMainMenu(Application* app) : Scene(app)
 
 bool SceneMainMenu::Start()
 {
-    mainMenu = _app->textures->Load("Assets/textures/Menu/MenuOptions.png");
-    logo = _app->textures->Load("Assets/textures/Menu/Logo.png");
-    arrow = _app->textures->Load("Assets/textures/Menu/Arrow.png");
+   // mainMenu = _app->textures->Load("Assets/textures/Menu/MenuOptions.png");
+    //logo = _app->textures->Load("Assets/textures/Menu/Logo.png");
+    //arrow = _app->textures->Load("Assets/textures/Menu/Arrow.png");
 
     arrowPos = { 69, 190 };
 
@@ -64,9 +64,9 @@ bool SceneMainMenu::PostUpdate()
         if (gameObjects[i] != nullptr)
             gameObjects[i]->PostUpdate();
     }
-    _app->renderer->AddTextureRenderQueue(mainMenu, { 0,0, });
-    _app->renderer->AddTextureRenderQueue(logo, { 96,logoY, });
-    _app->renderer->AddTextureRenderQueue(arrow, arrowPos, { 0,0,0,0 }, 1, 1);
+   // _app->renderer->AddTextureRenderQueue(mainMenu, { 0,0, });
+    //_app->renderer->AddTextureRenderQueue(logo, { 96,logoY, });
+    //_app->renderer->AddTextureRenderQueue(arrow, arrowPos, { 0,0,0,0 }, 1, 1);
 
     return true;
 }

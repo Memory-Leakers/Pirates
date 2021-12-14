@@ -44,7 +44,7 @@ public:
 
 	int moveX = 1, moveY = 1;
 
-	int mapHeight, mapWidth;
+	int mapHeight = 304 , mapWidth = 1860;
 
 };
 

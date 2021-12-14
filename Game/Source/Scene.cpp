@@ -14,6 +14,10 @@ bool Scene::Start()
 	return true;
 }
 
+void Scene::InitScene()
+{
+}
+
 bool Scene::PreUpdate()
 {
 	return true;

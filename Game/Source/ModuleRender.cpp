@@ -67,7 +67,7 @@ UpdateStatus ModuleRender::PostUpdate()
 	OPTICK_EVENT();
 
 	// Sorting layers
-	for (int i = 0; i < renderLayers.size(); i++)
+	for (int i = 1; i < renderLayers.size(); i++)
 	{
 		SortRenderObjects(renderLayers[i]);
 	}
@@ -167,8 +167,8 @@ void ModuleRender::AddRectRenderQueue(const SDL_Rect& rect, Uint8 r, Uint8 g, Ui
 
 	renderR.InitAsRect(rect, { r,g,b,a }, filled, layer, orderInlayer, speed);
 
-	//renderR.destRect.x = (int)(-camera->x * renderR.speedRegardCamera) + renderR.destRect.x * App->window->scale;
-	//renderR.destRect.y = (int)(-camera->y * renderR.speedRegardCamera) + renderR.destRect.y * App->window->scale;
+	renderR.destRect.x = (int)(-camera->x * renderR.speedRegardCamera) + renderR.destRect.x * App->window->scale;
+	renderR.destRect.y = (int)(-camera->y * renderR.speedRegardCamera) + renderR.destRect.y * App->window->scale;
 
 	renderLayers[layer].push_back(renderR);
 }
@@ -187,6 +187,7 @@ int ModuleRender::RoundToInt(int num)
 
 void ModuleRender::SortRenderObjects(vector<RenderObject> &obj)
 {
+	OPTICK_EVENT();
 	//sort(obj.begin(), obj.end(), CompareRenderObj);
 
 	int less = 0;
@@ -314,7 +315,7 @@ bool ModuleRender::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Ui
 	if(use_camera)
 		result = SDL_RenderDrawLine(renderer, -camera->x + x1 * App->window->scale, -camera->y + y1 * App->window->scale, -camera->x + x2 * App->window->scale, -camera->y + y2 * App->window->scale);
 	else
-		result = SDL_RenderDrawLine(renderer, x1 * App->window->scale, y1 * App->window->scale, x2 * App->window->scale, y2 * App->window->scale);
+		result = SDL_RenderDrawLine(renderer, x1 , y1 , x2 , y2 );
 
 	if(result != 0)
 	{

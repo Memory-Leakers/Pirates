@@ -160,6 +160,10 @@ public:
 	{
 		return radius;
 	}
+	RigidBodyType GetType()
+	{
+		return type;
+	}
 
 	bool Contains(fPoint pos)
 	{

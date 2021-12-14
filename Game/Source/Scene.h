@@ -28,6 +28,8 @@ public:
 
 	virtual bool Start();
 
+	virtual void InitScene();
+
 	virtual bool PreUpdate();
 
 	virtual bool Update();

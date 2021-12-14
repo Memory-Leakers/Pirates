@@ -13,6 +13,7 @@ public:
 	~SceneIntro();
 
 	bool Start();
+	void InitScene() override;
 	bool Update();
 	bool PostUpdate();
 	bool CleanUp() override;

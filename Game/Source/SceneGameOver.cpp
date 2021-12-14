@@ -7,8 +7,8 @@ SceneGameOver::SceneGameOver(Application* app) : Scene(app)
 
 bool SceneGameOver::Start()
 {
-    mainMenu = _app->textures->Load("Assets/textures/Menu/GameOverOptions.png", false);
-    arrow = _app->textures->Load("Assets/textures/Menu/ArrowGO.png", false);
+    //mainMenu = _app->textures->Load("Assets/textures/Menu/GameOverOptions.png", false);
+    //arrow = _app->textures->Load("Assets/textures/Menu/ArrowGO.png", false);
 
     arrowPos = { 20, 190 };
 
@@ -63,8 +63,8 @@ bool SceneGameOver::PostUpdate()
         if (gameObjects[i] != nullptr)
             gameObjects[i]->PostUpdate();
     }
-    _app->renderer->AddTextureRenderQueue(mainMenu, { 0,0, });
-    _app->renderer->AddTextureRenderQueue(arrow, arrowPos, { 0,0,0,0 }, 1, 1);
+    //_app->renderer->AddTextureRenderQueue(mainMenu, { 0,0, });
+    //_app->renderer->AddTextureRenderQueue(arrow, arrowPos, { 0,0,0,0 }, 1, 1);
 
     return true;
 }
