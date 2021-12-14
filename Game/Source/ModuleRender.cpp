@@ -173,6 +173,20 @@ void ModuleRender::AddRectRenderQueue(const SDL_Rect& rect, Uint8 r, Uint8 g, Ui
 	renderLayers[layer].push_back(renderR);
 }
 
+void ModuleRender::AddLineRenderQueue(iPoint startPoint, iPoint endPoint, Uint8 r, Uint8 g, Uint8 b, Uint8 a, int layer, float orderInlayer, float speed)
+{
+	RenderObject renderL;
+
+	renderL.InitAsLine(startPoint, endPoint, { r,g,b,a }, layer, orderInlayer, speed);
+	
+	/*renderL.start.x = (int)(-camera->x * renderL.speedRegardCamera) + renderL.start.x * App->window->scale;
+	renderL.start.y = (int)(-camera->x * renderL.speedRegardCamera) + renderL.start.x * App->window->scale;
+	renderL.end.x = (int)(-camera->x * renderL.speedRegardCamera) + renderL.start.x * App->window->scale;
+	renderL.end.y = (int)(-camera->x * renderL.speedRegardCamera) + renderL.start.x * App->window->scale;
+	*/
+	renderLayers[layer].push_back(renderL);
+}
+
 int ModuleRender::RoundToInt(int num)
 {
 	float divisionRes;

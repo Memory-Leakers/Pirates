@@ -119,14 +119,6 @@ bool SceneIntro::Update()
 
 bool SceneIntro::PostUpdate()
 {
-	
-	/*rect3.x = floor->GetScreenPosition().x;
-	rect3.y = floor->GetScreenPosition().y -150;
-	rect3.w = 1280;
-	rect3.h = 300;
-
-	_app->renderer->AddRectRenderQueue(rect3, 0, 255, 255);*/
-
 	rect.x = testGO->GetWorldPosition().x;
 	rect.y = testGO->GetWorldPosition().y;
 
@@ -146,16 +138,17 @@ bool SceneIntro::PostUpdate()
 
 	_app->renderer->DrawCircle(rect2.x, rect2.y, (int)(std::floor(testGO2->rBody->GetRadius() * PIXELS_PER_METERS)), 255, 0, 0);
 
-	for (int i = 0; i < gameObjects.count(); i++)
+	/*for (int i = 0; i < gameObjects.count(); i++)
 	{
 		if (gameObjects[i]->rBody->GetType() == RigidBodyType::STATIC)
 		{
 			_app->renderer->AddRectRenderQueue({gameObjects[i]->rBody->GetPosition().x-8, gameObjects[i]->rBody->GetPosition().y-8, 32, 32}, 255, 255, 0);
 		}
-	}
+	}*/
 	
 	_app->renderer->AddRectRenderQueue({ 0,0,3200,5 }, 255, 0, 0);
 	_app->renderer->AddRectRenderQueue({ 1550,0,5,1440 }, 255, 0, 0);
+	_app->renderer->AddRectRenderQueue({ 0,0,5,1440 }, 255, 0, 0);
 
 	return true;
 }

@@ -53,6 +53,14 @@ public:
 			}
 			return true;
 			break;
+		case RenderType::RENDER_LINE:
+
+			SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+			SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+
+			SDL_RenderDrawLine(renderer,start.x, start.y, end.x, end.y);
+			
+			break;
 		}
 	}
 
@@ -84,6 +92,17 @@ public:
 		this->speedRegardCamera = speedRegardCamera;
 	}
 
+	void InitAsLine(iPoint startPoint, iPoint endPoint, SDL_Color color = { 0,0,0,255 }, int layer = 0, float orderInLayer = 0.0f, float speed = 1.0f)
+	{
+		this->color = color;
+		this->start = startPoint;
+		this->end = endPoint;
+		this->type = RENDER_LINE;
+		this->layer = layer;
+		this->orderInLayer = orderInLayer;
+		this->speedRegardCamera = speed;
+	}
+
 	SDL_Rect destRect;
 	RenderType type;
 	int layer = 0;
@@ -96,6 +115,10 @@ public:
 	// Rect
 	SDL_Color color;
 	bool filled = false;
+
+	// Line
+	iPoint start;
+	iPoint end;
 
 	// Texture
 	SDL_Texture* texture = nullptr;

@@ -111,7 +111,8 @@ void TurnsManager::DrawMouseItemLine()
 		mousePos.x = _app->input->GetMouseX();
 		mousePos.y = _app->input->GetMouseY();
 
-		_app->renderer->DrawLine(mousePos.x, mousePos.y, itemPos.x, itemPos.y, 255, 0, 0);
+		//_app->renderer->DrawLine(mousePos.x, mousePos.y, itemPos.x, itemPos.y, 255, 0, 0);
+		_app->renderer->AddLineRenderQueue({ mousePos.x, mousePos.y }, { itemPos.x, itemPos.y }, 255, 0, 0, 255, 2, 100);
 	}
 }
 
