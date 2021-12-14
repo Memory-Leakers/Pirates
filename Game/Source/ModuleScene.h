@@ -64,6 +64,8 @@ public:
 
 	PlayerSettings* playerSettings = nullptr;
 
+	bool DEBUGMODE = true;
+
 private:
 
 

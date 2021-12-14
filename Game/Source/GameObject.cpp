@@ -115,6 +115,11 @@ fPoint GameObject::GetLinearVelocity()
 
 void GameObject::SetPosition(iPoint pos)
 {
+	this->position = pos;
+	if (rBody != nullptr)
+	{
+		rBody->SetPosition(pos);
+	}
 
 }
 

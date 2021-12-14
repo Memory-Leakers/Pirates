@@ -22,9 +22,14 @@ bool SceneIntro::Start()
 
 	InitScene();
 
+	//BombINit
+	bomb = new Bomb("Bomb", "Bomb", _app, BombType::BANANA);
+	bomb->Start();
+	bomb->SetPosition({ 200,180 });
+
 	testGO = new GameObject("test", "test", _app);
 	testGO->rBody = new RigidBody({ 300, 180 }, RigidBodyType::DYNAMIC, 10);
-	testGO->rBody->SetGravityScale(1.0f);
+	testGO->rBody->SetGravityScale(2.0f);
 	testGO->rBody->SetRestitution(0.6f);
 	testGO->rBody->SetDragCoeficient(0.01f);
 
@@ -41,13 +46,16 @@ bool SceneIntro::Start()
 
 	world->AddRigidBody(testGO->rBody);
 	world->AddRigidBody(testGO2->rBody);
+	world->AddRigidBody(bomb->rBody);
 
+	turnsManager->AddGameObjectAsItem(bomb, PLAYER1);
 	turnsManager->AddGameObjectAsItem(testGO, PLAYER1);
 	turnsManager->AddGameObjectAsItem(testGO2, PLAYER2);
 
 	gameObjects.add(testGO);
 	gameObjects.add(testGO2);
 	gameObjects.add(floor);
+	gameObjects.add(bomb);
 
 	//_app->ui->CreateUI(1234567890, 500, 500, 3.0f);
 
@@ -113,6 +121,12 @@ bool SceneIntro::Update()
 		testGO->rBody->SetLinearVelocity({ 0,0 });
 	}
 
+	if (_app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
+		_app->scene->DEBUGMODE = !_app->scene->DEBUGMODE;
+		if (_app->scene->DEBUGMODE) printf_s("DEBUG ON"); else printf_s("DEBUG OFF");
+	}
+
 	_app->renderer->camera->MoveCameraWithMouse();
 
 	return true;
@@ -139,7 +153,8 @@ bool SceneIntro::PostUpdate()
 		printf("MouseY = %d\n", _app->input->GetMouseY());
 	}
 
-
+	bomb->PostUpdate();
+	
 	_app->renderer->AddRectRenderQueue(rect, 255, 0, 0);
 
 	rect2.x = testGO2->GetWorldPosition().x;

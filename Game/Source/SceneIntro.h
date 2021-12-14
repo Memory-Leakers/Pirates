@@ -2,6 +2,8 @@
 #include "Scene.h"
 #include "Globals.h"
 
+#include "Bomb.h"
+
 class PhysCore;
 class RigidBody;
 class TurnsManager;
@@ -18,8 +20,11 @@ public:
 	bool PostUpdate();
 	bool CleanUp() override;
 
-public:
+private:
+	
 
+public:
+	Bomb* bomb;
 	SDL_Rect rect = { 10,10,10,10 };
 	SDL_Rect rect2 = { 10,10,10,10 };
 	SDL_Rect rect3 = { 10,10,10,10 };
@@ -33,4 +38,5 @@ public:
 	GameObject* testGO2 = nullptr;
 
 	TurnsManager* turnsManager;
+
 };
