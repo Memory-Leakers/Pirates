@@ -14,14 +14,15 @@ public:
 
 private:
 	iPoint arrowPos;
-	BackGround* bg;
+	//BackGround* bg;
 
-	int logoY = -100;
+	//SDL_Texture* mainMenu;
 
-	SDL_Texture* mainMenu;
+	SDL_Texture* startBtn;
 
-	SDL_Texture* arrow;
+	SDL_Texture* exitBtn;
 
-	SDL_Texture* logo;
+	//SDL_Texture* arrow;
+
+	//SDL_Texture* logo;
 };
-

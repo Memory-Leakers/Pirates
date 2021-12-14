@@ -57,19 +57,19 @@ bool TurnsManager::CheckInteraction()
 
 void TurnsManager::GetCurrentOption()
 {
-	if (_app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+	if (_app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB1;
 	}
-	if (_app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	if (_app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
 		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB2;
 	}
-	if (_app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+	if (_app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 	{
 		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB3;
 	}
-	if (_app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	if (_app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
 	{
 		playerCurrentOption[currentPlayer] = ThrowOptions::CURRENT_ITEM;
 	}
@@ -107,11 +107,24 @@ void TurnsManager::DrawMouseItemLine()
 	if (_app->input->GetMouseButton(1) == KEY_REPEAT)	// Si estamos manteniendo el boton del ratón, dibujamos la linea
 	{
 		iPoint itemPos = { (int)currentItem->gameObject->GetScreenPosition().x, (int)currentItem->gameObject->GetScreenPosition().y };
-		iPoint mousePos;
 		mousePos.x = _app->input->GetMouseX();
 		mousePos.y = _app->input->GetMouseY();
 
-		_app->renderer->DrawLine(mousePos.x, mousePos.y, itemPos.x, itemPos.y, 255, 0, 0);
+		// Si la linea es muy larga, no dejamos que se haga más grande
+		float mouseMaxModule = 100 / GetMouseModule(currentItem);
+		// Si la division del modulo por el rango maximo es menor que uno, significa que el modulo es mayor que el rango...
+		if (mouseMaxModule < 1)
+		{
+			//Obtener posicion de mouse respecto a la base del item
+			iPoint mousePosOnItem = mousePos - itemPos;
+			//Aplicar modulo maximo a esta base
+			mousePosOnItem *= mouseMaxModule;
+			//Transformar posicion de mouse a la base canónica de nuevo
+			mousePos = mousePosOnItem + itemPos;
+		}
+
+		//_app->renderer->DrawLine(mousePos.x, mousePos.y, itemPos.x, itemPos.y, 255, 0, 0);
+		_app->renderer->AddLineRenderQueue({ mousePos.x, mousePos.y }, { itemPos.x, itemPos.y }, 255, 0, 0, 255, 2, 100);
 	}
 }
 
@@ -123,9 +136,6 @@ void TurnsManager::ApplyForces()
 	if (_app->input->GetMouseButton(1) == KEY_UP) // Si soltamos el boton del raton
 	{
 		iPoint itemPos = currentItem->gameObject->GetScreenPosition();
-		iPoint mousePos;
-		mousePos.x = _app->input->GetMouseX();
-		mousePos.y = _app->input->GetMouseY();
 
 		// Si la posición del ratón está cerca de la del item, no aplicamos fuerza y cancelamos el lanzamiento
 		if (GetMouseModule(currentItem) < 50)

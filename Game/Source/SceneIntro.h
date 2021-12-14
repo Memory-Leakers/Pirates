@@ -30,7 +30,8 @@ public:
 	SDL_Rect rect3 = { 10,10,10,10 };
 	RigidBody* body;
 	RigidBody* body2;
-	GameObject* floor;
+
+	RigidBody* walls[3];
 	
 	PhysCore* world;
 
