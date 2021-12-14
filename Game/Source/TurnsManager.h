@@ -71,5 +71,7 @@ private:
 								// Esta variable debe controlarla un script externo, ya que esta clase no conoce
 								// El estado del juego, simplemente controla la logica de los turnos
 
+	iPoint mousePos;
+
 };
 
