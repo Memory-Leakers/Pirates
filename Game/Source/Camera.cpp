@@ -18,7 +18,7 @@ void Camera::Update()
 {
 	UpdatePosition();
 
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+	/*if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
 	{
 		y -= cameraSpeed;
 		printf_s("Camera_X: %d, Camera_Y: %d\n", x, y);
@@ -37,7 +37,7 @@ void Camera::Update()
 	{
 		x += cameraSpeed;
 		printf_s("Camera_X: %d, Camera_Y: %d\n", x, y);
-	}
+	}*/
 }
 
 void Camera::UpdatePosition()

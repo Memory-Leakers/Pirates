@@ -58,7 +58,7 @@ bool SceneIntro::Start()
 
 	gameObjects.add(testGO);
 	gameObjects.add(testGO2);
-	gameObjects.add(floor);
+	//gameObjects.add(floor);
 	gameObjects.add(bomb);
 
 	//_app->ui->CreateUI(1234567890, 500, 500, 3.0f);

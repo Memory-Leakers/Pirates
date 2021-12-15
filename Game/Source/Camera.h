@@ -24,9 +24,9 @@ private:
 
 	iPoint GetCenter();
 
-	Application* App;
+	Application* App = nullptr;
 
-	GameObject* target;
+	GameObject* target = nullptr;
 
 	int pivotX, pivotY;
 

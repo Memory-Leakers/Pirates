@@ -27,7 +27,7 @@ bool ModuleScene::Init(pugi::xml_node& config)
 
 bool ModuleScene::Start()
 {
-	currentScene = scenes[1];
+	currentScene = scenes[0];
 
 	bool ret = true;
 
