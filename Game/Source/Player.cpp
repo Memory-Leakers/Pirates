@@ -97,10 +97,10 @@ void Player::SetAnimations()
 
 void Player::OnCollisionEnter(RigidBody* col)
 {
-
+	
 }
 
 void Player::OnCollisionExit(RigidBody* col)
 {
-
+	
 }

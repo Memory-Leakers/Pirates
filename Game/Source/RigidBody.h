@@ -16,6 +16,9 @@ enum class ShapeType
 	RECT,
 };
 
+
+class GameObject;
+
 class RigidBody
 {
 private:
@@ -49,14 +52,16 @@ private:
 
 	iPoint ColDir = { 0, 0 };
 
+	GameObject* gObj;
+
 public:
 	RigidBody();
 
 	~RigidBody();
 
-	RigidBody(iPoint pos, RigidBodyType type, float width, float height);
+	RigidBody(iPoint pos, RigidBodyType type, float width, float height, GameObject* gObj = nullptr);
 
-	RigidBody(iPoint pos, RigidBodyType type, float radius);
+	RigidBody(iPoint pos, RigidBodyType type, float radius, GameObject* gObj = nullptr);
 
 	RigidBody(RigidBody& copy);
 

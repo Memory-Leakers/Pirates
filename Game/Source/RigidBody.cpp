@@ -1,4 +1,5 @@
 #include "RigidBody.h"
+#include "GameObject.h"
 
 RigidBody::RigidBody()
 {
@@ -9,7 +10,7 @@ RigidBody::~RigidBody()
 {
 }
 
-RigidBody::RigidBody(iPoint pos, RigidBodyType type, float width, float height)
+RigidBody::RigidBody(iPoint pos, RigidBodyType type, float width, float height, GameObject* gObj)
 {
 	this->position.x = PIXELS_TO_METERS(pos.x);
 	this->position.y = PIXELS_TO_METERS(pos.y);
@@ -17,15 +18,17 @@ RigidBody::RigidBody(iPoint pos, RigidBodyType type, float width, float height)
 	this->shape = ShapeType::RECT;
 	this->width = PIXELS_TO_METERS(width);
 	this->height = PIXELS_TO_METERS(height);
+	this->gObj = gObj;
 }
 
-RigidBody::RigidBody(iPoint pos, RigidBodyType type, float radius)
+RigidBody::RigidBody(iPoint pos, RigidBodyType type, float radius, GameObject* gObj)
 {
 	this->position.x = PIXELS_TO_METERS(pos.x);
 	this->position.y = PIXELS_TO_METERS(pos.y);
 	this->type = type;
 	this->shape = ShapeType::CIRCLE;
 	this->radius = PIXELS_TO_METERS(radius);
+	this->gObj = gObj;
 }
 
 RigidBody::RigidBody(RigidBody& copy)
@@ -49,6 +52,11 @@ RigidBody::RigidBody(RigidBody& copy)
 void RigidBody::OnCollisionEnter(RigidBody* col)
 {
 	printf("Col enter\n");
+
+	if (gObj != nullptr)
+	{
+		gObj->OnCollisionEnter(col);
+	}
 }
 
 void RigidBody::OnCollisionStay(RigidBody* col)
@@ -59,6 +67,10 @@ void RigidBody::OnCollisionStay(RigidBody* col)
 void RigidBody::OnCollisionExit(RigidBody* col)
 {
 	//printf("Col exit\n");
+	if (gObj != nullptr)
+	{
+		gObj->OnCollisionExit(col);
+	}
 }
 
 void RigidBody::AddForceToCenter(fPoint force)

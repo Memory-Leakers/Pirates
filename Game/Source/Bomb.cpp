@@ -29,23 +29,23 @@ Bomb::~Bomb()
 
 void Bomb::OnCollisionEnter(RigidBody* col)
 {
-	printf_s("BOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMB");
+	
 }
 
 void Bomb::OnCollisionExit(RigidBody* col)
 {
-	printf_s("BOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMB");
+	
 }
 
 void Bomb::OnTriggerEnter(RigidBody* col)
 {
-	printf_s("BOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMBBOMB");
+
 }
 
 void Bomb::Start()
 {
 	//Cargar texturas
-	rBody = new RigidBody(position, RigidBodyType::DYNAMIC, radius);
+	rBody = new RigidBody(position, RigidBodyType::DYNAMIC, radius, this);
 	rBody->SetGravityScale(2.0f);
 	rBody->SetRestitution(0.6f);
 	rBody->SetDragCoeficient(0.15f);

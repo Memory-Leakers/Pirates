@@ -25,6 +25,7 @@ GameObject::~GameObject()
 
 void GameObject::OnCollisionEnter(RigidBody* col)
 {
+
 }
 
 void GameObject::OnCollisionExit(RigidBody* col)
@@ -34,6 +35,7 @@ void GameObject::OnCollisionExit(RigidBody* col)
 
 void GameObject::OnTriggerEnter(RigidBody* col)
 {
+
 }
 
 void GameObject::Start()
