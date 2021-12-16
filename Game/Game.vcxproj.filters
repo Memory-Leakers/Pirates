@@ -73,6 +73,9 @@
     <ClCompile Include="Source\Player.cpp">
       <Filter>SourceFiles\GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Water.cpp">
+      <Filter>SourceFiles\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\External\PugiXml\src\pugiconfig.hpp">
@@ -178,6 +181,9 @@
       <Filter>HeaderFiles\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Source\Player.h">
+      <Filter>HeaderFiles\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Water.h">
       <Filter>HeaderFiles\GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

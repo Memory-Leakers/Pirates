@@ -111,6 +111,7 @@
     <ClCompile Include="Source\SceneIntro.cpp" />
     <ClCompile Include="Source\SceneMainMenu.cpp" />
     <ClCompile Include="Source\TurnsManager.cpp" />
+    <ClCompile Include="Source\Water.cpp" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Bomb.h" />
@@ -148,6 +149,7 @@
     <ClInclude Include="Source\SString.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\TurnsManager.h" />
+    <ClInclude Include="Source\Water.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

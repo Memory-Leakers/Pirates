@@ -1,7 +1,15 @@
 #pragma once
 #include "Scene.h"
 
+enum MENUBUTTONSTATE 
+{
+	PLAY_BTN,
+	EXIT_BTN,
+	MAX
+};
+
 class BackGround;
+
 class SceneMainMenu : public Scene
 {
 public:
@@ -10,19 +18,20 @@ public:
 	bool Start() override;
 
 	bool Update() override;
+
 	bool PostUpdate() override;
 
+	void NextBtnState();
+
+	void LastBtnState();
+
 private:
-	iPoint arrowPos;
 	//BackGround* bg;
 
-	//SDL_Texture* mainMenu;
+	SDL_Texture* titleTex;
 
-	SDL_Texture* startBtn;
+	SDL_Texture* buttonsTex[2];
+	SDL_Rect buttonSections[2];
 
-	SDL_Texture* exitBtn;
-
-	//SDL_Texture* arrow;
-
-	//SDL_Texture* logo;
+	MENUBUTTONSTATE btnState;
 };

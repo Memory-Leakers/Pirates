@@ -11,7 +11,7 @@ TurnsManager::TurnsManager(Application* app)
 /// </summary>
 void TurnsManager::UpdateGameLogic()
 {
-	// Comprobar que el objeto tirado (si lo hay) aún está en movimiento
+	// Comprobar que el objeto tirado (si lo hay) aún est?en movimiento
 	if (throwedGameObj != nullptr)
 	{
 		if (throwedGameObj->rBody->GetLinearVelocity().Module() < 0.5f)
@@ -30,7 +30,7 @@ void TurnsManager::UpdateGameLogic()
 	GetCurrentOption();
 
 	// Fase de selección
-	// Donde el jugador activo escoge con qué item interactuar
+	// Donde el jugador activo escoge con qu?item interactuar
 
 	SelectItem();
 
@@ -83,10 +83,10 @@ void TurnsManager::SelectItem()
 
 		//printf("%f\n", GetMouseModule(playerItems[currentPlayer][i]));
 
-		if (_app->input->GetMouseButton(1) == KEY_DOWN && GetMouseModule(playerItems[currentPlayer][i]) < 20 ) //&& // Encontrar si el mouse está dentro de la hitbox del item) 
+		if (_app->input->GetMouseButton(1) == KEY_DOWN && GetMouseModule(playerItems[currentPlayer][i]) < 20 ) //&& // Encontrar si el mouse est?dentro de la hitbox del item) 
 		{													// Se puede hacer usando la posición del GameObject y añadiendole
 															// Un area determinada (20 pixeles por ejemplo)
-															// Si el ratón está dentro de ese area, se selecciona el item
+															// Si el ratón est?dentro de ese area, se selecciona el item
 															// Si Hemos hecho click en un item que nos pertenece
 															// Sin embargo de esta manera dos items del mismo jugador NO puedes compartir espacio
 															// Porque no sabriamos que espacio estamos seleccionando (estariamos seleccionando dos espacios a la vez)
@@ -137,7 +137,7 @@ void TurnsManager::ApplyForces()
 	{
 		iPoint itemPos = currentItem->gameObject->GetScreenPosition();
 
-		// Si la posición del ratón está cerca de la del item, no aplicamos fuerza y cancelamos el lanzamiento
+		// Si la posición del ratón est?cerca de la del item, no aplicamos fuerza y cancelamos el lanzamiento
 		if (GetMouseModule(currentItem) < 50)
 		{
 			currentItem = nullptr;
@@ -147,7 +147,7 @@ void TurnsManager::ApplyForces()
 		// Aplicamos fuerza
 		fPoint dir = { (float)(itemPos.x - mousePos.x), (float)(itemPos.y - mousePos.y) };	// El vector que determina hacia donde estamos apuntando
 
-		float throwForce = 10.0f;
+		float throwForce = 100.0f;
 
 		dir *= throwForce;
 
