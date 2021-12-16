@@ -9,15 +9,17 @@
 
 class Scene;
 
-enum SCENE_NUM
+enum SCENES
 {
-// Escenas totales
+	SCENE_MENU,
+	SCENE_GAME,
+	SCENE_GAME_OVER,
+	TOTAL_SCENES
 };
 
 class ModuleScene : public Module
 {
 public:
-
 	// Constructor
 	ModuleScene(Application* app, bool start_enabled = true);
 
@@ -67,9 +69,6 @@ public:
 	bool DEBUGMODE = true;
 
 private:
-
-
-
 	//int newScene;
 };
 

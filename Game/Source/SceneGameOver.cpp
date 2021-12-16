@@ -7,50 +7,40 @@ SceneGameOver::SceneGameOver(Application* app) : Scene(app)
 
 bool SceneGameOver::Start()
 {
-    //mainMenu = _app->textures->Load("Assets/textures/Menu/GameOverOptions.png", false);
-    //arrow = _app->textures->Load("Assets/textures/Menu/ArrowGO.png", false);
+    buttonsTex[RESTART_BTN] = _app->textures->Load("Assets/textures/UI/again.png");
+    buttonsTex[MENU_BTN] = _app->textures->Load("Assets/textures/UI/menu.png");
 
-    arrowPos = { 20, 190 };
+    buttonSections[RESTART_BTN] = { 160, 0, 160, 80 };
+    buttonSections[MENU_BTN] = { 0, 0, 160, 80 };
 
-    _app->SaveGameRequest();
-
-    for (int i = 0; i < gameObjects.count(); i++)
-    {
-        if (gameObjects[i] != nullptr)
-            gameObjects[i]->Start();
-    }
+    btnState = RESTART_BTN;
 
     return true;
 }
 
 bool SceneGameOver::Update()
 {
-    for (int i = 0; i < gameObjects.count(); i++)
-    {
-        if (gameObjects[i] != nullptr)
-            gameObjects[i]->Update();
-    }
-
     if (_app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN || _app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
     {
-        arrowPos.y = arrowPos.y == 250 ? 190 : 250;
+        NextBtnState();
     }
     if (_app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || _app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
     {
-        arrowPos.y = arrowPos.y == 190 ? 250 : 190;
+        LastBtnState();
     }
 
     if (_app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || _app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
     {
-        if (arrowPos.y == 190)
+        switch (btnState)
         {
-            _app->scene->ChangeCurrentScene(0, 0);
+        case GAMEOVERBUTTONSTATE::RESTART_BTN:
+            _app->scene->ChangeCurrentScene(SCENES::SCENE_GAME, 0);
+            break;
+
+        case GAMEOVERBUTTONSTATE::MENU_BTN:
+            _app->scene->ChangeCurrentScene(SCENES::SCENE_MENU, 0);
+            break;
         }
-        else
-        {
-            _app->scene->ChangeCurrentScene(1, 0);
-        }
-        //SelectDifficulty();
     }
 
     return true;
@@ -58,21 +48,30 @@ bool SceneGameOver::Update()
 
 bool SceneGameOver::PostUpdate()
 {
-    for (int i = 0; i < gameObjects.count(); i++)
-    {
-        if (gameObjects[i] != nullptr)
-            gameObjects[i]->PostUpdate();
-    }
-    //_app->renderer->AddTextureRenderQueue(mainMenu, { 0,0, });
-    //_app->renderer->AddTextureRenderQueue(arrow, arrowPos, { 0,0,0,0 }, 1, 1);
+    _app->renderer->AddTextureRenderQueue(buttonsTex[RESTART_BTN], { 280,200 }, buttonSections[RESTART_BTN], 0.5f, 1);
+    _app->renderer->AddTextureRenderQueue(buttonsTex[MENU_BTN], { 280,250 }, buttonSections[MENU_BTN], 0.5f, 1);
 
     return true;
 }
 
-void SceneGameOver::SetSaveData()
+void SceneGameOver::NextBtnState()
 {
-    playerX = playerStartPos.x;
-    playerY = playerStartPos.y;
+    // Change btn state
+    btnState = (GAMEOVERBUTTONSTATE)(btnState + 1);
+    if (btnState == GAMEOVERBUTTONSTATE::MAX2) btnState = GAMEOVERBUTTONSTATE::RESTART_BTN;
 
-    _app->scene->ResetPlayerSettings();
+    // Change btn textures seccions
+    for (int i = 0; i < 2; i++) buttonSections[i] = { 0,0,160,80 };
+    buttonSections[btnState] = { 160,0,160,80 };
+}
+
+void SceneGameOver::LastBtnState()
+{
+    // Change btn state
+    if (btnState == GAMEOVERBUTTONSTATE::RESTART_BTN) btnState = (GAMEOVERBUTTONSTATE)(GAMEOVERBUTTONSTATE::MAX2 - 1);
+    else btnState = (GAMEOVERBUTTONSTATE)(btnState - 1);
+
+    // Change btn textures seccions
+    for (int i = 0; i < 2; i++) buttonSections[i] = { 0,0,160,80 };
+    buttonSections[btnState] = { 160,0,160,80 };
 }
