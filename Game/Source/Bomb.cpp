@@ -7,9 +7,9 @@ Bomb::Bomb(std::string name, std::string tag, Application* _app, BombType bType)
 	this->_app = _app;
 	this->bType = bType;
 
-	tex_normal = _app->textures->Load("Assets/text/Bomb/CherryBomb/Idle.png");
-	tex_banana = _app->textures->Load("Assets/text/Bomb/Banana/Banana.png");
-	tex_umbrella = _app->textures->Load("Assets/text/Bomb/CherryBomb/CherryBomb.png");
+	tex_normal = _app->textures->Load("Assets/textures/Bomb/CherryBomb/Idle.png");
+	tex_banana = _app->textures->Load("Assets/textures/Bomb/Banana/Banana.png");
+	tex_umbrella = _app->textures->Load("Assets/textures/Bomb/CherryBomb/CherryBomb.png");
 
 	SetAnimations();
 	anim_current = &anim_normal;
