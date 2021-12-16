@@ -1,15 +1,15 @@
 #pragma once
 #include "Scene.h"
 
-enum BUTTONSTATE 
+enum MENUBUTTONSTATE 
 {
 	PLAY_BTN,
 	EXIT_BTN,
 	MAX
 };
 
-
 class BackGround;
+
 class SceneMainMenu : public Scene
 {
 public:
@@ -26,7 +26,6 @@ public:
 	void LastBtnState();
 
 private:
-	iPoint arrowPos;
 	//BackGround* bg;
 
 	SDL_Texture* titleTex;
@@ -34,5 +33,5 @@ private:
 	SDL_Texture* buttonsTex[2];
 	SDL_Rect buttonSections[2];
 
-	BUTTONSTATE btnState;
+	MENUBUTTONSTATE btnState;
 };

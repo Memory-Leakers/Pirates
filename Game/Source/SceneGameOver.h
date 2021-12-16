@@ -1,6 +1,15 @@
 #pragma once
 #include "Scene.h"
+
+enum GAMEOVERBUTTONSTATE
+{
+	RESTART_BTN,
+	MENU_BTN,
+	MAX2
+};
+
 class BackGround;
+
 class SceneGameOver : public Scene
 {
 public:
@@ -9,14 +18,18 @@ public:
 	bool Start() override;
 
 	bool Update() override;
+
 	bool PostUpdate() override;
 
-	void SetSaveData() override;
+	void NextBtnState();
+
+	void LastBtnState();
 
 private:
-	iPoint arrowPos;
-	SDL_Texture* mainMenu;
-	SDL_Texture* arrow;
+	//BackGround* bg;
 
-	iPoint playerStartPos = { 40, 567 };
+	SDL_Texture* buttonsTex[2];
+	SDL_Rect buttonSections[2];
+
+	GAMEOVERBUTTONSTATE btnState;
 };

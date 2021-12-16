@@ -7,9 +7,9 @@ ModuleScene::ModuleScene(Application* app, bool start_enabled) : Module(app, sta
 {
 	name = "scene";
 
-	scenes[0] = new SceneMainMenu(app);
-	scenes[1] = new SceneIntro(app);
-	scenes[2] = new SceneGameOver(app);
+	scenes[SCENE_MENU] = new SceneMainMenu(app);
+	scenes[SCENE_GAME] = new SceneIntro(app);
+	scenes[SCENE_GAME_OVER] = new SceneGameOver(app);
 
 	playerSettings = PlayerSettings::Instance();
 }

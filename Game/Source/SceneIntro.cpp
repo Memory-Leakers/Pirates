@@ -31,13 +31,15 @@ bool SceneIntro::Start()
 	player1 = new Player("Player1", "player", _app,1);
 	player1->Start();
 	player1->rBody = new RigidBody({ 230,180 }, RigidBodyType::DYNAMIC, 11);
-	player1->rBody->SetGravityScale(1.0f);
+	player1->rBody->SetGravityScale(2.0f);
+	player1->rBody->SetDragCoeficient(0.1f);
 	player1->rBody->SetRestitution(0.2f);
 
 	player2 = new Player("Player2", "player", _app, 2);
 	player2->Start();
 	player2->rBody = new RigidBody({ 250,180 }, RigidBodyType::DYNAMIC, 11);
-	player2->rBody->SetGravityScale(1.0f);
+	player2->rBody->SetGravityScale(2.0f);
+	player2->rBody->SetDragCoeficient(0.1f);
 	player2->rBody->SetRestitution(0.2f);
 
 	// Init water
@@ -141,6 +143,11 @@ bool SceneIntro::Update()
 	{
 		_app->scene->DEBUGMODE = !_app->scene->DEBUGMODE;
 		if (_app->scene->DEBUGMODE) printf_s("DEBUG ON"); else printf_s("DEBUG OFF");
+	}
+
+	if (_app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	{
+		_app->scene->ChangeCurrentScene(2, 0);
 	}
 
 	_app->renderer->camera->MoveCameraWithMouse();
