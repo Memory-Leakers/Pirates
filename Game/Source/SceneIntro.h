@@ -24,7 +24,8 @@ private:
 	
 
 public:
-	Bomb* bomb;
+	Bomb* bombP1;
+	Bomb* bombP2;
 	SDL_Rect rect = { 10,10,10,10 };
 	SDL_Rect rect2 = { 10,10,10,10 };
 	SDL_Rect rect3 = { 10,10,10,10 };

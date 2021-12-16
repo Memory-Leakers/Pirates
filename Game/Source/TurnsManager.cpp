@@ -153,7 +153,7 @@ void TurnsManager::ApplyForces()
 
 		ApplyForceOnOption(dir); // Aplicamos la fuerza usando el vector que hemos determinado. 
 
-		currentItem = nullptr;
+		//currentItem = nullptr;
 	}
 }
 
@@ -162,6 +162,7 @@ void TurnsManager::ApplyForceOnOption(fPoint dir)
 	switch (playerCurrentOption[currentPlayer])
 	{
 	case 0:
+		if (playerMovedItem[currentPlayer]) return;
 		// Create bomb of type "Bomb 1"
 		// Apply force to created Bomb
 		// Example:
@@ -171,10 +172,15 @@ void TurnsManager::ApplyForceOnOption(fPoint dir)
 		//bomb.AddForceToCenter(dir)
 
 		//Where Bomb(iPoint pos, int bombType)
+		currentItem->gameObject->rBody->AddForceToCenter(dir);	// Aplicamos fuerza en la dirección que hemos determinado
 
-		playerThrowedBomb[currentPlayer] = true;
+		throwedGameObj = currentItem->gameObject;
+
+		playerMovedItem[currentPlayer] = true;
+		
 		break;
 	case 1:
+		if (playerMovedItem[currentPlayer]) return;
 		// Create bomb of type "Bomb 2"
 		// Apply force to created Bomb
 		// Example:
@@ -188,6 +194,7 @@ void TurnsManager::ApplyForceOnOption(fPoint dir)
 		playerThrowedBomb[currentPlayer] = true;
 		break;
 	case 2:
+		if (playerMovedItem[currentPlayer]) return;
 		// Create bomb of type "Bomb 3"
 		// Apply force to created Bomb
 		// Example:
@@ -217,6 +224,13 @@ void TurnsManager::CheckPlayerTurn()
 	// Next turn if player throwed a bomb or pressed Space
 	if (playerThrowedBomb[currentPlayer] || _app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
+		//
+		if (currentItem != nullptr)
+		{
+			//currentItem->gameObject->CleanUp();
+			//delete currentItem->gameObject;
+			//currentItem->gameObject = nullptr;
+		}
 		// Reset variables from current player
 		ResetCurrentPlayerVariables();
 

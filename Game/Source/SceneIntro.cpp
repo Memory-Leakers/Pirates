@@ -23,9 +23,13 @@ bool SceneIntro::Start()
 	InitScene();
 
 	//BombINit
-	bomb = new Bomb("Bomb", "Bomb", _app, BombType::BANANA);
-	bomb->Start();
-	bomb->SetPosition({ 200,180 });
+	bombP1 = new Bomb("Bomb", "Bomb", _app, BombType::BANANA);
+	bombP1->Start();
+	bombP1->SetPosition({ 200,180 });
+
+	bombP2 = new Bomb("Bomb", "Bomb", _app, BombType::NORMAL);
+	bombP2->Start();
+	bombP2->SetPosition({ 450,100 });
 
 	testGO = new GameObject("test", "test", _app);
 	testGO->rBody = new RigidBody({ 300, 180 }, RigidBodyType::DYNAMIC, 5);
@@ -50,16 +54,19 @@ bool SceneIntro::Start()
 
 	world->AddRigidBody(testGO->rBody);
 	world->AddRigidBody(testGO2->rBody);
-	world->AddRigidBody(bomb->rBody);
+	world->AddRigidBody(bombP1->rBody);
+	world->AddRigidBody(bombP2->rBody);
 
-	turnsManager->AddGameObjectAsItem(bomb, PLAYER1);
+	turnsManager->AddGameObjectAsItem(bombP1, PLAYER1);
+	turnsManager->AddGameObjectAsItem(bombP2, PLAYER2);
 	turnsManager->AddGameObjectAsItem(testGO, PLAYER1);
 	turnsManager->AddGameObjectAsItem(testGO2, PLAYER2);
 
 	gameObjects.add(testGO);
 	gameObjects.add(testGO2);
-	gameObjects.add(floor);
-	gameObjects.add(bomb);
+	//gameObjects.add(floor);
+	gameObjects.add(bombP1);
+	gameObjects.add(bombP2);
 
 	//_app->ui->CreateUI(1234567890, 500, 500, 3.0f);
 
@@ -110,6 +117,9 @@ bool SceneIntro::Update()
 
 	turnsManager->UpdateGameLogic();
 
+	bombP1->Update();
+	bombP2->Update();
+
 	// Camera Follow Logic
 	if (turnsManager->throwedGameObj != nullptr)		// Follow throwed Game Object
 	{
@@ -131,6 +141,64 @@ bool SceneIntro::Update()
 		if (_app->scene->DEBUGMODE) printf_s("DEBUG ON"); else printf_s("DEBUG OFF");
 	}
 
+	if (_app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
+		if (turnsManager->currentPlayer == PLAYER1)
+		{
+			bombP1->active = true;
+			bombP1->SetPosition({ 200,180 });
+			bombP1->setType(BombType::NORMAL);
+		}
+		else if (turnsManager->currentPlayer == PLAYER2)
+		{
+			bombP2->active = true;
+			bombP2->SetPosition({ 450,100 });
+			bombP2->setType(BombType::NORMAL);
+		}
+	}
+	if (_app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	{
+		if (turnsManager->currentPlayer == PLAYER1)
+		{
+			bombP1->active = true;
+			bombP1->SetPosition({ 200,180 });
+			bombP1->setType(BombType::BANANA);
+		}
+		else if (turnsManager->currentPlayer == PLAYER2)
+		{
+			bombP2->active = true;
+			bombP2->SetPosition({ 450,100 });
+			bombP2->setType(BombType::BANANA);
+		}
+	}
+	if (_app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	{
+		if (turnsManager->currentPlayer == PLAYER1)
+		{
+			bombP1->active = true;
+			bombP1->SetPosition({ 200,180 });
+			bombP1->setType(BombType::UMBRELLA);
+		}
+		else if (turnsManager->currentPlayer == PLAYER2)
+		{
+			bombP2->active = true;
+			bombP2->SetPosition({ 450,100 });
+			bombP2->setType(BombType::UMBRELLA);
+		}
+	}
+
+	if (turnsManager->currentPlayer == PLAYER1)
+	{
+		//bombP1->active = true;
+		bombP2->active = false;
+	}
+	else
+	{
+		//bombP2->active = true;
+		bombP1->active = false;
+	}
+
+
 	_app->renderer->camera->MoveCameraWithMouse();
 
 	return true;
@@ -149,7 +217,15 @@ bool SceneIntro::PostUpdate()
 		printf("MouseY = %d\n", _app->input->GetMouseY());
 	}
 
-	bomb->PostUpdate();
+	if (bombP1 != nullptr)
+	{
+		bombP1->PostUpdate();
+	}
+	if (bombP2 != nullptr)
+	{
+		bombP2->PostUpdate();
+	}
+	
 
 	_app->renderer->AddRectRenderQueue(rect, 255, 0, 0);
 	_app->renderer->DrawCircle(rect.x, rect.y, (int)(std::floor(testGO->rBody->GetRadius() * PIXELS_PER_METERS)), 0,255, 0);

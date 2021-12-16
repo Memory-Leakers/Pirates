@@ -103,6 +103,7 @@ public:
 
 	bool adjustToGrid = false;
 
+	bool active = true;
 };
 
 #endif // !GAMEOBJECT_H

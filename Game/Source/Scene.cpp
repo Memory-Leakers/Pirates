@@ -37,7 +37,10 @@ bool Scene::CleanUp()
 {
 	for (int i = 0; i < gameObjects.count(); i++)
 	{
-		gameObjects[i]->CleanUp();
+		if (gameObjects[i] != nullptr)
+		{
+			gameObjects[i]->CleanUp();
+		}
 	}
 
 	gameObjects.clearPtr();

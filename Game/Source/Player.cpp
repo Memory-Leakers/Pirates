@@ -42,8 +42,6 @@ void Player::Update()
 
 void Player::PostUpdate()
 {
-	
-
 	player = player_Idle.GetCurrentFrame();
 
 

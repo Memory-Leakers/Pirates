@@ -31,7 +31,7 @@ bool SceneMainMenu::Update()
         gameObjects[i]->Update();
     }
 
-    logoY = logoY == 58 ? logoY : logoY + 1;
+    //logoY = logoY == 58 ? logoY : logoY + 1;
 
     if (_app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN || _app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
     {
