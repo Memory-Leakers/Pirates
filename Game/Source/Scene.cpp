@@ -47,6 +47,7 @@ bool Scene::CleanUp()
 		if(sceneTextures[i])
 		{
 			_app->textures->Unload(sceneTextures[i]);
+			sceneTextures[i] = nullptr;
 		}
 	}
 

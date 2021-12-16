@@ -35,6 +35,8 @@ bool SceneMainMenu::Update()
     //    gameObjects[i]->Update();
     //}
 
+   // logoY = logoY == 58 ? logoY : logoY + 1;
+
     if (_app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN || _app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
     {
         NextBtnState();
@@ -83,7 +85,7 @@ void SceneMainMenu::NextBtnState()
     if (btnState == BUTTONSTATE::MAX) btnState = BUTTONSTATE::PLAY_BTN;
 
     // Change btn textures seccions
-    for (int i = 0; i < 2; i++) buttonSections[i] = { 0,0,160,80 };  
+    for (int i = 0; i < 2; i++) buttonSections[i] = { 0,0,160,80 };
     buttonSections[btnState] = { 160,0,160,80 };
 }
 
@@ -97,4 +99,3 @@ void SceneMainMenu::LastBtnState()
     for (int i = 0; i < 2; i++) buttonSections[i] = { 0,0,160,80 };
     buttonSections[btnState] = { 160,0,160,80 };
 }
-

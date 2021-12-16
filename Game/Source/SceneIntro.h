@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "Globals.h"
 
+#include "Player.h"
 #include "Bomb.h"
 
 class PhysCore;
@@ -25,6 +26,9 @@ private:
 
 public:
 	Bomb* bomb;
+	Player* player1;
+	Player* player2;
+
 	SDL_Rect rect = { 10,10,10,10 };
 	SDL_Rect rect2 = { 10,10,10,10 };
 	SDL_Rect rect3 = { 10,10,10,10 };

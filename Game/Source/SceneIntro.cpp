@@ -27,6 +27,20 @@ bool SceneIntro::Start()
 	bomb->Start();
 	bomb->SetPosition({ 200,180 });
 
+	//player Init
+	player1 = new Player("Player1", "player", _app,1);
+	player1->Start();
+	player1->rBody = new RigidBody({ 230,180 }, RigidBodyType::DYNAMIC, 11);
+	player1->rBody->SetGravityScale(1.0f);
+	player1->rBody->SetRestitution(0.2f);
+
+	player2 = new Player("Player2", "player", _app, 2);
+	player2->Start();
+	player2->rBody = new RigidBody({ 250,180 }, RigidBodyType::DYNAMIC, 11);
+	player2->rBody->SetGravityScale(1.0f);
+	player2->rBody->SetRestitution(0.2f);
+
+
 	testGO = new GameObject("test", "test", _app);
 	testGO->rBody = new RigidBody({ 300, 180 }, RigidBodyType::DYNAMIC, 5);
 	testGO->rBody->SetGravityScale(1.0f);
@@ -51,15 +65,21 @@ bool SceneIntro::Start()
 	world->AddRigidBody(testGO->rBody);
 	world->AddRigidBody(testGO2->rBody);
 	world->AddRigidBody(bomb->rBody);
+	world->AddRigidBody(player1->rBody);
+	world->AddRigidBody(player2->rBody);
 
-	turnsManager->AddGameObjectAsItem(bomb, PLAYER1);
-	turnsManager->AddGameObjectAsItem(testGO, PLAYER1);
-	turnsManager->AddGameObjectAsItem(testGO2, PLAYER2);
+	//turnsManager->AddGameObjectAsItem(bomb, PLAYER1);
+	//turnsManager->AddGameObjectAsItem(testGO, PLAYER1);
+	//turnsManager->AddGameObjectAsItem(testGO2, PLAYER2);
+	turnsManager->AddGameObjectAsItem(player1, PLAYER1);
+	turnsManager->AddGameObjectAsItem(player2, PLAYER2);
 
-	gameObjects.add(testGO);
-	gameObjects.add(testGO2);
+	//gameObjects.add(testGO);
+	//gameObjects.add(testGO2);
 	//gameObjects.add(floor);
 	gameObjects.add(bomb);
+	gameObjects.add(player1);
+	gameObjects.add(player2);
 
 	//_app->ui->CreateUI(1234567890, 500, 500, 3.0f);
 
@@ -110,6 +130,9 @@ bool SceneIntro::Update()
 
 	turnsManager->UpdateGameLogic();
 
+	player1->Update();
+	player2->Update();
+
 	// Camera Follow Logic
 	if (turnsManager->throwedGameObj != nullptr)		// Follow throwed Game Object
 	{
@@ -138,8 +161,8 @@ bool SceneIntro::Update()
 
 bool SceneIntro::PostUpdate()
 {
-	rect.x = testGO->GetWorldPosition().x;
-	rect.y = testGO->GetWorldPosition().y;
+	/*rect.x = testGO->GetWorldPosition().x;
+	rect.y = testGO->GetWorldPosition().y;*/
 
 	if (_app->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
 	{
@@ -151,8 +174,11 @@ bool SceneIntro::PostUpdate()
 
 	bomb->PostUpdate();
 
-	_app->renderer->AddRectRenderQueue(rect, 255, 0, 0);
-	_app->renderer->DrawCircle(rect.x, rect.y, (int)(std::floor(testGO->rBody->GetRadius() * PIXELS_PER_METERS)), 0,255, 0);
+	player1->PostUpdate();
+	player2->PostUpdate();
+
+	//_app->renderer->AddRectRenderQueue(rect, 255, 0, 0);
+	//_app->renderer->DrawCircle(rect.x, rect.y, (int)(std::floor(testGO->rBody->GetRadius() * PIXELS_PER_METERS)), 0,255, 0);
 
 	rect2.x = testGO2->GetWorldPosition().x;
 	rect2.y = testGO2->GetWorldPosition().y;

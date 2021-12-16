@@ -6,7 +6,7 @@ class Player :
     public GameObject
 {
 public:
-	Player(std::string name = "Default", std::string tag = "None", Application* _app = nullptr);
+	Player(std::string name = "Default", std::string tag = "None", Application* _app = nullptr,int ID = 1);
 
 	~Player();
 
@@ -27,16 +27,10 @@ public:
 	void SetAnimations();
 
 private:
+	//Depends on the number you choose,you'll get player 1 or two texture
+	int ID = 1;
 
-	iPoint position { 0,0 };
-
-	SDL_Texture* player1_idle_tex = nullptr;
-
-	SDL_Texture* player2_idle_tex = nullptr;
-
-	SDL_Texture* player1_hit_tex = nullptr;
-
-	SDL_Texture* player2_hit_tex = nullptr;
+	SDL_Texture* playerTextures[4];
 
 	SDL_Rect player_bounds;
 
@@ -46,7 +40,7 @@ private:
 
 	Animation player_hit;
 
-	Animation* currentAnimation_player1 = nullptr;
+	Animation* currentAnimation_player = nullptr;
 
 };
 
