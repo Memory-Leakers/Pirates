@@ -3,6 +3,7 @@
 #include "SceneIntro.h"
 #include "PhysCore.h"
 #include "TurnsManager.h"
+#include "Water.h"
 
 SceneIntro::SceneIntro(Application* app) : Scene(app)
 {}
@@ -24,7 +25,6 @@ bool SceneIntro::Start()
 
 	//BombINit
 	bomb = new Bomb("Bomb", "Bomb", _app, BombType::BANANA);
-	bomb->Start();
 	bomb->SetPosition({ 200,180 });
 
 	//player Init
@@ -40,16 +40,8 @@ bool SceneIntro::Start()
 	player2->rBody->SetGravityScale(1.0f);
 	player2->rBody->SetRestitution(0.2f);
 
-
-	testGO = new GameObject("test", "test", _app);
-	testGO->rBody = new RigidBody({ 300, 180 }, RigidBodyType::DYNAMIC, 5);
-	testGO->rBody->SetGravityScale(1.0f);
-	testGO->rBody->SetRestitution(0.6f);
-	testGO->rBody->SetDragCoeficient(0.01f);
-
-	testGO2 = new GameObject("test", "test", _app);
-	testGO2->rBody = new RigidBody({ 400, 180 }, RigidBodyType::DYNAMIC, 5);
-	testGO2->rBody->SetGravityScale(1.0f);
+	// Init water
+	water = new Water({ 0,450 }, "water", "Water", _app);
 
 	walls[0] = new RigidBody({ 0,0 }, RigidBodyType::STATIC, 3200, 5);
 	walls[1] = new RigidBody({ 0,0 }, RigidBodyType::STATIC, 5, 1440);
@@ -57,33 +49,28 @@ bool SceneIntro::Start()
 
 	turnsManager = new TurnsManager(_app);
 
+	gameObjects.add(bomb);
+	gameObjects.add(player1);
+	gameObjects.add(player2);
+	gameObjects.add(water);
+
+	for (int i = 0; i < gameObjects.count(); i++)
+	{
+		gameObjects[i]->Start();
+	}
+
 	for (int i = 0; i < 3; i++)
 	{
 		world->AddRigidBody(walls[i]);
 	}
 
-	world->AddRigidBody(testGO->rBody);
-	world->AddRigidBody(testGO2->rBody);
 	world->AddRigidBody(bomb->rBody);
 	world->AddRigidBody(player1->rBody);
 	world->AddRigidBody(player2->rBody);
+	world->AddRigidBody(water->rBody);
 
-	//turnsManager->AddGameObjectAsItem(bomb, PLAYER1);
-	//turnsManager->AddGameObjectAsItem(testGO, PLAYER1);
-	//turnsManager->AddGameObjectAsItem(testGO2, PLAYER2);
 	turnsManager->AddGameObjectAsItem(player1, PLAYER1);
 	turnsManager->AddGameObjectAsItem(player2, PLAYER2);
-
-	//gameObjects.add(testGO);
-	//gameObjects.add(testGO2);
-	//gameObjects.add(floor);
-	gameObjects.add(bomb);
-	gameObjects.add(player1);
-	gameObjects.add(player2);
-
-	//_app->ui->CreateUI(1234567890, 500, 500, 3.0f);
-
-
 
 	return ret;
 }
@@ -130,8 +117,10 @@ bool SceneIntro::Update()
 
 	turnsManager->UpdateGameLogic();
 
-	player1->Update();
-	player2->Update();
+	for (int i = 0; i < gameObjects.count(); i++)
+	{
+		gameObjects[i]->Update();
+	}
 
 	// Camera Follow Logic
 	if (turnsManager->throwedGameObj != nullptr)		// Follow throwed Game Object
@@ -161,37 +150,10 @@ bool SceneIntro::Update()
 
 bool SceneIntro::PostUpdate()
 {
-	/*rect.x = testGO->GetWorldPosition().x;
-	rect.y = testGO->GetWorldPosition().y;*/
-
-	if (_app->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+	for (int i = 0; i < gameObjects.count(); i++)
 	{
-		printf("ItemX = %d\n", testGO2->GetScreenPosition().x);
-		printf("ItemY = %d\n", testGO2->GetScreenPosition().y);
-		printf("MouseX = %d\n", _app->input->GetMouseX());
-		printf("MouseY = %d\n", _app->input->GetMouseY());
+		gameObjects[i]->PostUpdate();
 	}
-
-	bomb->PostUpdate();
-
-	player1->PostUpdate();
-	player2->PostUpdate();
-
-	//_app->renderer->AddRectRenderQueue(rect, 255, 0, 0);
-	//_app->renderer->DrawCircle(rect.x, rect.y, (int)(std::floor(testGO->rBody->GetRadius() * PIXELS_PER_METERS)), 0,255, 0);
-
-	rect2.x = testGO2->GetWorldPosition().x;
-	rect2.y = testGO2->GetWorldPosition().y;
-
-	_app->renderer->DrawCircle(rect2.x, rect2.y, (int)(std::floor(testGO2->rBody->GetRadius() * PIXELS_PER_METERS)), 255, 0, 0);
-
-	/*for (int i = 0; i < gameObjects.count(); i++)
-	{
-		if (gameObjects[i]->rBody->GetType() == RigidBodyType::STATIC)
-		{
-			_app->renderer->AddRectRenderQueue({gameObjects[i]->rBody->GetPosition().x-8, gameObjects[i]->rBody->GetPosition().y-8, 32, 32}, 255, 255, 0);
-		}
-	}*/
 
 	_app->renderer->AddRectRenderQueue({ 0,0,3200,5 }, 255, 0, 0);
 	_app->renderer->AddRectRenderQueue({ 1550,0,5,1440 }, 255, 0, 0);

@@ -8,6 +8,7 @@
 class PhysCore;
 class RigidBody;
 class TurnsManager;
+class Water;
 
 class SceneIntro : public Scene
 {
@@ -28,6 +29,7 @@ public:
 	Bomb* bomb;
 	Player* player1;
 	Player* player2;
+	Water* water;
 
 	SDL_Rect rect = { 10,10,10,10 };
 	SDL_Rect rect2 = { 10,10,10,10 };
