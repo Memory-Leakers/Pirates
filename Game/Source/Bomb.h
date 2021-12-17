@@ -7,8 +7,8 @@ enum class BombType
 {
     NORMAL = 0,
     BANANA,
+    UMBRELLA,
     MINI_BANANA,
-    UMBRELLA
 };
 
 class Bomb :

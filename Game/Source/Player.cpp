@@ -65,16 +65,7 @@ void Player::PostUpdate()
 
 void Player::CleanUp()
 {
-	for (int i = 0; i < 4; i++)
-	{
-		if (playerTextures[i] != nullptr)
-		{
-			_app->textures->Unload(playerTextures[i]);
-			playerTextures[i] = nullptr;
-		}
-	}
 	currentAnimation_player = nullptr;
-
 }
 
 void Player::SetAnimations()

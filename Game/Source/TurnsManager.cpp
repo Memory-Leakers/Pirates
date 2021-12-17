@@ -1,9 +1,13 @@
 #include "TurnsManager.h"
+#include "Bomb.h"
+#include "Scene.h"
+#include "PhysCore.h"
 
-
-TurnsManager::TurnsManager(Application* app)
+TurnsManager::TurnsManager(Application* app, Scene* currentScene, PhysCore* world)
 {
 	_app = app;
+	scene = currentScene;
+	physCore = world;
 }
 
 /// <summary>
@@ -59,18 +63,62 @@ void TurnsManager::GetCurrentOption()
 {
 	if (_app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
+		if (currentBomb != nullptr)
+		{
+			ChangeCurrentBomb(0);
+		}
+		else if (_app->input->GetMouseButton(1) == KEY_REPEAT)
+		{
+			playerCurrentOption[currentPlayer] = ThrowOptions::BOMB1;
+			currentBomb = new Bomb("bomb", "Bomb", _app, (BombType)playerCurrentOption[currentPlayer]);
+			currentBomb->Start();
+			currentBomb->SetPosition(currentItem->gameObject->GetWorldPosition());
+			physCore->AddRigidBody(currentBomb->rBody);
+			scene->gameObjects.add(currentBomb);
+		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB1;
 	}
 	if (_app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
+		if (currentBomb != nullptr)
+		{
+			ChangeCurrentBomb(1);
+		}
+		else if (_app->input->GetMouseButton(1) == KEY_REPEAT)
+		{
+			playerCurrentOption[currentPlayer] = ThrowOptions::BOMB2;
+			currentBomb = new Bomb("bomb", "Bomb", _app, (BombType)playerCurrentOption[currentPlayer]);
+			currentBomb->Start();
+			currentBomb->SetPosition(currentItem->gameObject->GetWorldPosition());
+			physCore->AddRigidBody(currentBomb->rBody);
+			scene->gameObjects.add(currentBomb);
+		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB2;
 	}
 	if (_app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 	{
+		if (currentBomb != nullptr)
+		{
+			ChangeCurrentBomb(2);
+		}
+		else if (_app->input->GetMouseButton(1) == KEY_REPEAT)
+		{
+			playerCurrentOption[currentPlayer] = ThrowOptions::BOMB3;
+			currentBomb = new Bomb("bomb", "Bomb", _app, (BombType)playerCurrentOption[currentPlayer]);
+			currentBomb->Start();
+			currentBomb->SetPosition(currentItem->gameObject->GetWorldPosition());
+			physCore->AddRigidBody(currentBomb->rBody);
+			scene->gameObjects.add(currentBomb);
+		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB3;
 	}
 	if (_app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
 	{
+		if (currentBomb != nullptr)
+		{
+			currentBomb->pendingToDelete = true;
+			currentBomb = nullptr;
+		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::CURRENT_ITEM;
 	}
 }
@@ -83,19 +131,23 @@ void TurnsManager::SelectItem()
 
 		//printf("%f\n", GetMouseModule(playerItems[currentPlayer][i]));
 
-		if (_app->input->GetMouseButton(1) == KEY_DOWN && GetMouseModule(playerItems[currentPlayer][i]) < 20 ) //&& // Encontrar si el mouse est?dentro de la hitbox del item) 
-		{													// Se puede hacer usando la posición del GameObject y añadiendole
-															// Un area determinada (20 pixeles por ejemplo)
-															// Si el ratón est?dentro de ese area, se selecciona el item
-															// Si Hemos hecho click en un item que nos pertenece
-															// Sin embargo de esta manera dos items del mismo jugador NO puedes compartir espacio
-															// Porque no sabriamos que espacio estamos seleccionando (estariamos seleccionando dos espacios a la vez)
-
+		if (_app->input->GetMouseButton(1) == KEY_DOWN && GetMouseModule(playerItems[currentPlayer][i]) < 20 ) //Encontrar si el mouse esta dentro de la hitbox del item
+		{													
 			if (currentItem != nullptr) currentItem->isSelected = false;	// El Item que estaba seleccionado pasa a no estarlo
 
 			playerItems[currentPlayer][i]->isSelected = true;	// Seleccionamos nuestro item
 
 			currentItem = playerItems[currentPlayer][i];	// Lo guardamos como item seleccionado actualmente
+
+			if (playerCurrentOption[currentPlayer] < 3)
+			{
+				currentBomb = new Bomb("bomb", "Bomb", _app, (BombType)playerCurrentOption[currentPlayer]);
+				currentBomb->Start();
+				currentBomb->SetPosition(currentItem->gameObject->GetWorldPosition());
+				physCore->AddRigidBody(currentBomb->rBody);
+				scene->gameObjects.add(currentBomb);
+			}
+			break;
 		}
 	}
 }
@@ -141,6 +193,11 @@ void TurnsManager::ApplyForces()
 		if (GetMouseModule(currentItem) < 50)
 		{
 			currentItem = nullptr;
+			if (currentBomb != nullptr)
+			{
+				currentBomb->pendingToDelete = true;
+				currentBomb = nullptr;
+			}
 			return;
 		}
 
@@ -162,7 +219,8 @@ void TurnsManager::ApplyForceOnOption(fPoint dir)
 	switch (playerCurrentOption[currentPlayer])
 	{
 	case 0:
-		if (playerMovedItem[currentPlayer]) return;
+	case 1:
+	case 2:
 		// Create bomb of type "Bomb 1"
 		// Apply force to created Bomb
 		// Example:
@@ -172,40 +230,13 @@ void TurnsManager::ApplyForceOnOption(fPoint dir)
 		//bomb.AddForceToCenter(dir)
 
 		//Where Bomb(iPoint pos, int bombType)
-		currentItem->gameObject->rBody->AddForceToCenter(dir);	// Aplicamos fuerza en la dirección que hemos determinado
 
-		throwedGameObj = currentItem->gameObject;
+		currentBomb->rBody->AddForceToCenter(dir);
 
-		playerMovedItem[currentPlayer] = true;
+		throwedGameObj = currentBomb;
+
+		playerThrowedBomb[currentPlayer] = true;
 		
-		break;
-	case 1:
-		if (playerMovedItem[currentPlayer]) return;
-		// Create bomb of type "Bomb 2"
-		// Apply force to created Bomb
-		// Example:
-
-		//Bomb bomb = new Bomb(itemPos, 1)
-
-		//bomb.AddForceToCenter(dir)
-
-		//Where Bomb(iPoint pos, int bombType)
-
-		playerThrowedBomb[currentPlayer] = true;
-		break;
-	case 2:
-		if (playerMovedItem[currentPlayer]) return;
-		// Create bomb of type "Bomb 3"
-		// Apply force to created Bomb
-		// Example:
-
-		//Bomb bomb = new Bomb(itemPos, 2)
-
-		//bomb.AddForceToCenter(dir)
-
-		//Where Bomb(iPoint pos, int bombType)
-
-		playerThrowedBomb[currentPlayer] = true;
 		break;
 	case 3:
 		if (playerMovedItem[currentPlayer]) return;
@@ -247,6 +278,7 @@ void TurnsManager::ResetCurrentPlayerVariables()
 	playerThrowedBomb[currentPlayer] = false;
 	currentItem = nullptr;
 	throwedGameObj = nullptr;
+	currentBomb = nullptr;
 }
 
 float TurnsManager::GetMouseModule(Item* item)
@@ -259,6 +291,20 @@ float TurnsManager::GetMouseModule(Item* item)
 
 	float mouseModule = mouseDistance.Module();
 	return mouseModule;
+}
+
+void TurnsManager::ChangeCurrentBomb(int bombType)
+{
+	if (playerCurrentOption[currentPlayer] == bombType) return;
+
+	currentBomb->pendingToDelete = true;
+
+	currentBomb = new Bomb("bomb", "Bomb", _app, (BombType)bombType);
+	currentBomb->Start();
+	currentBomb->SetPosition(currentItem->gameObject->GetWorldPosition());
+	physCore->AddRigidBody(currentBomb->rBody);
+	scene->gameObjects.add(currentBomb);
+
 }
 
 
