@@ -77,7 +77,7 @@ void PhysCore::Update(float simulationTime)
 					// 1 = 100%
 					float submerge = submergedVolume(rigidBodies[i], rigidBodies[i]->collisionList[j]);
 
-					printf("%f\n", submerge);
+					//printf("%f\n", submerge);
 
 					// *2 = 200% para que pueda subir
 					magnitudbuoyancy = density * mod * submerge * 2 * rigidBodies[i]->GetGravityScale();
@@ -428,7 +428,6 @@ void PhysCore::ResolveColForce(RigidBody& b1, RigidBody& b2, fPoint colPoint)
 			//colCondition = colPoint;
 
 			colCondition = CollisionDir(*dinBody, colPoint);
-
 			fPoint direction = CollisionDir(*dinBody, colPoint);
 			float velMagnitud = b1Vel.magnitude();
 			b1Vel = direction * velMagnitud * b1.restitution;
