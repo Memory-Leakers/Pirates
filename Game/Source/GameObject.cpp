@@ -38,6 +38,10 @@ void GameObject::OnTriggerEnter(RigidBody* col)
 
 }
 
+void GameObject::OnTriggerExit(RigidBody* col)
+{
+}
+
 void GameObject::Start()
 {
 	//Cargar texturas

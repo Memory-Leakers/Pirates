@@ -230,7 +230,6 @@ public:
 	{
 		return sqrt(x * x + y * y);
 	}
-
 };
 
 typedef Point<int> iPoint;

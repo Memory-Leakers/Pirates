@@ -39,14 +39,18 @@ bool SceneIntro::Start()
 	player1 = new Player("Player1", "player", _app,1);
 	player1->rBody = new RigidBody({ 230,180 }, RigidBodyType::DYNAMIC, 11, player1);
 	player1->rBody->SetGravityScale(2.0f);
-	player1->rBody->SetDragCoeficient(0.1f);
+	player1->rBody->SetDragCoeficient(0.01f);
 	player1->rBody->SetRestitution(0.2f);
+	player1->rBody->SetHydrodynamicDragCoeficient(0.5f);
+	player1->rBody->SetFriction(5.0f);
 
 	player2 = new Player("Player2", "player", _app, 2);
 	player2->rBody = new RigidBody({ 250,180 }, RigidBodyType::DYNAMIC, 11, player2);
 	player2->rBody->SetGravityScale(2.0f);
-	player2->rBody->SetDragCoeficient(0.1f);
+	player2->rBody->SetDragCoeficient(0.01f);
 	player2->rBody->SetRestitution(0.2f);
+	player2->rBody->SetHydrodynamicDragCoeficient(0.5f);
+	player2->rBody->SetFriction(5.0f);
 
 	// Init water
 	water = new Water({ 0,450 }, "water", "Water", _app);
@@ -162,16 +166,26 @@ bool SceneIntro::Update()
 	{
 		_app->renderer->camera->SetTarget(turnsManager->throwedGameObj);
 	}
+	/*else if (turnsManager->changingTurn)
+	{
+		float distance = (turnsManager->playerItems[turnsManager->currentPlayer][0]->gameObject->GetScreenPosition() - iPoint(_app->renderer->camera->x, _app->renderer->camera->y)).Module();
+
+		if (distance > 5.0f && !_app->renderer->camera->reachedMax)
+		{
+			_app->renderer->camera->SetTarget(turnsManager->playerItems[turnsManager->currentPlayer][0]->gameObject);
+		}
+		else 
+		{
+			turnsManager->changingTurn = false;
+			_app->renderer->camera->SetTarget(nullptr);
+		}
+	}*/
 	else
 	{
 		_app->renderer->camera->SetTarget(nullptr);
 	}
 
-	if (_app->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
-	{
-		testGO->rBody->SetLinearVelocity({ 0,0 });
-	}
-
+	// Debug
 	if (_app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		_app->scene->DEBUGMODE = !_app->scene->DEBUGMODE;

@@ -53,6 +53,10 @@ public:
 
 	bool playerMovedItem[2] = { false, false };
 
+	bool throwedBomb;
+
+	bool changingTurn;
+
 private:
 
 	bool CheckInteraction();

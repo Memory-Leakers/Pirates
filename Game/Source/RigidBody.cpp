@@ -10,7 +10,7 @@ RigidBody::~RigidBody()
 {
 }
 
-RigidBody::RigidBody(iPoint pos, RigidBodyType type, float width, float height, GameObject* gObj)
+RigidBody::RigidBody(iPoint pos, RigidBodyType type, float width, float height, GameObject* gObj, COL_TYPE colType)
 {
 	this->position.x = PIXELS_TO_METERS(pos.x);
 	this->position.y = PIXELS_TO_METERS(pos.y);
@@ -19,9 +19,10 @@ RigidBody::RigidBody(iPoint pos, RigidBodyType type, float width, float height, 
 	this->width = PIXELS_TO_METERS(width);
 	this->height = PIXELS_TO_METERS(height);
 	this->gObj = gObj;
+	this->colType = colType;
 }
 
-RigidBody::RigidBody(iPoint pos, RigidBodyType type, float radius, GameObject* gObj)
+RigidBody::RigidBody(iPoint pos, RigidBodyType type, float radius, GameObject* gObj, COL_TYPE colType)
 {
 	this->position.x = PIXELS_TO_METERS(pos.x);
 	this->position.y = PIXELS_TO_METERS(pos.y);
@@ -29,6 +30,7 @@ RigidBody::RigidBody(iPoint pos, RigidBodyType type, float radius, GameObject* g
 	this->shape = ShapeType::CIRCLE;
 	this->radius = PIXELS_TO_METERS(radius);
 	this->gObj = gObj;
+	this->colType = colType;
 }
 
 RigidBody::RigidBody(RigidBody& copy)
@@ -47,11 +49,13 @@ RigidBody::RigidBody(RigidBody& copy)
 	this->radius = copy.radius;
 	this->shape = copy.shape;
 	this->gravityScale = copy.gravityScale;
+	this->gObj = copy.gObj;
+	this->colType = copy.colType;
 }
 
 void RigidBody::OnCollisionEnter(RigidBody* col)
 {
-	printf("Col enter\n");
+	//printf("Col enter\n");
 
 	if (gObj != nullptr)
 	{
@@ -70,6 +74,29 @@ void RigidBody::OnCollisionExit(RigidBody* col)
 	if (gObj != nullptr)
 	{
 		gObj->OnCollisionExit(col);
+	}
+}
+
+void RigidBody::OnTriggerEnter(RigidBody* col)
+{
+	//printf("Trigger enter\n");
+	if (gObj != nullptr)
+	{
+		gObj->OnTriggerEnter(col);
+	}
+}
+
+void RigidBody::OnTriggerStay(RigidBody* col)
+{
+	//printf("Trigger stay\n");
+}
+
+void RigidBody::OnTriggerExit(RigidBody* col)
+{
+	//printf("Trigger exit\n");
+	if (gObj != nullptr)
+	{
+		gObj->OnTriggerExit(col);
 	}
 }
 
