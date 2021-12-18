@@ -18,6 +18,11 @@ bool SceneIntro::Start()
 	bool ret = true;
 
 	_app->map->Load("PiratesLevel.tmx");
+	
+	bg[0] = _app->textures->Load("Assets/textures/Background/0.png");
+	bg[1] = _app->textures->Load("Assets/textures/Background/1.png");
+	bg[2] = _app->textures->Load("Assets/textures/Background/2.png");
+	bg[3] = _app->textures->Load("Assets/textures/Background/3.png");
 
 	world = new PhysCore({ 0,10 });
 
@@ -74,6 +79,7 @@ bool SceneIntro::Start()
 	world->AddRigidBody(player2->rBody);
 	world->AddRigidBody(water->rBody);
 
+
 	turnsManager->AddGameObjectAsItem(player1, PLAYER1);
 	turnsManager->AddGameObjectAsItem(player2, PLAYER2);
 
@@ -127,6 +133,11 @@ bool SceneIntro::CleanUp()
 		turnsManager->CleanUp();
 		delete turnsManager;
 		turnsManager = nullptr;
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		SDL_DestroyTexture(bg[i]);
+		bg[i] = nullptr;
 	}
 
 	Scene::CleanUp();
@@ -235,6 +246,13 @@ bool SceneIntro::Update()
 
 bool SceneIntro::PostUpdate()
 {
+	_app->renderer->AddTextureRenderQueue(bg[0], { 0,0 }, { 0,0,0,0 },2.0f);
+	_app->renderer->AddTextureRenderQueue(bg[2], { 0,180 }, { 0,0,0,0 }, 2.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.4f);
+	_app->renderer->AddTextureRenderQueue(bg[1], { 100,100 }, { 0,0,0,0 }, 2.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.5f);
+	_app->renderer->AddTextureRenderQueue(bg[3], { 0,50 }, { 0,0,0,0 }, 1.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.6f);
+	
+	
+
 	for (int i = 0; i < gameObjects.count(); i++)
 	{
 		gameObjects[i]->PostUpdate();

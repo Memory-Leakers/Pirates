@@ -42,6 +42,7 @@ void TurnsManager::UpdateGameLogic()
 	// Donde se dibuja la linea entre el objeto seleccionado y el mouse.
 
 	DrawMouseItemLine();
+	drawTrajectory();
 
 	// Fase de Movimiento
 	// Donde se aplican fuerzas en los items seleccionados que han sido soltados
@@ -161,6 +162,7 @@ void TurnsManager::DrawMouseItemLine()
 		iPoint itemPos = { (int)currentItem->gameObject->GetScreenPosition().x, (int)currentItem->gameObject->GetScreenPosition().y };
 		mousePos.x = _app->input->GetMouseX();
 		mousePos.y = _app->input->GetMouseY();
+		
 
 		// Si la linea es muy larga, no dejamos que se haga más grande
 		float mouseMaxModule = 100 / GetMouseModule(currentItem);
@@ -269,6 +271,55 @@ void TurnsManager::CheckPlayerTurn()
 		currentPlayer = currentPlayer == 0 ? 1 : 0;
 
 		printf("Turno player %d", currentPlayer);
+	}
+}
+
+void TurnsManager::drawTrajectory()
+{
+	if (currentItem == nullptr) return;
+	else
+	{
+		if (_app->input->GetMouseButton(1) == KEY_REPEAT)	// Si estamos manteniendo el boton del ratón, dibujamos la linea
+		{
+			iPoint itemPos = { (int)currentItem->gameObject->GetScreenPosition().x, (int)currentItem->gameObject->GetScreenPosition().y };
+
+			iPoint mousepos; 
+
+			mousepos.x = _app->input->GetMouseX();
+			mousepos.y = _app->input->GetMouseY();
+
+			// Si la linea es muy larga, no dejamos que se haga más grande
+			float mouseMaxModule = 100 / GetMouseModule(currentItem);
+
+			//Obtener posicion de mouse respecto a la base del item
+			iPoint mousePosOnItem = mousePos - itemPos;
+
+			//Invertir el Vector MousePositem
+
+			//Aplicar modulo maximo a esta base
+			mousePosOnItem *= mouseMaxModule;
+
+
+			//Transformar posicion de mouse a la base canónica de nuevo
+			mousepos = mousePosOnItem + itemPos;
+
+			iPoint resultpoint;
+
+			for (float t = 0.0f; t < 2.0f; t += 0.25f)
+			{
+				//Vector Invertido del Vector MousePositem * 100(VALOR DE THROWFORCE)
+				resultpoint.x = currentItem->gameObject->GetScreenPosition().x + currentItem->gameObject->GetLinearVelocity().x * t;
+				resultpoint.y = currentItem->gameObject->GetScreenPosition().y + currentItem->gameObject->GetLinearVelocity().y * t - ((10 * 10) / 2) * pow(t, 2);
+
+				resultpoint = resultpoint * mousePos;
+
+				
+				//Draw QUADs
+			}
+
+			
+			
+		}
 	}
 }
 

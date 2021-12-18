@@ -61,6 +61,7 @@ private:
 	void GetCurrentOption();
 
 	void DrawMouseItemLine();
+	void drawTrajectory();
 
 	void ApplyForceOnOption(fPoint dir);
 	void CheckPlayerTurn();
