@@ -2,14 +2,6 @@
 #include "RigidBody.h"
 #include "List.h"
 
-enum COL_TYPE
-{
-	NONE = 0,
-	COLLISION,
-	TRIGGER
-};
-
-
 class PhysCore
 {
 public:
@@ -25,11 +17,11 @@ public:
 
 	void DeleteRigidBody(RigidBody* body);
 
-	COL_TYPE BoxColBox(RigidBody& b1, RigidBody& b2, bool trigger = false);
+	void BoxColBox(RigidBody& b1, RigidBody& b2);
 
-	COL_TYPE CircleColCircle(RigidBody& b1, RigidBody& b2, bool trigger = false);
+	void CircleColCircle(RigidBody& b1, RigidBody& b2);
 
-	COL_TYPE BoxColCircle(RigidBody& b1, RigidBody& b2, bool trigger = false);
+	void BoxColCircle(RigidBody& b1, RigidBody& b2);
 
 	void ResolveColForce(RigidBody& b1, RigidBody& b2, fPoint colPoint);
 
@@ -55,10 +47,24 @@ public:
 		return gravity;
 	}
 
+	// Detect collision point in 2 shapes
 	fPoint CollisionPoint(RigidBody& b1, RigidBody& b2);
 
+	// Dectet center of shape -> collision point(any point) vector
 	fPoint CollisionDir(RigidBody& b1, fPoint colPoint);
 
+	// Resolve clamping case
+	void ResolveClipping(RigidBody& b1, RigidBody& b2);
+
+	/// <summary>
+	/// Check intersectionPoint of 2 lines
+	/// </summary>
+	/// <param name="p1">init of line 1</param>
+	/// <param name="p2">end of line 1</param>
+	/// <param name="p3">init of line 2</param>
+	/// <param name="p4">end of line 2</param>
+	/// <returns></returns>
+	fPoint IntersectionPoint(fPoint p1, fPoint p2, fPoint p3, fPoint p4);
 private:
 
 	fPoint gravity;

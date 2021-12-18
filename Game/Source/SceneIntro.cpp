@@ -34,14 +34,18 @@ bool SceneIntro::Start()
 	player1 = new Player("Player1", "player", _app,1);
 	player1->rBody = new RigidBody({ 230,180 }, RigidBodyType::DYNAMIC, 11, player1);
 	player1->rBody->SetGravityScale(2.0f);
-	player1->rBody->SetDragCoeficient(0.1f);
+	player1->rBody->SetDragCoeficient(0.01f);
 	player1->rBody->SetRestitution(0.2f);
+	player1->rBody->SetHydrodynamicDragCoeficient(0.5f);
+	player1->rBody->SetFriction(5.0f);
 
 	player2 = new Player("Player2", "player", _app, 2);
 	player2->rBody = new RigidBody({ 250,180 }, RigidBodyType::DYNAMIC, 11, player2);
 	player2->rBody->SetGravityScale(2.0f);
-	player2->rBody->SetDragCoeficient(0.1f);
+	player2->rBody->SetDragCoeficient(0.01f);
 	player2->rBody->SetRestitution(0.2f);
+	player2->rBody->SetHydrodynamicDragCoeficient(0.5f);
+	player2->rBody->SetFriction(5.0f);
 
 	//BombInit
 	bombP1 = new Bomb("Bomb", "Bomb", _app, BombType::BANANA);

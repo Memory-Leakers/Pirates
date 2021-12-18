@@ -25,6 +25,7 @@ public:
 	virtual void OnCollisionExit(RigidBody* col);
 
 	virtual void OnTriggerEnter(RigidBody* col);
+	virtual void OnTriggerExit(RigidBody* col);
 
 	virtual void Start();
 
