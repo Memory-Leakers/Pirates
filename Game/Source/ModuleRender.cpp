@@ -12,7 +12,7 @@ ModuleRender::ModuleRender(Application* app, bool start_enabled) : Module(app, s
 	camera->w = SCREEN_WIDTH;
 	camera->h = SCREEN_HEIGHT;
 
-	renderLayers.resize(4);
+	renderLayers.resize(5);
 }
 
 // Destructor
@@ -67,13 +67,13 @@ UpdateStatus ModuleRender::PostUpdate()
 	OPTICK_EVENT();
 
 	// Sorting layers
-	for (int i = 1; i < renderLayers.size(); i++)
+	for (int i = 2; i < renderLayers.size(); i++)
 	{
 		SortRenderObjects(renderLayers[i]);
 	}
 
 	//Draw
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		for each (auto renderObject in renderLayers[i])
 		{
@@ -83,7 +83,7 @@ UpdateStatus ModuleRender::PostUpdate()
 	
 	SDL_RenderPresent(renderer);
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		renderLayers[i].clear();
 	}

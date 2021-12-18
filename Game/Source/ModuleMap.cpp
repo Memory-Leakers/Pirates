@@ -68,7 +68,7 @@ UpdateStatus ModuleMap::PostUpdate()
 						SDL_Rect r = tileset->GetTileRect(gid);
 						iPoint pos = MapToWorld(x, y);
 
-						App->renderer->AddTextureRenderQueue(tileset->texture, iPoint(pos.x, pos.y), r, 1, 0, 0.5f);
+						App->renderer->AddTextureRenderQueue(tileset->texture, iPoint(pos.x, pos.y), r, 1, 1, 0.5f);
 					}
 
 				}
