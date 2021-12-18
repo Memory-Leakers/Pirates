@@ -20,6 +20,8 @@ public:
 
 	void MoveCameraWithMouse();
 
+	bool CheckMaximumBoundaries();
+
 private:
 
 	iPoint GetCenter();
@@ -46,5 +48,6 @@ public:
 
 	int mapHeight = 304 , mapWidth = 1860;
 
+	bool reachedMax;
 };
 

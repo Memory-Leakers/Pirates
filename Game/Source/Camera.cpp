@@ -52,6 +52,9 @@ void Camera::UpdatePosition()
 
 		targetPosY > y ? y += distance / cameraDelay : targetPosY < y ? y -= distance / cameraDelay : y = y;
 
+		if ((y < 0 || y > mapHeight) && distance > 5) reachedMax = true;
+		else reachedMax = false;
+
 		y < 0 ? y = 0 : y > mapHeight ? y = mapHeight : y = y;
 
 		// Update X
@@ -62,6 +65,9 @@ void Camera::UpdatePosition()
 		distance = abs(targetPosX - x);
 
 		targetPosX > x ? x += distance / cameraDelay : targetPosX < x ? x -= distance / cameraDelay : x = x;
+
+		if ((x < 0 || y > mapWidth) && distance > 5) reachedMax = true;
+		else reachedMax = false;
 
 		x < 0 ? x = 0 : x > mapWidth ? x = mapWidth : x = x;
 	}
@@ -111,6 +117,16 @@ void Camera::MoveCameraWithMouse()
 
 }
 
+bool Camera::CheckMaximumBoundaries()
+{
+	if (x == 0 || y == 0)
+		return true;
+
+	if (x == mapWidth || y == mapHeight)
+		return true;
+
+	return false;
+}
 
 iPoint Camera::GetCenter()
 {

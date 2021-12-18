@@ -151,16 +151,26 @@ bool SceneIntro::Update()
 	{
 		_app->renderer->camera->SetTarget(turnsManager->throwedGameObj);
 	}
+	/*else if (turnsManager->changingTurn)
+	{
+		float distance = (turnsManager->playerItems[turnsManager->currentPlayer][0]->gameObject->GetScreenPosition() - iPoint(_app->renderer->camera->x, _app->renderer->camera->y)).Module();
+
+		if (distance > 5.0f && !_app->renderer->camera->reachedMax)
+		{
+			_app->renderer->camera->SetTarget(turnsManager->playerItems[turnsManager->currentPlayer][0]->gameObject);
+		}
+		else 
+		{
+			turnsManager->changingTurn = false;
+			_app->renderer->camera->SetTarget(nullptr);
+		}
+	}*/
 	else
 	{
 		_app->renderer->camera->SetTarget(nullptr);
 	}
 
-	if (_app->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
-	{
-		testGO->rBody->SetLinearVelocity({ 0,0 });
-	}
-
+	// Debug
 	if (_app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		_app->scene->DEBUGMODE = !_app->scene->DEBUGMODE;
