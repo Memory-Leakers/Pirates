@@ -22,10 +22,14 @@ struct Item
 	bool isSelected = false;
 };
 
+class Bomb;
+class Scene;
+class PhysCore;
+
 class TurnsManager
 {
 public:
-	TurnsManager(Application* app);
+	TurnsManager(Application* app, Scene* currentScene, PhysCore* world);
 
 	void UpdateGameLogic();
 
@@ -49,6 +53,10 @@ public:
 
 	bool playerMovedItem[2] = { false, false };
 
+	bool throwedBomb;
+
+	bool changingTurn;
+
 private:
 
 	bool CheckInteraction();
@@ -65,13 +73,21 @@ private:
 
 	float GetMouseModule(Item* item);
 
+	void ChangeCurrentBomb(int bombType);
+
 	Application* _app;
+
+	Scene* scene;
+
+	PhysCore* physCore;
 
 	bool canInteract = true;	// Determina si se puede interactuar con los items o no
 								// Esta variable debe controlarla un script externo, ya que esta clase no conoce
 								// El estado del juego, simplemente controla la logica de los turnos
 
 	iPoint mousePos;
+
+	Bomb* currentBomb = nullptr;
 
 };
 

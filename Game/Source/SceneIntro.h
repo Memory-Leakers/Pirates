@@ -18,6 +18,7 @@ public:
 
 	bool Start();
 	void InitScene() override;
+	bool PreUpdate() override;
 	bool Update();
 	bool PostUpdate();
 	bool CleanUp() override;

@@ -33,8 +33,8 @@ public:
     void CleanUp() override;
 
     void setType(BombType type);
-   
-private:    
+
+private:
     BombType bType = BombType::NORMAL;
     bool exploded = false;
     Timer tNormalBomb;
@@ -59,4 +59,3 @@ public:
     int explosionRadius = (int)(std::floor(8 * PIXELS_PER_METERS));
     int bombRadius = (int)(std::floor(0.8 * PIXELS_PER_METERS));
 };
-

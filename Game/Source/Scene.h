@@ -15,8 +15,6 @@ protected:
 
 	Application* _app;
 
-	List<GameObject*> gameObjects;
-
 	List<SDL_Texture*> sceneTextures;
 
 public:
@@ -53,6 +51,8 @@ public:
 
 	int playerX;
 	int playerY;
+
+	List<GameObject*> gameObjects;
 };
 
 

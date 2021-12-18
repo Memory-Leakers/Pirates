@@ -23,6 +23,13 @@ bool SceneIntro::Start()
 
 	InitScene();
 
+	//BombINit
+	/*bombP1 = new Bomb("Bomb", "Bomb", _app, BombType::BANANA);
+	bombP1->SetPosition({ 200,180 });
+
+	bombP2 = new Bomb("Bomb", "Bomb", _app, BombType::NORMAL);
+	bombP2->SetPosition({ 450,100 });*/
+
 	//player Init
 	player1 = new Player("Player1", "player", _app,1);
 	player1->rBody = new RigidBody({ 230,180 }, RigidBodyType::DYNAMIC, 11, player1);
@@ -50,10 +57,10 @@ bool SceneIntro::Start()
 	walls[1] = new RigidBody({ 0,0 }, RigidBodyType::STATIC, 5, 1440);
 	walls[2] = new RigidBody({1550,0 }, RigidBodyType::STATIC, 5, 1440);
 
-	turnsManager = new TurnsManager(_app);
+	turnsManager = new TurnsManager(_app, this, world);
 
-	gameObjects.add(bombP1);
-	gameObjects.add(bombP2);
+	//gameObjects.add(bombP1);
+	//gameObjects.add(bombP2);
 	gameObjects.add(player1);
 	gameObjects.add(player2);
 	gameObjects.add(water);
@@ -68,8 +75,8 @@ bool SceneIntro::Start()
 		world->AddRigidBody(walls[i]);
 	}
 
-	world->AddRigidBody(bombP1->rBody);
-	world->AddRigidBody(bombP2->rBody);
+	//world->AddRigidBody(bombP1->rBody);
+	//world->AddRigidBody(bombP2->rBody);
 	world->AddRigidBody(player1->rBody);
 	world->AddRigidBody(player2->rBody);
 	world->AddRigidBody(water->rBody);
@@ -94,6 +101,25 @@ void SceneIntro::InitScene()
 			gameObjects.add(g);
 		}
 	}
+}
+
+bool SceneIntro::PreUpdate()
+{
+	for (int i = 0; i < gameObjects.count(); i++)
+	{
+		gameObjects[i]->PreUpdate();
+		if (gameObjects[i]->pendingToDelete == true)
+		{
+			if (gameObjects[i]->rBody != nullptr)
+			{
+				world->DeleteRigidBody(gameObjects[i]->rBody);
+			}
+			gameObjects[i]->CleanUp();
+			gameObjects.del(gameObjects.At(gameObjects.find(gameObjects[i])));
+		}
+	}
+
+	return true;
 }
 
 // Load assets
@@ -132,23 +158,33 @@ bool SceneIntro::Update()
 	{
 		_app->renderer->camera->SetTarget(turnsManager->throwedGameObj);
 	}
+	/*else if (turnsManager->changingTurn)
+	{
+		float distance = (turnsManager->playerItems[turnsManager->currentPlayer][0]->gameObject->GetScreenPosition() - iPoint(_app->renderer->camera->x, _app->renderer->camera->y)).Module();
+
+		if (distance > 5.0f && !_app->renderer->camera->reachedMax)
+		{
+			_app->renderer->camera->SetTarget(turnsManager->playerItems[turnsManager->currentPlayer][0]->gameObject);
+		}
+		else
+		{
+			turnsManager->changingTurn = false;
+			_app->renderer->camera->SetTarget(nullptr);
+		}
+	}*/
 	else
 	{
 		_app->renderer->camera->SetTarget(nullptr);
 	}
 
-	if (_app->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
-	{
-		testGO->rBody->SetLinearVelocity({ 0,0 });
-	}
-
+	// Debug
 	if (_app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
 		_app->scene->DEBUGMODE = !_app->scene->DEBUGMODE;
 		if (_app->scene->DEBUGMODE) printf_s("DEBUG ON"); else printf_s("DEBUG OFF");
 	}
 
-	if (_app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	/*if (_app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		if (turnsManager->currentPlayer == PLAYER1)
 		{
@@ -193,8 +229,8 @@ bool SceneIntro::Update()
 			bombP2->setType(BombType::UMBRELLA);
 		}
 	}
-
-	if (turnsManager->currentPlayer == PLAYER1)
+	*/
+	/*if (turnsManager->currentPlayer == PLAYER1)
 	{
 		//bombP1->active = true;
 		bombP2->active = false;
@@ -203,7 +239,7 @@ bool SceneIntro::Update()
 	{
 		//bombP2->active = true;
 		bombP1->active = false;
-	}
+	}*/
 	if (_app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
 		_app->scene->ChangeCurrentScene(2, 0);

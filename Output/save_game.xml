@@ -8,6 +8,6 @@
 		<player x="0" y="0" lifes="3" score="0" />
 	</scene>
 	<renderer>
-		<camera x="172" y="76" />
+		<camera x="107" y="304" />
 	</renderer>
 </game_state>

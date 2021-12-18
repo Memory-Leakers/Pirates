@@ -23,5 +23,5 @@ void Water::Update()
 
 void Water::PostUpdate()
 {
-	_app->renderer->AddTextureRenderQueue(renderObjects[0].texture, { renderObjects[0].destRect.x, renderObjects[0].destRect.y }, { 0,0,0,0 }, 1, 2);
+	_app->renderer->AddTextureRenderQueue(renderObjects[0].texture, { renderObjects[0].destRect.x, renderObjects[0].destRect.y }, { 0,0,0,0 }, 1, 3);
 }
