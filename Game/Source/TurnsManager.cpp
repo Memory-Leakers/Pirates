@@ -203,7 +203,6 @@ void TurnsManager::ApplyForces()
 {
 	if (currentItem == nullptr) return;
 
-
 	if (_app->input->GetMouseButton(1) == KEY_UP) // Si soltamos el boton del raton
 	{
 		iPoint itemPos = currentItem->gameObject->GetScreenPosition();
@@ -223,7 +222,7 @@ void TurnsManager::ApplyForces()
 		// Aplicamos fuerza
 		fPoint dir = { (float)(itemPos.x - mousePos.x), (float)(itemPos.y - mousePos.y) };	// El vector que determina hacia donde estamos apuntando
 
-		float throwForce = 100.0f;
+		float throwForce = 25.0f;
 
 		dir *= throwForce;
 
@@ -323,7 +322,6 @@ void TurnsManager::ChangeCurrentBomb(int bombType)
 	scene->gameObjects.add(currentBomb);
 
 }
-
 
 void TurnsManager::AddItem(Item* item, int player)
 {

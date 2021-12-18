@@ -6,7 +6,7 @@ Water::Water(iPoint pos, std::string name, std::string tag, Application* app) : 
 	renderObjects[0].destRect.x = pos.x - 128;
 	renderObjects[0].destRect.y = pos.y;
 
-	this->rBody = new RigidBody({ pos.x, pos.y + 150 }, WATER, 3200, 300);
+	this->rBody = new RigidBody({ pos.x, pos.y + 150 }, RigidBodyType::WATER, 3200, 300);
 }
 
 void Water::Update()

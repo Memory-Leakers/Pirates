@@ -1,4 +1,4 @@
-#include "PhysCore.h"
+﻿#include "PhysCore.h"
 #include <algorithm>
 
 PhysCore::PhysCore(fPoint gravity)
@@ -53,45 +53,74 @@ void PhysCore::Update(float simulationTime)
 		// Step #2 Calculate Newton's Second law (acceleration)
 		rigidBodies[i]->acceleration = rigidBodies[i]->totalForce / rigidBodies[i]->mass;
 
-		// Chek if collision Stay
+		// Check if collision Stay
 		for (int j = 0; j < rigidBodies[i]->collisionList.count(); j++)
 		{
-			if (rigidBodies[i]->collisionList[j]->type == RigidBodyType::WATER)
+			// Trigger
+			if (rigidBodies[i]->colType == COL_TYPE::TRIGGER || rigidBodies[i]->collisionList[j]->colType == COL_TYPE::TRIGGER)
 			{
-				//Buoyancy (Density * gravity * area of the object flooded)
-				fPoint buoyancyForce;
-				float magnitudbuoyancy;
-				fPoint direct = { 0, -10 };
-				fPoint direction = direct.Normalize();
-
-				float mod = gravity.Module();
-
-				// 1 = 100%
-				float submerge = submergedVolume(rigidBodies[i], rigidBodies[i]->collisionList[j]);
-
-				// *2 = 200% para que pueda subir
-				magnitudbuoyancy = density * mod * submerge * 2 * rigidBodies[i]->GetGravityScale();
-
-				buoyancyForce = direction * magnitudbuoyancy;
-
-				rigidBodies[i]->AddForceToCenter(buoyancyForce);
-
-				// Calcular la fuerza de drag
-				dragForce = (rigidBodies[i]->velocity * -1) * rigidBodies[i]->hydrodynamicDrag;
-
-				rigidBodies[i]->AddForceToCenter(dragForce);
+				rigidBodies[i]->OnTriggerStay(rigidBodies[i]->collisionList[j]);
 			}
+			// Collision
 			else
 			{
-				fPoint colPoint = CollisionPoint(*rigidBodies[i], *rigidBodies[i]->collisionList[j]);
-				ResolveColForce(*rigidBodies[i], *rigidBodies[i]->collisionList[j], colPoint);
+				if (rigidBodies[i]->collisionList[j]->type == RigidBodyType::WATER)
+				{
+					//Buoyancy (Density * gravity * area of the object flooded)
+					fPoint buoyancyForce;
+					float magnitudbuoyancy;
+					fPoint direct = { 0, -10 };
+					fPoint direction = direct.Normalize();
+
+					float mod = gravity.Module();
+
+					// 1 = 100%
+					float submerge = submergedVolume(rigidBodies[i], rigidBodies[i]->collisionList[j]);
+
+					printf("%f\n", submerge);
+
+					// *2 = 200% para que pueda subir
+					magnitudbuoyancy = density * mod * submerge * 2 * rigidBodies[i]->GetGravityScale();
+
+					buoyancyForce = direction * magnitudbuoyancy;
+
+					rigidBodies[i]->AddForceToCenter(buoyancyForce);
+
+					// Calcular la fuerza de drag hidrodinamica
+					dragForce = (rigidBodies[i]->velocity * -1) * rigidBodies[i]->hydrodynamicDrag;
+
+					rigidBodies[i]->AddForceToCenter(dragForce);
+				}
+				else
+				{
+					// Clipping case!!!
+					if (rigidBodies[i]->colType == COL_TYPE::COLLISION && rigidBodies[i]->collisionList[j]->type == RigidBodyType::STATIC)
+					{
+						if (rigidBodies[i]->collisionList[j]->Contains(rigidBodies[i]->position))
+						ResolveClipping(*rigidBodies[i], *rigidBodies[i]->collisionList[j]);
+					}
+					//FUERZA DE FRICCIÓN
+					if (rigidBodies[i]->collisionList[j]->type == RigidBodyType::STATIC)
+					{
+						dragForce = (rigidBodies[i]->GetLinearVelocity() * -1) * rigidBodies[i]->GetFriction();
+
+						rigidBodies[i]->AddForceToCenter(dragForce);
+					}
+					//IMPEDIR QUE ENTRE DENTRO DE UN RIGIDBODY
+					fPoint colPoint = CollisionPoint(*rigidBodies[i], *rigidBodies[i]->collisionList[j]);
+					ResolveColForce(*rigidBodies[i], *rigidBodies[i]->collisionList[j], colPoint);
+
+				}
 			}
 		}
 
-		// Check if next position is colling
-		fPoint nextPosition = rigidBodies[i]->position + rigidBodies[i]->velocity * simulationTime + rigidBodies[i]->acceleration * (simulationTime * simulationTime * 0.5f);
+		// If velocity is few, ignore
+		if (abs(rigidBodies[i]->velocity.x) < 0.1f) rigidBodies[i]->velocity.x = 0;
+		if (abs(rigidBodies[i]->velocity.y) < 0.1f) rigidBodies[i]->velocity.y = 0;
 
-		// Step #3 Integrate with Verlet
+		// Save lastPosition
+		rigidBodies[i]->lastPosition = rigidBodies[i]->position;
+		// Step #3 Integrate with Verlet	
 		rigidBodies[i]->position += rigidBodies[i]->velocity * simulationTime + rigidBodies[i]->acceleration * (simulationTime * simulationTime * 0.5f);
 		rigidBodies[i]->velocity += rigidBodies[i]->acceleration * simulationTime;
 	}
@@ -142,7 +171,7 @@ void PhysCore::DeleteRigidBody(RigidBody* body)
 	rigidBodies.del(rigidBodies.At(rigidBodies.find(body)));
 }
 
-COL_TYPE PhysCore::BoxColBox(RigidBody& b1, RigidBody& b2, bool trigger)
+void PhysCore::BoxColBox(RigidBody& b1, RigidBody& b2)
 {
 	// No collision case
 	if (b1.position.x > b2.position.x + b2.width ||
@@ -155,38 +184,56 @@ COL_TYPE PhysCore::BoxColBox(RigidBody& b1, RigidBody& b2, bool trigger)
 			// Collision Exit
 			if (rigidBodies.find(b1.collisionList[i]) == rigidBodies.find(&b2))
 			{
-				b1.OnCollisionExit(&b2);
+				if (b1.colType == COL_TYPE::COLLISION && b2.colType == COL_TYPE::COLLISION)
+				{
+					b1.OnCollisionExit(&b2);
+				}
+				else
+				{
+					b1.OnTriggerExit(&b2);
+				}
+
 				b1.collisionList.remove(b1.collisionList.At(b1.collisionList.find(&b2)));
-				;
+				return;
 			}
 		}
-		return NONE;
 	}
 
 	// Collision case
 	for (int i = 0; i < b1.collisionList.count(); i++)
 	{
-		if (trigger)
-		{
-			return TRIGGER;
-		}
 		// Collision stay
 		if (rigidBodies.find(b1.collisionList[i]) == rigidBodies.find(&b2))
 		{
-			b1.OnCollisionStay(&b2);
-			ResolveColForce(b1, b2, CollisionPoint(b1, b2));
-			return COLLISION;
+			if (b1.colType == COL_TYPE::COLLISION && b2.colType == COL_TYPE::COLLISION)
+			{
+				b1.OnCollisionStay(&b2);
+				ResolveColForce(b1, b2, CollisionPoint(b1, b2));
+			}
+			else
+			{
+				b1.OnTriggerStay(&b2);
+			}
+			return;
 		}
 	}
 
 	// Collision Enter
+	if (b1.colType == COL_TYPE::COLLISION && b2.colType == COL_TYPE::COLLISION)
+	{
+		b1.OnCollisionEnter(&b2);
+		ResolveColForce(b1, b2, CollisionPoint(b1, b2));
+	}
+	else
+	{
+		b1.OnTriggerEnter(&b2);
+	}
 	b1.collisionList.add(&b2);
-	b1.OnCollisionEnter(&b2);
-	ResolveColForce(b1, b2, CollisionPoint(b1, b2));
-	return COLLISION;
+
+	return;
 }
 
-COL_TYPE PhysCore::CircleColCircle(RigidBody& b1, RigidBody& b2, bool trigger)
+void PhysCore::CircleColCircle(RigidBody& b1, RigidBody& b2)
 {
 	float distX = b1.position.x - b2.position.x;
 	float distY = b1.position.y - b2.position.y;
@@ -195,26 +242,39 @@ COL_TYPE PhysCore::CircleColCircle(RigidBody& b1, RigidBody& b2, bool trigger)
 	//Collision
 	if (distance <= b1.radius + b2.radius)
 	{
-		if (trigger)
-		{
-			return TRIGGER;
-		}
 		for (int i = 0; i < b1.collisionList.count(); i++)
 		{
 			if (rigidBodies.find(b1.collisionList[i]) == rigidBodies.find(&b2))
 			{
-				b1.OnCollisionStay(&b2);
-				return COLLISION;
+				if (b1.colType == COL_TYPE::COLLISION && b2.colType == COL_TYPE::COLLISION)
+				{
+					b1.OnCollisionStay(&b2);
+					fPoint colPoint = CollisionPoint(b1, b2);
+					ResolveColForce(b1, b2, colPoint);
+				}
+				else
+				{
+					b1.OnTriggerStay(&b2);
+				}
+
+				return;
 			}
 		}
 
 		b1.collisionList.add(&b2);
-		b1.OnCollisionEnter(&b2);
 
-		fPoint colPoint = CollisionPoint(b1, b2);
+		if (b1.colType == COL_TYPE::COLLISION && b2.colType == COL_TYPE::COLLISION)
+		{
+			b1.OnCollisionEnter(&b2);
+			fPoint colPoint = CollisionPoint(b1, b2);
+			ResolveColForce(b1, b2, colPoint);
+		}
+		else
+		{
+			b1.OnTriggerEnter(&b2);
+		}
 
-		ResolveColForce(b1, b2, colPoint);
-		return COLLISION;
+		return;
 	}
 
 	//No Collision
@@ -224,14 +284,24 @@ COL_TYPE PhysCore::CircleColCircle(RigidBody& b1, RigidBody& b2, bool trigger)
 		{
 			if (rigidBodies.find(b1.collisionList[i]) == rigidBodies.find(&b2))
 			{
-				b1.OnCollisionExit(&b2);
+				if (b1.colType == COL_TYPE::COLLISION && b2.colType == COL_TYPE::COLLISION)
+				{
+					b1.OnCollisionExit(&b2);
+				}
+				else
+				{
+					b1.OnTriggerExit(&b2);
+				}
+
 				b1.collisionList.remove(b1.collisionList.At(b1.collisionList.find(&b2)));
+
+				return;
 			}
 		}
 	}
 }
 
-COL_TYPE PhysCore::BoxColCircle(RigidBody& b1, RigidBody& b2, bool trigger)
+void PhysCore::BoxColCircle(RigidBody& b1, RigidBody& b2)
 {
 	RigidBody* circ;
 	RigidBody* rect;
@@ -259,39 +329,57 @@ COL_TYPE PhysCore::BoxColCircle(RigidBody& b1, RigidBody& b2, bool trigger)
 	// Collision case
 	if (distance <= circ->GetRadius())
 	{
-		if (trigger)
-		{
-			return TRIGGER;
-		}
-
 		for (int i = 0; i < b1.collisionList.count(); i++)
 		{
 			if (rigidBodies.find(b1.collisionList[i]) == rigidBodies.find(&b2))
 			{
-				b1.OnCollisionStay(&b2);
-				ResolveColForce(b1, b2, colPoint);
-				return COLLISION;
+				if (b1.colType == COL_TYPE::COLLISION && b2.colType == COL_TYPE::COLLISION)
+				{
+					b1.OnCollisionStay(&b2);
+					ResolveColForce(b1, b2, colPoint);
+					return;
+				}
+				else
+				{
+					b1.OnTriggerStay(&b2);
+					return;
+				}
 			}
 		}
-		b1.collisionList.add(&b2);
-		b1.OnCollisionEnter(&b2);
-		ResolveColForce(b1, b2, colPoint);
-		return COLLISION;
-	}
 
-	// Cliping case
+		b1.collisionList.add(&b2);
+
+		if (b1.colType == COL_TYPE::COLLISION && b2.colType == COL_TYPE::COLLISION)
+		{
+			b1.OnCollisionEnter(&b2);
+			ResolveColForce(b1, b2, colPoint);
+		}
+		else
+		{
+			b1.OnTriggerEnter(&b2);
+		}
+		return;
+	}
 
 	// No collision case
 	for (int i = 0; i < b1.collisionList.count(); i++)
 	{
 		if (rigidBodies.find(b1.collisionList[i]) == rigidBodies.find(&b2))
 		{
-			b1.OnCollisionExit(&b2);
+			if (b1.colType == COL_TYPE::COLLISION && b2.colType == COL_TYPE::COLLISION)
+			{
+				b1.OnCollisionExit(&b2);
+			}
+			else
+			{
+				b1.OnTriggerExit(&b2);
+			}
+
 			b1.collisionList.remove(b1.collisionList.At(b1.collisionList.find(&b2)));
+
+			return;
 		}
 	}
-
-	return NONE;
 }
 
 /// <summary>
@@ -463,6 +551,123 @@ fPoint PhysCore::CollisionDir(RigidBody& b1, fPoint colPoint)
 
 	return dir;
 }
+
+void PhysCore::ResolveClipping(RigidBody& b1, RigidBody& b2)
+{
+	RigidBody* dinBody = nullptr;
+	RigidBody* staticBody = nullptr;
+
+	if (b1.type == RigidBodyType::DYNAMIC && b2.type == RigidBodyType::STATIC)
+	{
+		dinBody = &b1;
+		staticBody = &b2;
+	}
+	else if (b2.type == RigidBodyType::DYNAMIC && b1.type == RigidBodyType::STATIC)
+	{
+		dinBody = &b2;
+		staticBody = &b1;
+	}
+
+	// Just resolve circle && rect clamping
+	if (dinBody->shape != ShapeType::CIRCLE || staticBody->shape != ShapeType::RECT)
+	{
+		printf("Can not resolve clamping");
+		return;
+	}
+
+	// calcular interseccion de linea de last position->position y static body
+	// circle trayector ray
+	fPoint p1 = dinBody->lastPosition;
+	fPoint p2 = dinBody->position;
+
+	// rect line 1
+	fPoint p3 = { staticBody->position.x - (staticBody->width / 2), staticBody->position.y - (staticBody->height / 2) };
+	fPoint p4 = p3;
+	p4.x += staticBody->width;
+
+	fPoint colPoint = IntersectionPoint(p1, p2, p3, p4);
+
+	if (colPoint.x != 0 && colPoint.y != 0)
+	{
+		fPoint dir = p2 - p1;
+		dir = dir.Normalize();
+		dir.y = -dir.y;
+		dinBody->position = colPoint + dir * dinBody->radius;
+		ResolveColForce(*dinBody, *staticBody, colPoint);
+		return;
+	}
+
+	// rect line 2
+	p3 = { staticBody->position.x - (staticBody->width / 2), staticBody->position.y - (staticBody->height / 2) };
+	p4 = p3;
+	p4.y += staticBody->height;
+
+	colPoint = IntersectionPoint(p1, p2, p3, p4);
+
+	if (colPoint.x != 0 && colPoint.y != 0)
+	{
+		fPoint dir = p2 - p1;
+		dir = dir.Normalize();
+		dir.y = -dir.y;
+		dinBody->position = colPoint + dir * dinBody->radius;
+		ResolveColForce(*dinBody, *staticBody, colPoint);
+		return;
+	}
+
+	// rect line 3
+	p3 = { staticBody->position.x - (staticBody->width / 2), staticBody->position.y - (staticBody->height / 2) };
+	p3.y += staticBody->height;
+	p4 = p3;
+	p4.x += staticBody->width;
+
+	colPoint = IntersectionPoint(p1, p2, p3, p4);
+
+	if (colPoint.x != 0 && colPoint.y != 0)
+	{
+		fPoint dir = p2 - p1;
+		dir = dir.Normalize();
+		dir.y = -dir.y;
+		dinBody->position = colPoint + dir * dinBody->radius;
+		ResolveColForce(*dinBody, *staticBody, colPoint);
+		return;
+	}
+
+	// rect line 4
+	p3 = { staticBody->position.x - (staticBody->width / 2), staticBody->position.y - (staticBody->height / 2) };
+	p3.x += staticBody->width;
+	p4 = p3;
+	p4.y += staticBody->height;
+
+	colPoint = IntersectionPoint(p1, p2, p3, p4);
+
+	if (colPoint.x != 0 && colPoint.y != 0)
+	{
+		fPoint dir = p2 - p1;
+		dir = dir.Normalize();
+		dir.y = -dir.y;
+		dinBody->position = colPoint + dir * dinBody->radius;
+		ResolveColForce(*dinBody, *staticBody, colPoint);
+		return;
+	}
+}
+
+fPoint PhysCore::IntersectionPoint(fPoint p1, fPoint p2, fPoint p3, fPoint p4)
+{
+	fPoint colPoint = { 0, 0 };
+
+	float lambda = (((p4.x - p2.x) * (p3.y - p4.y)) - ((p4.y - p2.y) * (p3.x - p4.x))) / (((p1.x - p2.x) * (p3.y - p4.y)) - ((p1.y - p2.y) * (p3.x - p4.x)));
+
+	if (IN_RANGE(lambda, 0, 1))
+	{
+		colPoint.x = lambda * p1.x + (1 - lambda) * (p2.x);
+		colPoint.y = lambda * p1.y + (1 - lambda) * (p2.y);
+	}
+
+	//printf("x = %f \t y= %f\n", colPoint.x, colPoint.y);
+
+	return colPoint;
+}
+
 
 float PhysCore::submergedVolume(RigidBody* body, RigidBody* water)
 {
