@@ -75,4 +75,3 @@ void Scene::LoadSaveData(pugi::xml_node save)
 {
 }
 
-

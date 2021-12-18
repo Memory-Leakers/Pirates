@@ -21,6 +21,8 @@ class GameObject;
 
 class RigidBody
 {
+public:
+	GameObject* gObj;
 private:
 	// Position
 	fPoint position = { 0.0, 0.0 };
@@ -52,7 +54,7 @@ private:
 
 	iPoint ColDir = { 0, 0 };
 
-	GameObject* gObj;
+	
 
 public:
 	RigidBody();

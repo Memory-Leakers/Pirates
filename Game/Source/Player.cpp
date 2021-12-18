@@ -31,7 +31,15 @@ void Player::Start()
 
 	playerTextures[3] = _app->textures->Load("Assets/textures/Pirates2/Injure.png");
 
-
+	if (ID == 1)
+	{
+		tex_health = _app->textures->Load("Assets/textures/UI/HearthBar/unit_health_blue.png");
+	}
+	else
+	{
+		tex_health = _app->textures->Load("Assets/textures/UI/HearthBar/unit_health_red.png");
+	}
+	
 
 
 }
@@ -61,6 +69,25 @@ void Player::PostUpdate()
 		_app->renderer->AddTextureRenderQueue(playerTextures[2], position, player, 1.0f, 2, 0.0f);
 		_app->renderer->DrawCircle(rBody->GetPosition().x, rBody->GetPosition().y, rBody->GetRadius() * PIXELS_PER_METERS, 255, 255, 0);
 	}
+
+	iPoint hBarPoint = position;
+	hBarPoint.y -= 8;
+	hBarPoint.x -= 2;
+	switch (health)
+	{
+		case 0:
+		case 1:
+			_app->renderer->AddTextureRenderQueue(tex_health, hBarPoint, anim_health.getFrame(2), 1.0f, 2, 0.0f);
+			break;
+		case 2:
+			_app->renderer->AddTextureRenderQueue(tex_health, hBarPoint, anim_health.getFrame(1), 1.0f, 2, 0.0f);
+			break;
+		case 3:
+			_app->renderer->AddTextureRenderQueue(tex_health, hBarPoint, anim_health.getFrame(0), 1.0f, 2, 0.0f);
+			break;
+	}
+	
+
 }
 
 void Player::CleanUp()
@@ -93,14 +120,59 @@ void Player::SetAnimations()
 	player_hit.hasIdle = false;
 	player_hit.speed = 0.25;
 
+
+	//Player health bar
+	anim_health.PushBack({ 0, 0, 25, 8 });
+	anim_health.PushBack({ 25, 0, 49, 8 });
+	anim_health.PushBack({ 50, 0, 75, 8 });
+	player_hit.hasIdle = false;
+	player_hit.speed = 0.25;
 }
 
 void Player::OnCollisionEnter(RigidBody* col)
 {
-	
+	if (col->gObj != nullptr)
+	{
+		if (col->gObj->tag == "EXPLODED" && !hurt)
+		{
+			health--;
+			hurt = true;
+			printf("OUCH");
+
+			int colX = col->GetPosition().x;
+			int colY = col->GetPosition().y;
+			//float mag = 
+			fPoint dir = { 0, 0 };
+
+			if (colX <= position.x && colY <= position.y)
+			{
+				dir = { -200, -200 };
+			}
+			else if (colX >= position.x && colY <= position.y)
+			{
+				dir = { 200, -200 };
+			}
+			else if (colX <= position.x && colY >= position.y)
+			{
+				dir = { -200, 200 };
+			}
+			else if (colX >= position.x && colY >= position.y)
+			{
+				dir = { 200, 200 };
+			}
+			rBody->AddForceToCenter(dir);
+		}
+	}
 }
 
 void Player::OnCollisionExit(RigidBody* col)
 {
-	
+	if (col->gObj != nullptr)
+	{
+		if (col->gObj->tag == "EXPLODED" && hurt)
+		{
+			hurt = false;
+			printf("NOUCH");
+		}
+	}
 }

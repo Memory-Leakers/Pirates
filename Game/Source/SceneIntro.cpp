@@ -23,13 +23,6 @@ bool SceneIntro::Start()
 
 	InitScene();
 
-	//BombINit
-	bombP1 = new Bomb("Bomb", "Bomb", _app, BombType::BANANA);
-	bombP1->SetPosition({ 200,180 });
-
-	bombP2 = new Bomb("Bomb", "Bomb", _app, BombType::NORMAL);
-	bombP2->SetPosition({ 450,100 });
-
 	//player Init
 	player1 = new Player("Player1", "player", _app,1);
 	player1->rBody = new RigidBody({ 230,180 }, RigidBodyType::DYNAMIC, 11, player1);
@@ -42,6 +35,13 @@ bool SceneIntro::Start()
 	player2->rBody->SetGravityScale(2.0f);
 	player2->rBody->SetDragCoeficient(0.1f);
 	player2->rBody->SetRestitution(0.2f);
+
+	//BombInit
+	bombP1 = new Bomb("Bomb", "Bomb", _app, BombType::BANANA);
+	bombP1->SetPosition(player1->rBody->GetPosition());
+
+	bombP2 = new Bomb("Bomb", "Bomb", _app, BombType::NORMAL);
+	bombP2->SetPosition(player2->rBody->GetPosition());
 
 	// Init water
 	water = new Water({ 0,450 }, "water", "Water", _app);
@@ -153,13 +153,13 @@ bool SceneIntro::Update()
 		if (turnsManager->currentPlayer == PLAYER1)
 		{
 			bombP1->active = true;
-			bombP1->SetPosition({ 200,180 });
+			bombP1->SetPosition(player1->GetDrawPosition());
 			bombP1->setType(BombType::NORMAL);
 		}
 		else if (turnsManager->currentPlayer == PLAYER2)
 		{
 			bombP2->active = true;
-			bombP2->SetPosition({ 450,100 });
+			bombP2->SetPosition(player2->GetDrawPosition());
 			bombP2->setType(BombType::NORMAL);
 		}
 	}
@@ -168,13 +168,13 @@ bool SceneIntro::Update()
 		if (turnsManager->currentPlayer == PLAYER1)
 		{
 			bombP1->active = true;
-			bombP1->SetPosition({ 200,180 });
+			bombP1->SetPosition(player1->GetDrawPosition());
 			bombP1->setType(BombType::BANANA);
 		}
 		else if (turnsManager->currentPlayer == PLAYER2)
 		{
 			bombP2->active = true;
-			bombP2->SetPosition({ 450,100 });
+			bombP2->SetPosition(player2->GetDrawPosition());
 			bombP2->setType(BombType::BANANA);
 		}
 	}
@@ -183,13 +183,13 @@ bool SceneIntro::Update()
 		if (turnsManager->currentPlayer == PLAYER1)
 		{
 			bombP1->active = true;
-			bombP1->SetPosition({ 200,180 });
+			bombP1->SetPosition(player1->GetDrawPosition());
 			bombP1->setType(BombType::UMBRELLA);
 		}
 		else if (turnsManager->currentPlayer == PLAYER2)
 		{
 			bombP2->active = true;
-			bombP2->SetPosition({ 450,100 });
+			bombP2->SetPosition(player2->GetDrawPosition());
 			bombP2->setType(BombType::UMBRELLA);
 		}
 	}

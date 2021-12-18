@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "Animation.h"
 
+
+#define MAX_HEALTH 3
 class Player :
     public GameObject
 {
@@ -32,6 +34,8 @@ private:
 
 	SDL_Texture* playerTextures[4];
 
+	SDL_Texture* tex_health;
+
 	SDL_Rect player_bounds;
 
 	SDL_Rect player;
@@ -42,5 +46,10 @@ private:
 
 	Animation* currentAnimation_player = nullptr;
 
+	Animation anim_health;
+
+public:
+	int health = MAX_HEALTH;
+	bool hurt = false;
 };
 

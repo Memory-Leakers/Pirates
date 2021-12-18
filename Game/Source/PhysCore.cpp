@@ -323,7 +323,7 @@ void PhysCore::ResolveColForce(RigidBody& b1, RigidBody& b2, fPoint colPoint)
 	}
 	else
 	{
-		printf("Canno't resolve collision force!");
+		//printf("Cannot resolve collision force!");
 		return;
 	}
 
