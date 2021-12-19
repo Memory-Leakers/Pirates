@@ -90,6 +90,16 @@ bool SceneIntro::Start()
 		turnsManager->AddGameObjectAsItem(player2Characters[i], PLAYER2);
 	}
 
+	// Init Audio
+	_app->audio->LoadFx("Assets/Audio/SFX/bananaBounce1.wav");
+	_app->audio->LoadFx("Assets/Audio/SFX/click.wav");
+	_app->audio->LoadFx("Assets/Audio/SFX/explosion1.wav");
+	_app->audio->LoadFx("Assets/Audio/SFX/explosion2.wav");
+	_app->audio->LoadFx("Assets/Audio/SFX/explosion3.wav");
+	_app->audio->LoadFx("Assets/Audio/SFX/explosion4.wav");
+	_app->audio->LoadFx("Assets/Audio/SFX/hitHurt.wav");
+	_app->audio->LoadFx("Assets/Audio/SFX/jump.wav");
+	_app->audio->LoadFx("Assets/Audio/SFX/jump2.wav");
 
 	return ret;
 }

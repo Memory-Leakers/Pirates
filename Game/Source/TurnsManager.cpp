@@ -95,6 +95,7 @@ void TurnsManager::GetCurrentOption()
 		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB1;
 		ui->ChangeCurrentOption(0);
+		_app->audio->PlayFx(2);
 	}
 	if (_app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
@@ -117,6 +118,7 @@ void TurnsManager::GetCurrentOption()
 		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB2;
 		ui->ChangeCurrentOption(1);
+		_app->audio->PlayFx(2);
 	}
 	if (_app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 	{
@@ -139,6 +141,7 @@ void TurnsManager::GetCurrentOption()
 		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB3;
 		ui->ChangeCurrentOption(2);
+		_app->audio->PlayFx(2);
 	}
 	if (_app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
 	{
@@ -149,6 +152,7 @@ void TurnsManager::GetCurrentOption()
 		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::CURRENT_ITEM;
 		ui->ChangeCurrentOption(3);
+		_app->audio->PlayFx(2);
 	}
 }
 
@@ -285,6 +289,8 @@ void TurnsManager::ApplyForceOnOption(fPoint dir)
 
 		throwedBomb = true;
 
+		_app->audio->PlayFx(9);
+
 		break;
 	case 3:
 		if (playerMovedItem[currentPlayer]) return;
@@ -294,6 +300,8 @@ void TurnsManager::ApplyForceOnOption(fPoint dir)
 		throwedGameObj = currentItem->gameObject;
 
 		playerMovedItem[currentPlayer] = true;
+
+		_app->audio->PlayFx(8);
 		break;
 	}
 }

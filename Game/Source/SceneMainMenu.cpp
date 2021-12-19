@@ -16,6 +16,10 @@ bool SceneMainMenu::Start()
     buttonSections[PLAY_BTN] = { 160, 0, 160, 80 };
     buttonSections[EXIT_BTN] = { 0, 0, 160, 80 };
 
+    _app->audio->PlayMusic("Assets/Audio/Music/GameMusic.mp3", 1);
+
+    Mix_VolumeMusic(40);
+
     btnState = PLAY_BTN;
 
     return true;

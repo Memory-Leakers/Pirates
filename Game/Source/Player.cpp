@@ -189,6 +189,7 @@ void Player::OnTriggerStay(RigidBody* col)
 			health--;
 			hurt = true;
 			printf_s("OUCH");
+			_app->audio->PlayFx(7);
 
 			int colX = col->GetPosition().x;
 			int colY = col->GetPosition().y;
