@@ -48,8 +48,8 @@ bool SceneGameOver::Update()
 
 bool SceneGameOver::PostUpdate()
 {
-    _app->renderer->AddTextureRenderQueue(buttonsTex[RESTART_BTN], { 280,200 }, buttonSections[RESTART_BTN], 0.5f, 2);
-    _app->renderer->AddTextureRenderQueue(buttonsTex[MENU_BTN], { 280,250 }, buttonSections[MENU_BTN], 0.5f, 2);
+    _app->renderer->AddTextureRenderQueue(buttonsTex[RESTART_BTN], { 280,200 }, buttonSections[RESTART_BTN], 0.5f, 2, 1, 0, SDL_FLIP_NONE, 0);
+    _app->renderer->AddTextureRenderQueue(buttonsTex[MENU_BTN], { 280,250 }, buttonSections[MENU_BTN], 0.5f, 2, 1, 0, SDL_FLIP_NONE, 0);
 
     return true;
 }
