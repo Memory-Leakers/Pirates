@@ -77,6 +77,9 @@
       <Filter>SourceFiles\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Source\ModuleDebug.cpp" />
+    <ClCompile Include="Source\GameUI.cpp">
+      <Filter>SourceFiles\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\External\PugiXml\src\pugiconfig.hpp">
@@ -188,6 +191,9 @@
       <Filter>HeaderFiles\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleDebug.h" />
+    <ClInclude Include="Source\GameUI.h">
+      <Filter>SourceFiles\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

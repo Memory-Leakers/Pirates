@@ -7,6 +7,7 @@
 
 class RigidBody;
 class Water;
+class GameUI;
 
 class SceneIntro : public Scene
 {
@@ -24,9 +25,14 @@ public:
 public:
 	Bomb* bombP1;
 	Bomb* bombP2;
-	Player* player1;
-	Player* player2;
 	Water* water;
+	GameUI* gameUI;
+
+	Player* player1Characters[3] = { nullptr };
+	Player* player2Characters[3] = { nullptr };
+
+	iPoint player1Positions[3] = { {230, 180}, {500, 180}, {700, 180} };
+	iPoint player2Positions[3] = { {270, 180}, {550, 180}, {750, 180} };
 
 	SDL_Texture* bg[4];
 

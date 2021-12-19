@@ -92,6 +92,7 @@
     <ClCompile Include="Source\Bomb.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
+    <ClCompile Include="Source\GameUI.cpp" />
     <ClCompile Include="Source\Log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\ModuleDebug.cpp" />
@@ -122,6 +123,7 @@
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp" />
     <ClInclude Include="Source\GameObject.h" />
+    <ClInclude Include="Source\GameUI.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\List.h" />
     <ClInclude Include="Source\ModuleDebug.h" />
