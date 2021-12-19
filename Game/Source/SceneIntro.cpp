@@ -24,7 +24,7 @@ bool SceneIntro::Start()
 	bg[2] = _app->textures->Load("Assets/textures/Background/2.png");
 	bg[3] = _app->textures->Load("Assets/textures/Background/3.png");
 
-	world = new PhysCore({ 0,10 });
+	_app->scene->world = new PhysCore({ 0,10 });
 
 	InitScene();
 
@@ -39,7 +39,7 @@ bool SceneIntro::Start()
 	player1 = new Player("Player1", "player", _app,1);
 	player1->rBody = new RigidBody({ 230,180 }, RigidBodyType::DYNAMIC, 11, player1);
 	player1->rBody->SetGravityScale(2.0f);
-	player1->rBody->SetDragCoeficient(0.01f);
+	player1->rBody->SetDragCoeficient(0.1f);
 	player1->rBody->SetRestitution(0.2f);
 	player1->rBody->SetHydrodynamicDragCoeficient(0.5f);
 	player1->rBody->SetFriction(5.0f);
@@ -47,7 +47,7 @@ bool SceneIntro::Start()
 	player2 = new Player("Player2", "player", _app, 2);
 	player2->rBody = new RigidBody({ 250,180 }, RigidBodyType::DYNAMIC, 11, player2);
 	player2->rBody->SetGravityScale(2.0f);
-	player2->rBody->SetDragCoeficient(0.01f);
+	player2->rBody->SetDragCoeficient(0.1f);
 	player2->rBody->SetRestitution(0.2f);
 	player2->rBody->SetHydrodynamicDragCoeficient(0.5f);
 	player2->rBody->SetFriction(5.0f);
@@ -59,7 +59,7 @@ bool SceneIntro::Start()
 	walls[1] = new RigidBody({ 0,0 }, RigidBodyType::STATIC, 5, 1440);
 	walls[2] = new RigidBody({1550,0 }, RigidBodyType::STATIC, 5, 1440);
 
-	turnsManager = new TurnsManager(_app, this, world);
+	turnsManager = new TurnsManager(_app, this, _app->scene->world);
 
 	//gameObjects.add(bombP1);
 	//gameObjects.add(bombP2);
@@ -74,14 +74,14 @@ bool SceneIntro::Start()
 
 	for (int i = 0; i < 3; i++)
 	{
-		world->AddRigidBody(walls[i]);
+		_app->scene->world->AddRigidBody(walls[i]);
 	}
 
 	//world->AddRigidBody(bombP1->rBody);
 	//world->AddRigidBody(bombP2->rBody);
-	world->AddRigidBody(player1->rBody);
-	world->AddRigidBody(player2->rBody);
-	world->AddRigidBody(water->rBody);
+	_app->scene->world->AddRigidBody(player1->rBody);
+	_app->scene->world->AddRigidBody(player2->rBody);
+	_app->scene->world->AddRigidBody(water->rBody);
 
 
 	turnsManager->AddGameObjectAsItem(player1, PLAYER1);
@@ -100,7 +100,7 @@ void SceneIntro::InitScene()
 			GameObject* g = new GameObject("wall", "Wall", _app);
 			// +8 = offset, porque pivot de b2Body es el centro, y de tectura es izquierda superior.
 			g->rBody = new RigidBody({ _app->map->mapObjects[i].position.x +8, _app->map->mapObjects[i].position.y +8 }, RigidBodyType::STATIC, 16, 16);
-			world->AddRigidBody(g->rBody);
+			_app->scene->world->AddRigidBody(g->rBody);
 			gameObjects.add(g);
 		}
 	}
@@ -115,7 +115,7 @@ bool SceneIntro::PreUpdate()
 		{
 			if (gameObjects[i]->rBody != nullptr)
 			{
-				world->DeleteRigidBody(gameObjects[i]->rBody);
+				_app->scene->world->DeleteRigidBody(gameObjects[i]->rBody);
 			}
 			gameObjects[i]->CleanUp();
 			gameObjects.del(gameObjects.At(gameObjects.find(gameObjects[i])));
@@ -130,7 +130,7 @@ bool SceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
-	RELEASE(world);
+	RELEASE(_app->scene->world);
 
 	if (turnsManager != nullptr)
 	{
@@ -152,7 +152,7 @@ bool SceneIntro::CleanUp()
 // Update: draw background
 bool SceneIntro::Update()
 {
-	world->Update(1.0/60);
+	_app->scene->world->Update((1.0 / _app->fps));
 
 	turnsManager->UpdateGameLogic();
 
@@ -186,11 +186,11 @@ bool SceneIntro::Update()
 	}
 
 	// Debug
-	if (_app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-	{
-		_app->scene->DEBUGMODE = !_app->scene->DEBUGMODE;
-		if (_app->scene->DEBUGMODE) printf_s("DEBUG ON"); else printf_s("DEBUG OFF");
-	}
+	//if (_app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	//{
+	//	_app->scene->DEBUGMODE = !_app->scene->DEBUGMODE;
+	//	if (_app->scene->DEBUGMODE) printf_s("DEBUG ON"); else printf_s("DEBUG OFF");
+	//}
 
 	/*if (_app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
@@ -248,10 +248,10 @@ bool SceneIntro::Update()
 		//bombP2->active = true;
 		bombP1->active = false;
 	}*/
-	if (_app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-	{
-		_app->scene->ChangeCurrentScene(2, 0);
-	}
+	//if (_app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	//{
+	//	_app->scene->ChangeCurrentScene(2, 0);
+	//}
 
 	_app->renderer->camera->MoveCameraWithMouse();
 
@@ -265,8 +265,6 @@ bool SceneIntro::PostUpdate()
 	_app->renderer->AddTextureRenderQueue(bg[1], { 100,100 }, { 0,0,0,0 }, 2.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.5f);
 	_app->renderer->AddTextureRenderQueue(bg[3], { 0,50 }, { 0,0,0,0 }, 1.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.6f);
 	
-	
-
 	for (int i = 0; i < gameObjects.count(); i++)
 	{
 		gameObjects[i]->PostUpdate();

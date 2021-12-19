@@ -56,7 +56,6 @@ RigidBody::RigidBody(RigidBody& copy)
 void RigidBody::OnCollisionEnter(RigidBody* col)
 {
 	//printf("Col enter\n");
-
 	if (gObj != nullptr)
 	{
 		gObj->OnCollisionEnter(col);

@@ -94,6 +94,7 @@
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\Log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\ModuleDebug.cpp" />
     <ClCompile Include="Source\ModuleMap.cpp" />
     <ClCompile Include="Source\ModuleAudio.cpp" />
     <ClCompile Include="Source\ModuleInput.cpp" />
@@ -123,6 +124,7 @@
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\List.h" />
+    <ClInclude Include="Source\ModuleDebug.h" />
     <ClInclude Include="Source\ModuleMap.h" />
     <ClInclude Include="Source\MemLeaks.h" />
     <ClInclude Include="Source\Module.h" />

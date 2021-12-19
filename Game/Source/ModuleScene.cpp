@@ -27,7 +27,7 @@ bool ModuleScene::Init(pugi::xml_node& config)
 
 bool ModuleScene::Start()
 {
-	currentScene = scenes[0];
+	currentScene = scenes[SCENE_MENU];
 
 	bool ret = true;
 
@@ -89,7 +89,7 @@ bool ModuleScene::ChangeCurrentScene(uint index, int frames)
 {
 	if (isChangingScene)return true;
 	isChangingScene = true;
-	this->index = index;
+	this->index = (SCENES)index;
 	currentScene->CleanUp();
 	currentScene = scenes[index];
 	currentScene->Start();

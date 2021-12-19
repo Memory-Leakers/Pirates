@@ -23,9 +23,6 @@ public:
 	bool PostUpdate();
 	bool CleanUp() override;
 
-private:
-
-
 public:
 	Bomb* bombP1;
 	Bomb* bombP2;
@@ -43,11 +40,8 @@ public:
 
 	RigidBody* walls[3];
 
-	PhysCore* world;
-
 	GameObject* testGO = nullptr;
 	GameObject* testGO2 = nullptr;
 
 	TurnsManager* turnsManager;
-
 };

@@ -10,6 +10,7 @@ Application::Application()
 	scene = new ModuleScene(this);
 	ui = new ModuleUI(this);
 	map = new ModuleMap(this);
+	debug = new ModuleDebug(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -18,12 +19,12 @@ Application::Application()
 	// Main Modules
 	AddModule(window);
 	AddModule(input);
+	AddModule(debug);
 
 	// Game Logic
 	AddModule(scene);
 
-	AddModule(textures);
-	
+	AddModule(textures);	
 	AddModule(audio);
 	AddModule(ui);
 	AddModule(map);
@@ -128,9 +129,9 @@ UpdateStatus Application::Update()
 
 	deltaTime = globalTime.getDeltaTime();
 
-	if (deltaTime <= FRAME_TIME)
+	if (deltaTime <= (1.0f / fps))
 	{
-		sleepTime = (FRAME_TIME - deltaTime) * 1000;
+		sleepTime = ((1.0f / fps) - deltaTime) * 1000;
 		Sleep(sleepTime);
 	}
 
