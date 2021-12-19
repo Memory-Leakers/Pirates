@@ -66,7 +66,7 @@ bool SceneIntro::Start()
 
 
 	gameUI = new GameUI(_app);
-	turnsManager = new TurnsManager(_app, this, _app->scene->world, gameUI);
+	turnsManager = new TurnsManager(_app, this, world, gameUI);
 
 	for (int i = 0; i < 3; i++)
 	{
@@ -83,12 +83,12 @@ bool SceneIntro::Start()
 
 	for (int i = 0; i < 3; i++)
 	{
-		_app->scene->world->AddRigidBody(walls[i]);
-		_app->scene->world->AddRigidBody(player1Characters[i]->rBody);
-		_app->scene->world->AddRigidBody(player2Characters[i]->rBody);
+		world->AddRigidBody(walls[i]);
+		world->AddRigidBody(player1Characters[i]->rBody);
+		world->AddRigidBody(player2Characters[i]->rBody);
 	}
 
-	_app->scene->world->AddRigidBody(water->rBody);
+	world->AddRigidBody(water->rBody);
 
 	for (int i = 0; i < 3; i++)
 	{
