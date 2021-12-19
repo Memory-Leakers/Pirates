@@ -51,6 +51,7 @@ void Player::Update()
 	if (health <= 0)
 	{
 		dead = true;
+		active = false;
 	}
 
 	if (dead)

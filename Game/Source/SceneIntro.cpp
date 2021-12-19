@@ -142,7 +142,7 @@ bool SceneIntro::PreUpdate()
 
 	if (player1Lifes == 0)
 	{
-		_app->scene->winner = 0;
+		_app->scene->winner = 1;
 		_app->scene->ChangeCurrentScene(2, 0);
 		return true;
 	}

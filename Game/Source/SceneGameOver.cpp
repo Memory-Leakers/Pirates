@@ -7,8 +7,12 @@ SceneGameOver::SceneGameOver(Application* app) : Scene(app)
 
 bool SceneGameOver::Start()
 {
+    winner = _app->scene->winner;
+
     buttonsTex[RESTART_BTN] = _app->textures->Load("Assets/textures/UI/again.png");
     buttonsTex[MENU_BTN] = _app->textures->Load("Assets/textures/UI/menu.png");
+
+    winMessage = _app->textures->Load("Assets/textures/UI/WinMessage.png");
 
     buttonSections[RESTART_BTN] = { 160, 0, 160, 80 };
     buttonSections[MENU_BTN] = { 0, 0, 160, 80 };
@@ -50,7 +54,7 @@ bool SceneGameOver::PostUpdate()
 {
     _app->renderer->AddTextureRenderQueue(buttonsTex[RESTART_BTN], { 280,200 }, buttonSections[RESTART_BTN], 0.5f, 2, 1, 0, SDL_FLIP_NONE, 0);
     _app->renderer->AddTextureRenderQueue(buttonsTex[MENU_BTN], { 280,250 }, buttonSections[MENU_BTN], 0.5f, 2, 1, 0, SDL_FLIP_NONE, 0);
-
+    _app->renderer->AddTextureRenderQueue(winMessage, { 0,100 }, winMessageSection[winner], 0.5f, 2, 1, 0, SDL_FLIP_NONE, 0);
     return true;
 }
 

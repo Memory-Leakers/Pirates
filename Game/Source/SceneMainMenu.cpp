@@ -57,9 +57,9 @@ bool SceneMainMenu::Update()
 
 bool SceneMainMenu::PostUpdate()
 {
-    _app->renderer->AddTextureRenderQueue(buttonsTex[PLAY_BTN], { 280,200 }, buttonSections[PLAY_BTN], 0.5f, 2);
-    _app->renderer->AddTextureRenderQueue(buttonsTex[EXIT_BTN], { 280,250 }, buttonSections[EXIT_BTN], 0.5f, 2);
-    _app->renderer->AddTextureRenderQueue(titleTex, { 160, 20}, { 0,0,0,0 }, 1, 2);
+    _app->renderer->AddTextureRenderQueue(buttonsTex[PLAY_BTN], { 280,200 }, buttonSections[PLAY_BTN], 0.5f, 2, 1, 0, SDL_FLIP_NONE, 0);
+    _app->renderer->AddTextureRenderQueue(buttonsTex[EXIT_BTN], { 280,250 }, buttonSections[EXIT_BTN], 0.5f, 2, 1 ,0, SDL_FLIP_NONE, 0);
+    _app->renderer->AddTextureRenderQueue(titleTex, { 160, 20}, { 0,0,0,0 }, 1, 2, 1, 0, SDL_FLIP_NONE, 0);
 
     return true;
 }

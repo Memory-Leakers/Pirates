@@ -31,8 +31,8 @@ public:
 	Player* player1Characters[3] = { nullptr };
 	Player* player2Characters[3] = { nullptr };
 
-	iPoint player1Positions[3] = { {230, 180}, {500, 180}, {700, 180} };
-	iPoint player2Positions[3] = { {270, 180}, {550, 180}, {750, 180} };
+	iPoint player1Positions[3] = { {230, 180}, {480, 180}, {700, 180} };
+	iPoint player2Positions[3] = { {270, 180}, {550, 180}, {800, 180} };
 
 	SDL_Rect rectbgclouds;
 	SDL_Texture* bg[4] = { nullptr };
