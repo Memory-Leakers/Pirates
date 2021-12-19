@@ -34,6 +34,7 @@ public:
 	iPoint player1Positions[3] = { {230, 180}, {500, 180}, {700, 180} };
 	iPoint player2Positions[3] = { {270, 180}, {550, 180}, {750, 180} };
 
+	SDL_Rect rectbgclouds;
 	SDL_Texture* bg[4];
 
 	SDL_Rect rect = { 10,10,10,10 };

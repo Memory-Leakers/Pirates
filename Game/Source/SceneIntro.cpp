@@ -26,6 +26,7 @@ bool SceneIntro::Start()
 	bg[3] = _app->textures->Load("Assets/textures/Background/3.png");
 
 	world = new PhysCore({ 0,10 });
+	rectbgclouds = { 0,50 };
 
 	InitScene();
 
@@ -268,7 +269,16 @@ bool SceneIntro::Update()
 	//{
 	//	_app->scene->ChangeCurrentScene(2, 0);
 	//}
+	if (rectbgclouds.x >= 1200)
+	{
+		rectbgclouds.x -= 2052;
+	}
+	else
+	{
+		rectbgclouds.x++;
+	}
 
+	
 	_app->renderer->camera->MoveCameraWithMouse();
 
 	return true;
@@ -280,16 +290,14 @@ bool SceneIntro::PostUpdate()
 	_app->renderer->AddTextureRenderQueue(bg[0], { 0,0 }, { 0,0,0,0 },2.0f);
 	_app->renderer->AddTextureRenderQueue(bg[2], { 0,180 }, { 0,0,0,0 }, 2.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.4f);
 	_app->renderer->AddTextureRenderQueue(bg[1], { 100,100 }, { 0,0,0,0 }, 2.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.5f);
-	_app->renderer->AddTextureRenderQueue(bg[3], { 0,50 }, { 0,0,0,0 }, 1.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.6f);
+	_app->renderer->AddTextureRenderQueue(bg[3], { 0,20 }, { 0,0,0,0 }, 1.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.6f);
 
 	for (int i = 0; i < gameObjects.count(); i++)
 	{
 		gameObjects[i]->PostUpdate();
 	}
 
-	_app->renderer->AddRectRenderQueue({ 0,0,3200,5 }, 255, 0, 0);
-	_app->renderer->AddRectRenderQueue({ 1550,0,5,1440 }, 255, 0, 0);
-	_app->renderer->AddRectRenderQueue({ 0,0,5,1440 }, 255, 0, 0);
+	_app->renderer->AddTextureRenderQueue(bg[3], { rectbgclouds.x,rectbgclouds.y }, { 0,0,0,0 }, 1.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.6f);
 
 	return true;
 }

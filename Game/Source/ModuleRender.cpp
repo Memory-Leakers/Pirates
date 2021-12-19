@@ -168,7 +168,19 @@ void ModuleRender::AddRectRenderQueue(const SDL_Rect& rect, Uint8 r, Uint8 g, Ui
 	renderR.InitAsRect(rect, { r,g,b,a }, filled, layer, orderInlayer, speed);
 
 	renderR.destRect.x = (int)(-camera->x * renderR.speedRegardCamera) + renderR.destRect.x * App->window->scale;
-	renderR.destRect.y = (int)(-camera->y * renderR.speedRegardCamera) + renderR.destRect.y * App->window->scale;
+	renderR.destRect.y = (int)(-camera->y * renderR.speedRegardCamera) + renderR.destRect.y * App->window->scale; 
+
+	renderLayers[layer].push_back(renderR);
+}
+
+void ModuleRender::AddRectRenderQueueWithoutScreenPos(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, int layer, float orderInlayer, bool filled, float speed)
+{
+	RenderObject renderR;
+
+	renderR.InitAsRect(rect, { r,g,b,a }, filled, layer, orderInlayer, speed);
+
+	/*renderR.destRect.x = (int)(-camera->x * renderR.speedRegardCamera) + renderR.destRect.x * App->window->scale;
+	renderR.destRect.y = (int)(-camera->y * renderR.speedRegardCamera) + renderR.destRect.y * App->window->scale;*/
 
 	renderLayers[layer].push_back(renderR);
 }

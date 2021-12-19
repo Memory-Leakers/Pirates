@@ -91,6 +91,8 @@ private:
 								// Esta variable debe controlarla un script externo, ya que esta clase no conoce
 								// El estado del juego, simplemente controla la logica de los turnos
 
+	SDL_Rect trajectory;
+
 	iPoint mousePos;
 
 	Bomb* currentBomb = nullptr;
