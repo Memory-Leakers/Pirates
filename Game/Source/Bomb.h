@@ -3,7 +3,7 @@
 #include "Animation.h"
 #include "Timer.h"
 
-#define bounceSize 4
+#define bounceSize 5
 
 enum class BombType
 {

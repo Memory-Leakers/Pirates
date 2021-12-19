@@ -31,15 +31,17 @@ void Player::Start()
 
 	playerTextures[3] = _app->textures->Load("Assets/textures/Pirates2/Injure.png");
 
-	tex_dead = _app->textures->Load("Assets/textures/Die/Die.png");
+	
 
 	if (ID == 1)
 	{
 		tex_health = _app->textures->Load("Assets/textures/UI/HearthBar/unit_health_blue.png");
+		tex_dead = _app->textures->Load("Assets/textures/Die/Die_Blue.png");
 	}
 	else
 	{
 		tex_health = _app->textures->Load("Assets/textures/UI/HearthBar/unit_health_red.png");
+		tex_dead = _app->textures->Load("Assets/textures/Die/Die_Red.png");
 	}
 }
 
@@ -90,7 +92,7 @@ void Player::PostUpdate()
 		_app->renderer->AddTextureRenderQueue(tex_dead, position, player, 1.0f, 2, 0.0f);
 	}
 	iPoint hBarPoint = position;
-	hBarPoint.y -= 8;
+	hBarPoint.y -= 12;
 	hBarPoint.x -= 2;
 	if (!dead)
 	{

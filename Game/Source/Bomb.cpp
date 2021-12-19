@@ -143,8 +143,8 @@ void Bomb::PostUpdate()
 				position.y -= 7;
 				rect = anim_banana.GetCurrentFrame();
 				//rBody->SetGravityScale(2.0f);
-				rBody->SetRestitution(0.8f);
-				rBody->SetFriction(-15.0f);
+				rBody->SetRestitution(0.6f);
+				rBody->SetFriction(-8.0f);
 				rBody->SetDragCoeficient(0.08f);
 				_app->renderer->AddTextureRenderQueue(tex_banana, position, rect, 1.0f, 2, 0.0f);
 				break;
