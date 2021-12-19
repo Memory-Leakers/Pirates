@@ -1,8 +1,5 @@
 #include "Player.h"
 
-
-
-
 Player::Player(std::string name, std::string tag, Application* _app,int ID):GameObject(name,tag,_app)
 {
 	/*player_bounds.x = position.x;

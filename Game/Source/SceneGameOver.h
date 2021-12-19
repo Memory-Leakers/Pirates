@@ -28,7 +28,7 @@ public:
 private:
 	//BackGround* bg;
 
-	SDL_Texture* buttonsTex[2];
+	SDL_Texture* buttonsTex[2] = { nullptr };
 	SDL_Rect buttonSections[2];
 
 	GAMEOVERBUTTONSTATE btnState;

@@ -676,7 +676,6 @@ fPoint PhysCore::IntersectionPoint(fPoint p1, fPoint p2, fPoint p3, fPoint p4)
 	return colPoint;
 }
 
-
 float PhysCore::submergedVolume(RigidBody* body, RigidBody* water)
 {
 	if (body->shape == ShapeType::CIRCLE)

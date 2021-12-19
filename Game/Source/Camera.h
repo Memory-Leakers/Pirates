@@ -30,15 +30,15 @@ private:
 
 	GameObject* target = nullptr;
 
-	int pivotX, pivotY;
+	int pivotX = 0, pivotY = 0;
 
-	int distanceFromTarget;
+	int distanceFromTarget = 0;
 
 public:
 	int x = 0;
 	int y = 0;
-	int w;
-	int h;
+	int w = 0;
+	int h = 0;
 
 	int cameraSpeed = 1;
 
@@ -48,6 +48,6 @@ public:
 
 	int mapHeight = 304 , mapWidth = 1860;
 
-	bool reachedMax;
+	bool reachedMax = 0;
 };
 

@@ -6,8 +6,8 @@ template<class tdata>
 struct ListItem
 {
 	tdata data;
-	ListItem<tdata>* next;
-	ListItem<tdata>* prev;
+	ListItem<tdata>* next = nullptr;
+	ListItem<tdata>* prev = nullptr;
 
 	inline ListItem(const tdata& _data)
 	{

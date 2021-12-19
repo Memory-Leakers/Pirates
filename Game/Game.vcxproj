@@ -150,7 +150,6 @@
     <ClInclude Include="Source\SceneGameOver.h" />
     <ClInclude Include="Source\SceneIntro.h" />
     <ClInclude Include="Source\SceneMainMenu.h" />
-    <ClInclude Include="Source\SString.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\TurnsManager.h" />
     <ClInclude Include="Source\Water.h" />

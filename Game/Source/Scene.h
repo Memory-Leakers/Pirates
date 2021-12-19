@@ -16,7 +16,7 @@ protected:
 
 	int ID;
 
-	Application* _app;
+	Application* _app = nullptr;
 
 	List<SDL_Texture*> sceneTextures;
 
@@ -52,8 +52,8 @@ public:
 
 	int lastID = 0;
 
-	int playerX;
-	int playerY;
+	int playerX = 0;
+	int playerY = 0;
 
 	List<GameObject*> gameObjects;
 

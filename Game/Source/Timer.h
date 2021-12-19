@@ -8,10 +8,10 @@ class Timer
 {
 private:
 
-	uint mStartTicks;
-	uint mElapsedTicks;
-	float mDeltaTime;
-	float mTimeScale;
+	uint mStartTicks = 0;
+	uint mElapsedTicks = 0;
+	float mDeltaTime = 0;
+	float mTimeScale = 0;
 	float lastTime = 0;
 
 public:

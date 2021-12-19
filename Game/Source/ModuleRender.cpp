@@ -1,7 +1,5 @@
 #include "Application.h"
 
-int cameraSpeed = 1;
-
 ModuleRender::ModuleRender(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	name = "renderer";

@@ -16,7 +16,7 @@ public:
 	void ChangeCurrentOption(int option);
 
 private:
-	Application* _app;
+	Application* _app = nullptr;
 
 	int currentTurn = 0;
 

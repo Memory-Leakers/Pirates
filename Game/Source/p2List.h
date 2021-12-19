@@ -9,7 +9,7 @@
 template<class tdata>
 struct p2List_item
 {
-	tdata                 data = nullptr;
+	tdata                 data;
 	p2List_item<tdata>*   next = nullptr;
 	p2List_item<tdata>*   prev = nullptr;
 
@@ -78,7 +78,7 @@ public:
 	*/
 	p2List_item<tdata>* add(const tdata& item)
 	{
-		p2List_item<tdata>*   p_data_item;
+		p2List_item<tdata>*   p_data_item = nullptr;
 		p_data_item = new p2List_item < tdata >(item);
 
 		if(start == NULL)
@@ -163,8 +163,8 @@ public:
 	*/
 	void clear()
 	{
-		p2List_item<tdata>*   p_data;
-		p2List_item<tdata>*   p_next;
+		p2List_item<tdata>*   p_data = nullptr;
+		p2List_item<tdata>*   p_next = nullptr;
 		p_data = start;
 
 		while(p_data != NULL)

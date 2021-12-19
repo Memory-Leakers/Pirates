@@ -23,15 +23,15 @@
 class Application
 {
 public:
-	ModuleRender* renderer;
-	ModuleWindow* window;
-	ModuleTextures* textures;
-	ModuleInput* input;
-	ModuleAudio* audio;
-	ModuleScene* scene;
-	ModuleUI* ui;
-	ModuleMap* map;
-	ModuleDebug* debug;
+	ModuleRender* renderer = nullptr;
+	ModuleWindow* window = nullptr;
+	ModuleTextures* textures = nullptr;
+	ModuleInput* input = nullptr;
+	ModuleAudio* audio = nullptr;
+	ModuleScene* scene = nullptr;
+	ModuleUI* ui = nullptr;
+	ModuleMap* map = nullptr;
+	ModuleDebug* debug = nullptr;
 
 	Timer globalTime;
 

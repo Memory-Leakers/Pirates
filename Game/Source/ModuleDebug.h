@@ -50,9 +50,9 @@ public:
 	int forceUIPos = 0;
 
 private:
-	SDL_Texture* debugPanelTex;
-	SDL_Texture* selectTex;
-	SDL_Texture* arrowTex;
+	SDL_Texture* debugPanelTex = nullptr;
+	SDL_Texture* selectTex = nullptr;
+	SDL_Texture* arrowTex = nullptr;
 
 	iPoint gravityGrid = { 314,206 };
 };

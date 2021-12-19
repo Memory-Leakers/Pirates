@@ -40,9 +40,9 @@ private:
 
 	SDL_Texture* playerTextures[4];
 
-	SDL_Texture* tex_health;
+	SDL_Texture* tex_health = nullptr;
 
-	SDL_Texture* tex_dead;
+	SDL_Texture* tex_dead = nullptr;
 
 	SDL_Rect player_bounds;
 
@@ -57,7 +57,6 @@ private:
 	Animation* currentAnimation_player = nullptr;
 
 	Animation anim_health;
-
 
 public:
 	int health = MAX_HEALTH;

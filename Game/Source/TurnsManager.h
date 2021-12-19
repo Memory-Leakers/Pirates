@@ -54,9 +54,9 @@ public:
 
 	bool playerMovedItem[2] = { false, false };
 
-	bool throwedBomb;
+	bool throwedBomb = false;
 
-	bool changingTurn;
+	bool changingTurn = false;
 
 	float throwForce = 25.0f;
 
@@ -79,13 +79,13 @@ private:
 
 	void ChangeCurrentBomb(int bombType);
 
-	Application* _app;
+	Application* _app = nullptr;
 
-	Scene* scene;
+	Scene* scene = nullptr;
 
-	PhysCore* physCore;
+	PhysCore* physCore = nullptr;
 
-	GameUI* ui;
+	GameUI* ui = nullptr;
 
 	bool canInteract = true;	// Determina si se puede interactuar con los items o no
 								// Esta variable debe controlarla un script externo, ya que esta clase no conoce

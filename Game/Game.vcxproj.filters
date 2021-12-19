@@ -76,9 +76,11 @@
     <ClCompile Include="Source\Water.cpp">
       <Filter>SourceFiles\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleDebug.cpp" />
     <ClCompile Include="Source\GameUI.cpp">
       <Filter>SourceFiles\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleDebug.cpp">
+      <Filter>SourceFiles\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,9 +127,6 @@
       <Filter>HeaderFiles\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Source\p2Point.h">
-      <Filter>HeaderFiles\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SString.h">
       <Filter>HeaderFiles\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Source\Timer.h">
@@ -190,9 +189,11 @@
     <ClInclude Include="Source\Water.h">
       <Filter>HeaderFiles\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleDebug.h" />
+    <ClInclude Include="Source\ModuleDebug.h">
+      <Filter>HeaderFiles\Modules</Filter>
+    </ClInclude>
     <ClInclude Include="Source\GameUI.h">
-      <Filter>SourceFiles\GUI</Filter>
+      <Filter>HeaderFiles\GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -16,18 +16,18 @@ struct MapObject
 // Ignore Terrain Types and Tile Types for now, but we want the image!
 struct TileSet
 {
-	std::string	name;
-	int	firstgid;
-	int margin;
-	int	spacing;
-	int	tileWidth;
-	int	tileHeight;
+	std::string	name = "";
+	int	firstgid = 0;
+	int margin = 0;
+	int	spacing = 0;
+	int	tileWidth = 0;
+	int	tileHeight = 0;
 
-	SDL_Texture* texture;
-	int	texWidth;
-	int	texHeight;
-	int	tilecount;
-	int	columns;
+	SDL_Texture* texture = nullptr;
+	int	texWidth = 0;
+	int	texHeight = 0;
+	int	tilecount = 0;
+	int	columns = 0;
 
 	// L04: DONE 7: Create a method that receives a tile id and returns it's Rectfind the Rect associated with a specific tile id
 	SDL_Rect GetTileRect(int id) const;
@@ -49,8 +49,8 @@ struct Properties
 	struct Property
 	{
 		//...
-		std::string name;
-		int value;
+		std::string name = "";
+		int value = 0;
 	};
 	
 	~Properties()
@@ -77,10 +77,10 @@ struct Properties
 // L04: DONE 1: Create a struct for the map layer
 struct MapLayer
 {
-	std::string	name;
-	int width;
-	int height;
-	uint* data;
+	std::string	name = "";
+	int width = 0;
+	int height = 0;
+	uint* data = nullptr;
 
 	// L06: DONE 1: Support custom properties
 	Properties properties;
@@ -103,10 +103,10 @@ struct MapLayer
 // L03: DONE 1: Create a struct needed to hold the information to Map node
 struct MapData
 {
-	int width;
-	int	height;
-	int	tileWidth;
-	int	tileHeight;
+	int width = 0;
+	int	height = 0;
+	int	tileWidth = 0;
+	int	tileHeight = 0;
 	SDL_Color backgroundColor;
 	MapTypes type;
 	List<TileSet*> tilesets;

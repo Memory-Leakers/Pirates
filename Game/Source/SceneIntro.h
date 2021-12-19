@@ -23,10 +23,10 @@ public:
 	bool CleanUp() override;
 
 public:
-	Bomb* bombP1;
-	Bomb* bombP2;
-	Water* water;
-	GameUI* gameUI;
+	Bomb* bombP1 = nullptr;
+	Bomb* bombP2 = nullptr;
+	Water* water = nullptr;
+	GameUI* gameUI = nullptr;
 
 	Player* player1Characters[3] = { nullptr };
 	Player* player2Characters[3] = { nullptr };
@@ -35,15 +35,15 @@ public:
 	iPoint player2Positions[3] = { {270, 180}, {550, 180}, {750, 180} };
 
 	SDL_Rect rectbgclouds;
-	SDL_Texture* bg[4];
+	SDL_Texture* bg[4] = { nullptr };
 
 	SDL_Rect rect = { 10,10,10,10 };
 	SDL_Rect rect2 = { 10,10,10,10 };
 	SDL_Rect rect3 = { 10,10,10,10 };
-	RigidBody* body;
-	RigidBody* body2;
+	RigidBody* body = nullptr;
+	RigidBody* body2 = nullptr;
 
-	RigidBody* walls[3];
+	RigidBody* walls[3] = { nullptr };
 
 	GameObject* testGO = nullptr;
 	GameObject* testGO2 = nullptr;

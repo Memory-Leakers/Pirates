@@ -29,7 +29,7 @@ using namespace std;
 class ModuleRender : public Module
 {
 public:
-	SDL_Renderer* renderer;
+	SDL_Renderer* renderer = nullptr;
 	Camera* camera = nullptr;
 
 public:

@@ -93,9 +93,9 @@ protected:
 
 public:
 
-	std::string name;
+	std::string name = "name";
 
-	std::string tag;
+	std::string tag = "tag";
 
 	RigidBody* rBody = nullptr;
 	RigidBody* rBodyTrigger = nullptr;

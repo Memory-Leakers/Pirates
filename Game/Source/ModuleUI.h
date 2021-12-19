@@ -53,15 +53,11 @@ public:
 
 	void DestroyUI(uint index);			// Deletes an existing UI based on its index
 
-	SDL_Texture* texture;
+	SDL_Texture* texture = nullptr;
 
 	itemUI* uiArray[MAX_UI_ITEMS] = { nullptr };
 
 	SDL_Rect numSection[10];
-
-	uint test;
-
 };
 
 #endif
-
