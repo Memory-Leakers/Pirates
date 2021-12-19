@@ -8,6 +8,7 @@
 #define SCENES_NUM 9
 
 class Scene;
+class PhysCore;
 
 enum SCENES
 {
@@ -54,7 +55,7 @@ public:
 
 public:
 
-	int index = 2;
+	SCENES index = SCENE_MENU;
 
 	Scene* currentScene = nullptr;
 

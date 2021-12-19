@@ -101,12 +101,12 @@ UpdateStatus ModuleInput::PreUpdate()
 	}
 
 	if (keyboard[SDL_SCANCODE_F8] == KEY_DOWN)
-		std::cout << mouse_x << " | " << mouse_y << std::endl;
+		//std::cout << mouse_x << " | " << mouse_y << std::endl;
 
 	//	Toggle Global Debug
 	if (GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
-		App->isDebug = !App->isDebug;
+		//App->isDebug = !App->isDebug;
 	}
 
 	return UPDATE_CONTINUE;

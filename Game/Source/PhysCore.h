@@ -77,5 +77,12 @@ private:
 
 public:
 
+	bool gravityOn = true;
+	bool buoyancyOn = true;
+	bool hydrioDragOn = true;
+	bool aeroDragOn = true;
+	bool clippingOn = true;
+	bool frictioOn = true;
+
 	List<RigidBody*> rigidBodies;
 };

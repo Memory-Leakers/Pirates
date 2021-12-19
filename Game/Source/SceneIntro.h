@@ -5,10 +5,9 @@
 #include "Player.h"
 #include "Bomb.h"
 
-class PhysCore;
 class RigidBody;
-class TurnsManager;
 class Water;
+class GameUI;
 
 class SceneIntro : public Scene
 {
@@ -23,15 +22,20 @@ public:
 	bool PostUpdate();
 	bool CleanUp() override;
 
-private:
-
-
 public:
 	Bomb* bombP1;
 	Bomb* bombP2;
-	Player* player1;
-	Player* player2;
 	Water* water;
+	GameUI* gameUI;
+
+	Player* player1Characters[3] = { nullptr };
+	Player* player2Characters[3] = { nullptr };
+
+	iPoint player1Positions[3] = { {230, 180}, {500, 180}, {700, 180} };
+	iPoint player2Positions[3] = { {270, 180}, {550, 180}, {750, 180} };
+
+	SDL_Rect rectbgclouds;
+	SDL_Texture* bg[4];
 
 	SDL_Rect rect = { 10,10,10,10 };
 	SDL_Rect rect2 = { 10,10,10,10 };
@@ -41,11 +45,6 @@ public:
 
 	RigidBody* walls[3];
 
-	PhysCore* world;
-
 	GameObject* testGO = nullptr;
 	GameObject* testGO2 = nullptr;
-
-	TurnsManager* turnsManager;
-
 };

@@ -2,20 +2,22 @@
 #include "Bomb.h"
 #include "Scene.h"
 #include "PhysCore.h"
+#include "GameUI.h"
 
-TurnsManager::TurnsManager(Application* app, Scene* currentScene, PhysCore* world)
+TurnsManager::TurnsManager(Application* app, Scene* currentScene, PhysCore* world, GameUI* ui)
 {
 	_app = app;
 	scene = currentScene;
 	physCore = world;
+	this->ui = ui;
 }
 
 /// <summary>
-/// Se encarga de gestionar la lógica de selección de items, aplicado de fuerza sobre estos y los turnos de cada jugador
+/// Se encarga de gestionar la lï¿½gica de selecciï¿½n de items, aplicado de fuerza sobre estos y los turnos de cada jugador
 /// </summary>
 void TurnsManager::UpdateGameLogic()
 {
-	// Comprobar que el objeto tirado (si lo hay) aún est?en movimiento
+	// Comprobar que el objeto tirado (si lo hay) aï¿½n est?en movimiento
 	if (throwedGameObj != nullptr)
 	{
 		if (throwedGameObj->rBody->GetLinearVelocity().Module() < 0.5f)
@@ -25,15 +27,15 @@ void TurnsManager::UpdateGameLogic()
 	}
 
 	// Fase de Check Interaction
-	// Si el juegador no puede interactuar en este frame, se termina la función
+	// Si el juegador no puede interactuar en este frame, se termina la funciï¿½n
 
 	if (!CheckInteraction()) return;
 
-	// Fase de selección de Bomba
+	// Fase de selecciï¿½n de Bomba
 	// Donde se mira que opcion ha elegido el jugador
 	GetCurrentOption();
 
-	// Fase de selección
+	// Fase de selecciï¿½n
 	// Donde el jugador activo escoge con qu?item interactuar
 
 	SelectItem();
@@ -42,13 +44,14 @@ void TurnsManager::UpdateGameLogic()
 	// Donde se dibuja la linea entre el objeto seleccionado y el mouse.
 
 	DrawMouseItemLine();
+	drawTrajectory();
 
 	// Fase de Movimiento
 	// Donde se aplican fuerzas en los items seleccionados que han sido soltados
 
 	ApplyForces();
 
-	// Fase de comprobación de turno
+	// Fase de comprobaciï¿½n de turno
 	// Donde se determina si el turno actual del jugador ha terminado o no
 
 	CheckPlayerTurn();
@@ -59,7 +62,7 @@ bool TurnsManager::CheckInteraction()
 	//Si hemos tirado una bomba
 	if (throwedBomb)
 	{
-		if (throwedGameObj != nullptr) return false;	// Y esa bomba aún existe devolvemos false
+		if (throwedGameObj != nullptr) return false;	// Y esa bomba aï¿½n existe devolvemos false
 		else throwedBomb = false; // Si no, desactivamos throwedBomb
 	}
 	if (throwedGameObj != nullptr)	// Si no hemos tirado una bomba
@@ -91,6 +94,7 @@ void TurnsManager::GetCurrentOption()
 			}
 		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB1;
+		ui->ChangeCurrentOption(0);
 	}
 	if (_app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
@@ -112,6 +116,7 @@ void TurnsManager::GetCurrentOption()
 			}
 		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB2;
+		ui->ChangeCurrentOption(1);
 	}
 	if (_app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 	{
@@ -133,6 +138,7 @@ void TurnsManager::GetCurrentOption()
 			}
 		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB3;
+		ui->ChangeCurrentOption(2);
 	}
 	if (_app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
 	{
@@ -142,6 +148,7 @@ void TurnsManager::GetCurrentOption()
 			currentBomb = nullptr;
 		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::CURRENT_ITEM;
+		ui->ChangeCurrentOption(3);
 	}
 }
 
@@ -154,7 +161,7 @@ void TurnsManager::SelectItem()
 		//printf("%f\n", GetMouseModule(playerItems[currentPlayer][i]));
 
 		if (_app->input->GetMouseButton(1) == KEY_DOWN && GetMouseModule(playerItems[currentPlayer][i]) < 20 ) //Encontrar si el mouse esta dentro de la hitbox del item
-		{													
+		{
 			if (currentItem != nullptr) currentItem->isSelected = false;	// El Item que estaba seleccionado pasa a no estarlo
 
 			playerItems[currentPlayer][i]->isSelected = true;	// Seleccionamos nuestro item
@@ -182,14 +189,15 @@ void TurnsManager::DrawMouseItemLine()
 {
 	if (currentItem == nullptr) return;	// Si no hay nignun objeto seleccionado no ejecutamos
 
-	if (_app->input->GetMouseButton(1) == KEY_REPEAT)	// Si estamos manteniendo el boton del ratón, dibujamos la linea
+	if (_app->input->GetMouseButton(1) == KEY_REPEAT)	// Si estamos manteniendo el boton del ratï¿½n, dibujamos la linea
 	{
 		iPoint itemPos = { (int)currentItem->gameObject->GetScreenPosition().x, (int)currentItem->gameObject->GetScreenPosition().y };
 		
 		mousePos.x = _app->input->GetMouseX();
 		mousePos.y = _app->input->GetMouseY();
 
-		// Si la linea es muy larga, no dejamos que se haga más grande
+
+		// Si la linea es muy larga, no dejamos que se haga mï¿½s grande
 		float mouseMaxModule = 100 / GetMouseModule(currentItem);
 		// Si la division del modulo por el rango maximo es menor que uno, significa que el modulo es mayor que el rango...
 		if (mouseMaxModule < 1)
@@ -198,7 +206,7 @@ void TurnsManager::DrawMouseItemLine()
 			iPoint mousePosOnItem = mousePos - itemPos;
 			//Aplicar modulo maximo a esta base
 			mousePosOnItem *= mouseMaxModule;
-			//Transformar posicion de mouse a la base canónica de nuevo
+			//Transformar posicion de mouse a la base canï¿½nica de nuevo
 			mousePos = mousePosOnItem + itemPos;
 		}
 
@@ -215,7 +223,7 @@ void TurnsManager::ApplyForces()
 	{
 		iPoint itemPos = currentItem->gameObject->GetScreenPosition();
 
-		// Si la posición del ratón est?cerca de la del item, no aplicamos fuerza y cancelamos el lanzamiento
+		// Si la posiciï¿½n del ratï¿½n est?cerca de la del item, no aplicamos fuerza y cancelamos el lanzamiento
 		if (GetMouseModule(currentItem) < 20)
 		{
 			currentItem = nullptr;
@@ -230,11 +238,9 @@ void TurnsManager::ApplyForces()
 		// Aplicamos fuerza
 		fPoint dir = { (float)(itemPos.x - mousePos.x), (float)(itemPos.y - mousePos.y) };	// El vector que determina hacia donde estamos apuntando
 
-		float throwForce = 25.0f;
-
 		dir *= throwForce;
 
-		ApplyForceOnOption(dir); // Aplicamos la fuerza usando el vector que hemos determinado. 
+		ApplyForceOnOption(dir); // Aplicamos la fuerza usando el vector que hemos determinado.
 
 		//currentItem = nullptr;
 	}
@@ -277,12 +283,12 @@ void TurnsManager::ApplyForceOnOption(fPoint dir)
 		playerThrowedBomb[currentPlayer] = true;
 
 		throwedBomb = true;
-		
+
 		break;
 	case 3:
 		if (playerMovedItem[currentPlayer]) return;
-	
-		currentItem->gameObject->rBody->AddForceToCenter(dir);	// Aplicamos fuerza en la dirección que hemos determinado
+
+		currentItem->gameObject->rBody->AddForceToCenter(dir);	// Aplicamos fuerza en la direcciï¿½n que hemos determinado
 
 		throwedGameObj = currentItem->gameObject;
 
@@ -310,10 +316,72 @@ void TurnsManager::CheckPlayerTurn()
 		// Change to the other player
 		currentPlayer = currentPlayer == 0 ? 1 : 0;
 
+		ui->ChangeCurrentOption(playerCurrentOption[currentPlayer]);
+
 		//changingTurn = true;
 
 		printf("Turno player %d\n", currentPlayer);
+
+		ui->ShowChangeTurnMessage(currentPlayer);
 	}
+}
+
+void TurnsManager::drawTrajectory()
+{
+	if (currentItem == nullptr) return;
+	else
+	{
+		if (_app->input->GetMouseButton(1) == KEY_REPEAT)	// Si estamos manteniendo el boton del ratï¿½n, dibujamos la linea
+		{
+			iPoint itemPos = { (int)currentItem->gameObject->GetScreenPosition().x, (int)currentItem->gameObject->GetScreenPosition().y };
+
+			iPoint mousepos;
+
+			mousepos.x = _app->input->GetMouseX();
+			mousepos.y = _app->input->GetMouseY();
+
+
+
+			// Si la linea es muy larga, no dejamos que se haga mï¿½s grande
+			float mouseMaxModule = 100 / GetMouseModule(currentItem);
+			printf("%f\n", mouseMaxModule);
+
+				//Obtener posicion de mouse respecto a la base del item
+				iPoint mousePosOnItem = mousepos - itemPos;
+
+				mousePosOnItem.x = -mousePosOnItem.x;
+				mousePosOnItem.y = -mousePosOnItem.y;
+
+			if (mouseMaxModule < 1)
+			{
+				//Aplicar modulo maximo a esta base
+				mousePosOnItem *= mouseMaxModule;
+			}
+
+				iPoint dir = mousePosOnItem.Normalize();
+				float direction = dir.Module();
+
+
+				fPoint resultpoint;
+
+				for (float t = 0.05f; t < 0.6f; t += 0.05f)
+				{
+					//Vector Invertido del Vector MousePositem * 100(VALOR DE THROWFORCE)
+					resultpoint.x = PIXELS_TO_METERS(itemPos.x) + PIXELS_TO_METERS(mousePosOnItem.x * throwForce *0.28f) * t;
+					resultpoint.y = PIXELS_TO_METERS(itemPos.y) + PIXELS_TO_METERS(mousePosOnItem.y * throwForce *0.28f) * t + (20 / 2) * pow(t, 2);
+
+					//Draw QUADs
+					trajectory.x = METERS_TO_PIXELS(resultpoint.x);
+					trajectory.y = METERS_TO_PIXELS(resultpoint.y);
+					trajectory.w = 20;
+					trajectory.h = 20;
+
+					_app->renderer->AddRectRenderQueueWithoutScreenPos({ trajectory.x,trajectory.y,5,5}, 255, 0, 0, 255, 2, 101);
+					/*_app->renderer->AddLineRenderQueue({ itemPos.x,itemPos.y }, {trajectory.x,trajectory.y}, 255, 255, 0, 255, 2, 101);*/
+				}
+		}
+	}
+
 }
 
 void TurnsManager::ResetCurrentPlayerVariables()

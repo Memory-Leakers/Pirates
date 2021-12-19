@@ -44,6 +44,7 @@ public:
 
 	void AddTextureRenderQueue(SDL_Texture* texture, iPoint pos, SDL_Rect section = {0,0,0,0}, float scale = 1, int layer = 0, float orderInlayer = 0.0f, float rotation = 0, SDL_RendererFlip flip = SDL_FLIP_NONE, float speed = 1.0f);// Speed = 1.0f = Fullscreen camera
 	void AddRectRenderQueue(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, int layer = 1, float orderInlayer = 0.0f, bool filled = true, float speed = 1.0f);
+	void AddRectRenderQueueWithoutScreenPos(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, int layer = 1, float orderInlayer = 0.0f, bool filled = true, float speed = 1.0f);
 	void AddLineRenderQueue(iPoint startPoint, iPoint endPoint, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, int layer = 1, float orderInlayer = 0.0f, float speed = 1.0f);
 
 	int RoundToInt(int num);

@@ -22,31 +22,37 @@ void PhysCore::Update(float simulationTime)
 
 		// Step #1 Calculate Forces (TotalForces = GravityForce + AdditionalForce)
 		//	gravity
-		rigidBodies[i]->AddForceToCenter(gravity * rigidBodies[i]->gravityScale * rigidBodies[i]->GetMass());
+		if (gravityOn)
+		{
+			rigidBodies[i]->AddForceToCenter(gravity * rigidBodies[i]->gravityScale * rigidBodies[i]->GetMass());
+		}
 
 		//	Drag	(0.5 * density * relative velocity square * surface * Drag coeficient)
-		fPoint dragForce;
-		fPoint relativeVelocity;
-		float relativeVelocityModule;
-		float magnitudDrag;
+		if(aeroDragOn)
+		{
+			fPoint dragForce;
+			fPoint relativeVelocity;
+			float relativeVelocityModule;
+			float magnitudDrag;
 
-		// Calcular velocidad relativa entre viento y body
-		relativeVelocity.x = wind.x - rigidBodies[i]->GetLinearVelocity().x;
-		relativeVelocity.y = wind.y - rigidBodies[i]->GetLinearVelocity().y;
+			// Calcular velocidad relativa entre viento y body
+			relativeVelocity.x = wind.x - rigidBodies[i]->GetLinearVelocity().x;
+			relativeVelocity.y = wind.y - rigidBodies[i]->GetLinearVelocity().y;
 
-		// Calcular el modulo de la velocidad relativa
-		relativeVelocityModule = relativeVelocity.Module();
+			// Calcular el modulo de la velocidad relativa
+			relativeVelocityModule = relativeVelocity.Module();
 
-		// Calcular el magnitud del drag
-		magnitudDrag = 0.5f * density * rigidBodies[i]->surface * pow(relativeVelocityModule, 2) * rigidBodies[i]->GetDragCoeficient();
+			// Calcular el magnitud del drag
+			magnitudDrag = 0.5f * density * rigidBodies[i]->surface * pow(relativeVelocityModule, 2) * rigidBodies[i]->GetDragCoeficient();
 
-		fPoint nor = relativeVelocity.Normalize();
+			fPoint nor = relativeVelocity.Normalize();
 
-		// Calcular la fuerza de drag
-		dragForce = nor * magnitudDrag;
+			// Calcular la fuerza de drag
+			dragForce = nor * magnitudDrag;
 
-		rigidBodies[i]->AddForceToCenter(dragForce);
-
+			rigidBodies[i]->AddForceToCenter(dragForce);
+		}
+		
 		rigidBodies[i]->totalForce = rigidBodies[i]->additionalForce;
 		rigidBodies[i]->additionalForce = { 0,0 };
 
@@ -64,7 +70,7 @@ void PhysCore::Update(float simulationTime)
 			// Collision
 			else
 			{
-				if (rigidBodies[i]->collisionList[j]->type == RigidBodyType::WATER)
+				if (rigidBodies[i]->collisionList[j]->type == RigidBodyType::WATER && buoyancyOn)
 				{
 					//Buoyancy (Density * gravity * area of the object flooded)
 					fPoint buoyancyForce;
@@ -87,22 +93,25 @@ void PhysCore::Update(float simulationTime)
 					rigidBodies[i]->AddForceToCenter(buoyancyForce);
 
 					// Calcular la fuerza de drag hidrodinamica
-					dragForce = (rigidBodies[i]->velocity * -1) * rigidBodies[i]->hydrodynamicDrag;
+					if (hydrioDragOn)
+					{
+						fPoint dragForce = (rigidBodies[i]->velocity * -1) * rigidBodies[i]->hydrodynamicDrag;
 
-					rigidBodies[i]->AddForceToCenter(dragForce);
+						rigidBodies[i]->AddForceToCenter(dragForce);
+					}				
 				}
 				else
 				{
 					// Clipping case!!!
-					if (rigidBodies[i]->colType == COL_TYPE::COLLISION && rigidBodies[i]->collisionList[j]->type == RigidBodyType::STATIC)
+					if (rigidBodies[i]->colType == COL_TYPE::COLLISION && rigidBodies[i]->collisionList[j]->type == RigidBodyType::STATIC && clippingOn)
 					{
 						if (rigidBodies[i]->collisionList[j]->Contains(rigidBodies[i]->position))
 						ResolveClipping(*rigidBodies[i], *rigidBodies[i]->collisionList[j]);
 					}
 					//FUERZA DE FRICCIÓN
-					if (rigidBodies[i]->collisionList[j]->type == RigidBodyType::STATIC)
+					if (rigidBodies[i]->collisionList[j]->type == RigidBodyType::STATIC && frictioOn)
 					{
-						dragForce = (rigidBodies[i]->GetLinearVelocity() * -1) * rigidBodies[i]->GetFriction();
+						fPoint dragForce = (rigidBodies[i]->GetLinearVelocity() * -1) * rigidBodies[i]->GetFriction();
 
 						rigidBodies[i]->AddForceToCenter(dragForce);
 					}

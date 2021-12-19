@@ -9,6 +9,7 @@
 #include "ModuleScene.h"
 #include "ModuleUI.h"
 #include "ModuleMap.h"
+#include "ModuleDebug.h"
 
 #include "Timer.h"
 #include "Optick/include/optick.h"
@@ -30,8 +31,11 @@ public:
 	ModuleScene* scene;
 	ModuleUI* ui;
 	ModuleMap* map;
+	ModuleDebug* debug;
 
 	Timer globalTime;
+
+	float fps = 60;
 
 	bool isDebug = false;
 

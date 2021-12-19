@@ -4,6 +4,7 @@
 #include "PhysCore.h"
 #include "TurnsManager.h"
 #include "Water.h"
+#include "GameUI.h"
 
 SceneIntro::SceneIntro(Application* app) : Scene(app)
 {}
@@ -19,26 +20,36 @@ bool SceneIntro::Start()
 
 	_app->map->Load("PiratesLevel.tmx");
 
+	bg[0] = _app->textures->Load("Assets/textures/Background/0.png");
+	bg[1] = _app->textures->Load("Assets/textures/Background/1.png");
+	bg[2] = _app->textures->Load("Assets/textures/Background/2.png");
+	bg[3] = _app->textures->Load("Assets/textures/Background/3.png");
+
 	world = new PhysCore({ 0,10 });
+	rectbgclouds = { 0,50 };
 
 	InitScene();
 
 	//player Init
-	player1 = new Player("Player1", "Player", _app,1);
-	player1->rBody = new RigidBody({ 440,180 }, RigidBodyType::DYNAMIC, 11, player1);
-	player1->rBody->SetGravityScale(2.0f);
-	player1->rBody->SetDragCoeficient(0.01f);
-	player1->rBody->SetRestitution(0.2f);
-	player1->rBody->SetHydrodynamicDragCoeficient(0.5f);
-	player1->rBody->SetFriction(6.0f);
 
-	player2 = new Player("Player2", "Player", _app, 2);
-	player2->rBody = new RigidBody({ 660,180 }, RigidBodyType::DYNAMIC, 11, player2);
-	player2->rBody->SetGravityScale(2.0f);
-	player2->rBody->SetDragCoeficient(0.01f);
-	player2->rBody->SetRestitution(0.2f);
-	player2->rBody->SetHydrodynamicDragCoeficient(0.5f);
-	player2->rBody->SetFriction(6.0f);
+	for (int i = 0; i < 3; i++)
+	{
+		player1Characters[i] = new Player("Player1", "player", _app, 1);
+		player1Characters[i]->rBody = new RigidBody(player1Positions[i], RigidBodyType::DYNAMIC, 11, player1Characters[i]);
+		player1Characters[i]->rBody->SetGravityScale(2.0f);
+		player1Characters[i]->rBody->SetDragCoeficient(0.1f);
+		player1Characters[i]->rBody->SetRestitution(0.2f);
+		player1Characters[i]->rBody->SetHydrodynamicDragCoeficient(0.5f);
+		player1Characters[i]->rBody->SetFriction(6.0f);
+
+		player2Characters[i] = new Player("Player2", "player", _app, 2);
+		player2Characters[i]->rBody = new RigidBody(player2Positions[i], RigidBodyType::DYNAMIC, 11, player2Characters[i]);
+		player2Characters[i]->rBody->SetGravityScale(2.0f);
+		player2Characters[i]->rBody->SetDragCoeficient(0.1f);
+		player2Characters[i]->rBody->SetRestitution(0.2f);
+		player2Characters[i]->rBody->SetHydrodynamicDragCoeficient(0.5f);
+		player2Characters[i]->rBody->SetFriction(6.0f);
+	}
 
 	// Init water
 	water = new Water({ 0,450 }, "water", "Water", _app);
@@ -47,12 +58,16 @@ bool SceneIntro::Start()
 	walls[1] = new RigidBody({ 0,0 }, RigidBodyType::STATIC, 5, 1440);
 	walls[2] = new RigidBody({1550,0 }, RigidBodyType::STATIC, 5, 1440);
 
-	turnsManager = new TurnsManager(_app, this, world);
 
-	//gameObjects.add(bombP1);
-	//gameObjects.add(bombP2);
-	gameObjects.add(player1);
-	gameObjects.add(player2);
+	gameUI = new GameUI(_app);
+	turnsManager = new TurnsManager(_app, this, world, gameUI);
+
+	for (int i = 0; i < 3; i++)
+	{
+		gameObjects.add(player1Characters[i]);
+		gameObjects.add(player2Characters[i]);
+	}
+
 	gameObjects.add(water);
 
 	for (int i = 0; i < gameObjects.count(); i++)
@@ -63,16 +78,18 @@ bool SceneIntro::Start()
 	for (int i = 0; i < 3; i++)
 	{
 		world->AddRigidBody(walls[i]);
+		world->AddRigidBody(player1Characters[i]->rBody);
+		world->AddRigidBody(player2Characters[i]->rBody);
 	}
 
-	//world->AddRigidBody(bombP1->rBody);
-	//world->AddRigidBody(bombP2->rBody);
-	world->AddRigidBody(player1->rBody);
-	world->AddRigidBody(player2->rBody);
 	world->AddRigidBody(water->rBody);
 
-	turnsManager->AddGameObjectAsItem(player1, PLAYER1);
-	turnsManager->AddGameObjectAsItem(player2, PLAYER2);
+	for (int i = 0; i < 3; i++)
+	{
+		turnsManager->AddGameObjectAsItem(player1Characters[i], PLAYER1);
+		turnsManager->AddGameObjectAsItem(player2Characters[i], PLAYER2);
+	}
+
 
 	return ret;
 }
@@ -131,6 +148,16 @@ bool SceneIntro::CleanUp()
 		delete turnsManager;
 		turnsManager = nullptr;
 	}
+	if (gameUI != nullptr)
+	{
+		delete gameUI;
+		gameUI = nullptr;
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		SDL_DestroyTexture(bg[i]);
+		bg[i] = nullptr;
+	}
 
 	Scene::CleanUp();
 
@@ -140,9 +167,10 @@ bool SceneIntro::CleanUp()
 // Update: draw background
 bool SceneIntro::Update()
 {
-	world->Update(1.0/60);
+	world->Update((1.0 / _app->fps));
 
 	turnsManager->UpdateGameLogic();
+	gameUI->Update();
 
 	for (int i = 0; i < gameObjects.count(); i++)
 	{
@@ -174,22 +202,11 @@ bool SceneIntro::Update()
 	}
 
 	// Debug
-	if (_app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-	{
-		_app->scene->DEBUGMODE = !_app->scene->DEBUGMODE;
-		if (_app->scene->DEBUGMODE) printf_s("DEBUG ON"); else printf_s("DEBUG OFF");
-	}
-
-
-	if (_app->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
-	{
-		player1->health--;
-	}
-	if (_app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
-	{
-		player2->health--;
-	}
-
+	//if (_app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	//{
+	//	_app->scene->DEBUGMODE = !_app->scene->DEBUGMODE;
+	//	if (_app->scene->DEBUGMODE) printf_s("DEBUG ON"); else printf_s("DEBUG OFF");
+	//}
 
 	/*if (_app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
@@ -247,10 +264,19 @@ bool SceneIntro::Update()
 		//bombP2->active = true;
 		bombP1->active = false;
 	}*/
-	if (_app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	//if (_app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	//{
+	//	_app->scene->ChangeCurrentScene(2, 0);
+	//}
+	if (rectbgclouds.x >= 1200)
 	{
-		_app->scene->ChangeCurrentScene(2, 0);
+		rectbgclouds.x -= 2052;
 	}
+	else
+	{
+		rectbgclouds.x++;
+	}
+
 
 	_app->renderer->camera->MoveCameraWithMouse();
 
@@ -259,14 +285,18 @@ bool SceneIntro::Update()
 
 bool SceneIntro::PostUpdate()
 {
+	gameUI->PostUpdate();
+	_app->renderer->AddTextureRenderQueue(bg[0], { 0,0 }, { 0,0,0,0 },2.0f);
+	_app->renderer->AddTextureRenderQueue(bg[2], { 0,180 }, { 0,0,0,0 }, 2.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.4f);
+	_app->renderer->AddTextureRenderQueue(bg[1], { 100,100 }, { 0,0,0,0 }, 2.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.5f);
+	_app->renderer->AddTextureRenderQueue(bg[3], { 0,20 }, { 0,0,0,0 }, 1.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.6f);
+
 	for (int i = 0; i < gameObjects.count(); i++)
 	{
 		gameObjects[i]->PostUpdate();
 	}
 
-	_app->renderer->AddRectRenderQueue({ 0,0,3200,5 }, 255, 0, 0);
-	_app->renderer->AddRectRenderQueue({ 1550,0,5,1440 }, 255, 0, 0);
-	_app->renderer->AddRectRenderQueue({ 0,0,5,1440 }, 255, 0, 0);
+	_app->renderer->AddTextureRenderQueue(bg[3], { rectbgclouds.x,rectbgclouds.y }, { 0,0,0,0 }, 1.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.6f);
 
 	return true;
 }
