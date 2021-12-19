@@ -69,6 +69,8 @@ public:
 
 	bool DEBUGMODE = false;
 
+	int winner = 0;
+
 private:
 	//int newScene;
 };

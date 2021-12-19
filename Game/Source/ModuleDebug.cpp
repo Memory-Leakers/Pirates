@@ -123,6 +123,7 @@ UpdateStatus ModuleDebug::PostUpdate()
 
 void ModuleDebug::ResetDebug()
 {
+	if (App->scene->currentScene->turnsManager == nullptr) return;
 	debugMode = DebugMode::NOT_DEBUG;
 	gravityOn = true;
 	buoyancyOn = true;

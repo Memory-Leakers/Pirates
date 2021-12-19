@@ -90,17 +90,6 @@ bool SceneIntro::Start()
 		turnsManager->AddGameObjectAsItem(player2Characters[i], PLAYER2);
 	}
 
-	// Init Audio
-	_app->audio->LoadFx("Assets/Audio/SFX/bananaBounce1.wav");
-	_app->audio->LoadFx("Assets/Audio/SFX/click.wav");
-	_app->audio->LoadFx("Assets/Audio/SFX/explosion1.wav");
-	_app->audio->LoadFx("Assets/Audio/SFX/explosion2.wav");
-	_app->audio->LoadFx("Assets/Audio/SFX/explosion3.wav");
-	_app->audio->LoadFx("Assets/Audio/SFX/explosion4.wav");
-	_app->audio->LoadFx("Assets/Audio/SFX/hitHurt.wav");
-	_app->audio->LoadFx("Assets/Audio/SFX/jump.wav");
-	_app->audio->LoadFx("Assets/Audio/SFX/jump2.wav");
-
 	return ret;
 }
 
@@ -142,6 +131,28 @@ bool SceneIntro::PreUpdate()
 		}
 	}
 
+	int player1Lifes = 0;
+	int player2Lifes = 0;
+
+	for (int i = 0; i < 3; i++)
+	{
+		player1Lifes += player1Characters[i]->health;
+		player2Lifes += player2Characters[i]->health;
+	}
+
+	if (player1Lifes == 0)
+	{
+		_app->scene->winner = 0;
+		_app->scene->ChangeCurrentScene(2, 0);
+		return true;
+	}
+	if (player2Lifes == 0)
+	{
+		_app->scene->winner = 0;
+		_app->scene->ChangeCurrentScene(2, 0);
+		return true;
+	}
+
 	return true;
 }
 
@@ -163,11 +174,8 @@ bool SceneIntro::CleanUp()
 		delete gameUI;
 		gameUI = nullptr;
 	}
-	for (int i = 0; i < 4; i++)
-	{
-		SDL_DestroyTexture(bg[i]);
-		bg[i] = nullptr;
-	}
+
+	_app->map->CleanUp();
 
 	Scene::CleanUp();
 
@@ -274,10 +282,12 @@ bool SceneIntro::Update()
 		//bombP2->active = true;
 		bombP1->active = false;
 	}*/
-	//if (_app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-	//{
-	//	_app->scene->ChangeCurrentScene(2, 0);
-	//}
+
+	if (_app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	{
+		_app->scene->ChangeCurrentScene(2, 0);
+	}
+
 	if (rectbgclouds.x >= 1200)
 	{
 		rectbgclouds.x -= 2052;

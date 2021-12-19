@@ -38,7 +38,16 @@ bool ModuleScene::Start()
 
 	currentScene->Start();
 
-
+	// Init Audio
+	App->audio->LoadFx("Assets/Audio/SFX/bananaBounce1.wav");
+	App->audio->LoadFx("Assets/Audio/SFX/click.wav");
+	App->audio->LoadFx("Assets/Audio/SFX/explosion1.wav");
+	App->audio->LoadFx("Assets/Audio/SFX/explosion2.wav");
+	App->audio->LoadFx("Assets/Audio/SFX/explosion3.wav");
+	App->audio->LoadFx("Assets/Audio/SFX/explosion4.wav");
+	App->audio->LoadFx("Assets/Audio/SFX/hitHurt.wav");
+	App->audio->LoadFx("Assets/Audio/SFX/jump.wav");
+	App->audio->LoadFx("Assets/Audio/SFX/jump2.wav");
 	return ret;
 }
 
