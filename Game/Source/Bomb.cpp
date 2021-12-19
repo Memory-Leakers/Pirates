@@ -40,13 +40,17 @@ void Bomb::OnCollisionEnter(RigidBody* col)
 			case BombType::UMBRELLA:
 			case BombType::NORMAL:			
 				exploded = true;
+				_app->audio->PlayFx((rand() % 4) + 3);
 				break;
 			case BombType::BANANA:
 				bounceCount--;
 				if (bounceCount <= 0)
 				{
 					exploded = true;
+					_app->audio->PlayFx((rand() % 4)+3);
+					return;
 				}
+				_app->audio->PlayFx(1);
 				break;
 			}
 		}
