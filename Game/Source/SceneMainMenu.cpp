@@ -20,6 +20,8 @@ bool SceneMainMenu::Start()
 
     Mix_VolumeMusic(40);
 
+    Mix_Volume(-1, 80);
+
     btnState = PLAY_BTN;
 
     return true;
