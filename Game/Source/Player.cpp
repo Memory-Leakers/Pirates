@@ -161,6 +161,7 @@ void Player::OnCollisionEnter(RigidBody* col)
 	{
 		health = 0;
 		currentAnimation_player = &anim_dead;
+		active = false;
 	}
 }
 

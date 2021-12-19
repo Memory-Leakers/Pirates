@@ -157,6 +157,7 @@ void TurnsManager::SelectItem()
 	for (int i = 0; i < playerItems[currentPlayer].count(); i++)
 	{
 		if (playerItems[currentPlayer][i] == nullptr) return;
+		if (!playerItems[currentPlayer][i]->gameObject->active) continue;
 
 		//printf("%f\n", GetMouseModule(playerItems[currentPlayer][i]));
 
