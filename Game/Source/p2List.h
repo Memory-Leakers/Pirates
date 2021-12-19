@@ -9,9 +9,9 @@
 template<class tdata>
 struct p2List_item
 {
-	tdata                 data;
-	p2List_item<tdata>*   next;
-	p2List_item<tdata>*   prev;
+	tdata                 data = nullptr;
+	p2List_item<tdata>*   next = nullptr;
+	p2List_item<tdata>*   prev = nullptr;
 
 	inline p2List_item(const tdata& _data)
 	{
@@ -32,8 +32,8 @@ class p2List
 
 private:
 
-	p2List_item<tdata>*   start;
-	p2List_item<tdata>*   end;
+	p2List_item<tdata>*   start = nullptr;
+	p2List_item<tdata>*   end = nullptr;
 	unsigned int  size;
 
 public:

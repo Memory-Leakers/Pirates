@@ -40,7 +40,7 @@ public:
 
 	void CleanUp();
 	
-	int currentPlayer;	// 0 = player1; 1 = player2
+	int currentPlayer = 0;	// 0 = player1; 1 = player2
 
 	Item* currentItem = nullptr;
 

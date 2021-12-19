@@ -26,8 +26,8 @@ class List
 
 public:
 
-	ListItem<tdata>* start;
-	ListItem<tdata>* end;
+	ListItem<tdata>* start = nullptr;
+	ListItem<tdata>* end = nullptr;
 
 private:
 
