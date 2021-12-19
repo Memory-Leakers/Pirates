@@ -20,6 +20,8 @@ Release the Mouse_button1 to fire
 
 4- Move player
 
+SPACEBAR- Pass your turn
+
 CTRL+D- Toggle debug mode
 
 ## Developers:
