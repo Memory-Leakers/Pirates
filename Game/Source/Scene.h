@@ -7,6 +7,9 @@
 
 #include "List.h"
 
+class PhysCore;
+class TurnsManager;
+
 class Scene
 {
 protected:
@@ -53,8 +56,9 @@ public:
 	int playerY;
 
 	List<GameObject*> gameObjects;
+
+	PhysCore* world = nullptr;
+
+	TurnsManager* turnsManager = nullptr;
 };
-
-
 #endif //_SCENE_H_
-

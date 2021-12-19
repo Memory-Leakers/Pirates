@@ -57,6 +57,8 @@ public:
 
 	bool changingTurn;
 
+	float throwForce = 25.0f;
+
 private:
 
 	bool CheckInteraction();
@@ -91,4 +93,3 @@ private:
 	Bomb* currentBomb = nullptr;
 
 };
-

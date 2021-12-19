@@ -24,7 +24,7 @@ bool SceneIntro::Start()
 	bg[2] = _app->textures->Load("Assets/textures/Background/2.png");
 	bg[3] = _app->textures->Load("Assets/textures/Background/3.png");
 
-	_app->scene->world = new PhysCore({ 0,10 });
+	world = new PhysCore({ 0,10 });
 
 	InitScene();
 
@@ -59,7 +59,7 @@ bool SceneIntro::Start()
 	walls[1] = new RigidBody({ 0,0 }, RigidBodyType::STATIC, 5, 1440);
 	walls[2] = new RigidBody({1550,0 }, RigidBodyType::STATIC, 5, 1440);
 
-	turnsManager = new TurnsManager(_app, this, _app->scene->world);
+	turnsManager = new TurnsManager(_app, this, world);
 
 	//gameObjects.add(bombP1);
 	//gameObjects.add(bombP2);
@@ -74,14 +74,14 @@ bool SceneIntro::Start()
 
 	for (int i = 0; i < 3; i++)
 	{
-		_app->scene->world->AddRigidBody(walls[i]);
+		world->AddRigidBody(walls[i]);
 	}
 
 	//world->AddRigidBody(bombP1->rBody);
 	//world->AddRigidBody(bombP2->rBody);
-	_app->scene->world->AddRigidBody(player1->rBody);
-	_app->scene->world->AddRigidBody(player2->rBody);
-	_app->scene->world->AddRigidBody(water->rBody);
+	world->AddRigidBody(player1->rBody);
+	world->AddRigidBody(player2->rBody);
+	world->AddRigidBody(water->rBody);
 
 
 	turnsManager->AddGameObjectAsItem(player1, PLAYER1);
@@ -100,7 +100,7 @@ void SceneIntro::InitScene()
 			GameObject* g = new GameObject("wall", "Wall", _app);
 			// +8 = offset, porque pivot de b2Body es el centro, y de tectura es izquierda superior.
 			g->rBody = new RigidBody({ _app->map->mapObjects[i].position.x +8, _app->map->mapObjects[i].position.y +8 }, RigidBodyType::STATIC, 16, 16);
-			_app->scene->world->AddRigidBody(g->rBody);
+			world->AddRigidBody(g->rBody);
 			gameObjects.add(g);
 		}
 	}
@@ -115,7 +115,7 @@ bool SceneIntro::PreUpdate()
 		{
 			if (gameObjects[i]->rBody != nullptr)
 			{
-				_app->scene->world->DeleteRigidBody(gameObjects[i]->rBody);
+				world->DeleteRigidBody(gameObjects[i]->rBody);
 			}
 			gameObjects[i]->CleanUp();
 			gameObjects.del(gameObjects.At(gameObjects.find(gameObjects[i])));
@@ -130,7 +130,7 @@ bool SceneIntro::CleanUp()
 {
 	LOG("Unloading Intro scene");
 
-	RELEASE(_app->scene->world);
+	RELEASE(world);
 
 	if (turnsManager != nullptr)
 	{
@@ -152,7 +152,7 @@ bool SceneIntro::CleanUp()
 // Update: draw background
 bool SceneIntro::Update()
 {
-	_app->scene->world->Update((1.0 / _app->fps));
+	world->Update((1.0 / _app->fps));
 
 	turnsManager->UpdateGameLogic();
 

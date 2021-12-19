@@ -93,6 +93,7 @@ bool ModuleScene::ChangeCurrentScene(uint index, int frames)
 	currentScene->CleanUp();
 	currentScene = scenes[index];
 	currentScene->Start();
+	App->debug->ResetDebug();
 
 	return true;
 }

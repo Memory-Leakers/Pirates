@@ -65,8 +65,6 @@ public:
 
 	int playerX, playerY;
 
-	PhysCore* world;
-
 	PlayerSettings* playerSettings = nullptr;
 
 	bool DEBUGMODE = true;

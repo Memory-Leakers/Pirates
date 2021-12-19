@@ -27,6 +27,7 @@ public:
 	int y;
 	int layer;
 	float orderInLayer;
+	float cameraSpeed;
 
 	void ChangeUI(int num);
 };
@@ -48,7 +49,7 @@ public:
 	// TODO CleanUp Scene
 	bool CleanUp();
 
-	uint CreateUI(int num, int x, int y, float scale = 1.0f, int layer = 4, float orderInLayer = 0.1f, bool isDynamic = false, int lifeFrames = 0, iPoint speed = { 0,0 });	// Creates a new UI item on the position given
+	uint CreateUI(int num, int x, int y, float scale = 1.0f, int layer = 4, float orderInLayer = 0.1f, bool isDynamic = false, int lifeFrames = 0, iPoint speed = { 0,0 }, float cameraSpeed = 1);	// Creates a new UI item on the position given
 
 	void DestroyUI(uint index);			// Deletes an existing UI based on its index
 

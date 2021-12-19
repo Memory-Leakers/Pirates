@@ -5,9 +5,7 @@
 #include "Player.h"
 #include "Bomb.h"
 
-class PhysCore;
 class RigidBody;
-class TurnsManager;
 class Water;
 
 class SceneIntro : public Scene
@@ -42,6 +40,4 @@ public:
 
 	GameObject* testGO = nullptr;
 	GameObject* testGO2 = nullptr;
-
-	TurnsManager* turnsManager;
 };

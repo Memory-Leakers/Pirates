@@ -63,7 +63,7 @@ UpdateStatus ModuleUI::PostUpdate()
 				iPoint tempPos = iPoint(uiArray[i]->x, uiArray[i]->y);
 				tempPos.x += (int)(37 * uiArray[i]->digitScale * j); // Spacing between digits
 				//App->renderer->Blit(texture, tempPos, uiArray[i]->y,uiArray[i]->digitScale, &numSection[uiArray[i]->digitVec.at(j)]);
-				App->renderer->AddTextureRenderQueue(texture, tempPos, numSection[uiArray[i]->digitVec.at(j)], uiArray[i]->digitScale, uiArray[i]->layer, uiArray[i]->orderInLayer);
+				App->renderer->AddTextureRenderQueue(texture, tempPos, numSection[uiArray[i]->digitVec.at(j)], uiArray[i]->digitScale, uiArray[i]->layer, uiArray[i]->orderInLayer, 0, SDL_RendererFlip::SDL_FLIP_NONE, uiArray[i]->cameraSpeed);
 			}
 		}
 	}
@@ -80,7 +80,7 @@ UpdateStatus ModuleUI::PostUpdate()
 /// <param name="x"></param>
 /// <param name="y"></param>
 /// <returns></returns>
-uint ModuleUI::CreateUI(int num, int x, int y, float scale, int layer, float orderInLayer, bool isDynamic, int lifeFrames, iPoint speed)
+uint ModuleUI::CreateUI(int num, int x, int y, float scale, int layer, float orderInLayer, bool isDynamic, int lifeFrames, iPoint speed, float cameraSpeed)
 {
 	//  Get position of the UI
 	itemUI* item = new itemUI();
@@ -92,6 +92,7 @@ uint ModuleUI::CreateUI(int num, int x, int y, float scale, int layer, float ord
 	item->isDynamic = isDynamic;
 	item->lifeFrames = lifeFrames;
 	item->speed = speed;
+	item->cameraSpeed = cameraSpeed;
 
 	//Make the number into an array of digits
 	//	Declare Variables
