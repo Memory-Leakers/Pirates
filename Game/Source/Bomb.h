@@ -3,6 +3,8 @@
 #include "Animation.h"
 #include "Timer.h"
 
+#define bounceSize 4
+
 enum class BombType
 {
     NORMAL = 0,
@@ -37,9 +39,7 @@ public:
 private:
     BombType bType = BombType::NORMAL;
     bool exploded = false;
-    Timer tNormalBomb;
-    float timeExplosionNormalBomb = 8.0f;
-    bool timerStart = false;
+    int bounceCount = bounceSize;
 
     SDL_Texture* tex_normal = nullptr;
     SDL_Texture* tex_banana = nullptr;
@@ -56,6 +56,6 @@ public:
 
     SDL_Rect rect;
 
-    int explosionRadius = (int)(std::floor(8 * PIXELS_PER_METERS));
+    int explosionRadius = (int)(std::floor(6.0 * PIXELS_PER_METERS));
     int bombRadius = (int)(std::floor(0.8 * PIXELS_PER_METERS));
 };

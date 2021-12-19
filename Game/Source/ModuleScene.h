@@ -66,7 +66,7 @@ public:
 
 	PlayerSettings* playerSettings = nullptr;
 
-	bool DEBUGMODE = true;
+	bool DEBUGMODE = false;
 
 private:
 	//int newScene;

@@ -23,36 +23,22 @@ bool SceneIntro::Start()
 
 	InitScene();
 
-	//BombINit
-	/*bombP1 = new Bomb("Bomb", "Bomb", _app, BombType::BANANA);
-	bombP1->SetPosition({ 200,180 });
-
-	bombP2 = new Bomb("Bomb", "Bomb", _app, BombType::NORMAL);
-	bombP2->SetPosition({ 450,100 });*/
-
 	//player Init
-	player1 = new Player("Player1", "player", _app,1);
-	player1->rBody = new RigidBody({ 230,180 }, RigidBodyType::DYNAMIC, 11, player1);
+	player1 = new Player("Player1", "Player", _app,1);
+	player1->rBody = new RigidBody({ 440,180 }, RigidBodyType::DYNAMIC, 11, player1);
 	player1->rBody->SetGravityScale(2.0f);
 	player1->rBody->SetDragCoeficient(0.01f);
 	player1->rBody->SetRestitution(0.2f);
 	player1->rBody->SetHydrodynamicDragCoeficient(0.5f);
-	player1->rBody->SetFriction(5.0f);
+	player1->rBody->SetFriction(6.0f);
 
-	player2 = new Player("Player2", "player", _app, 2);
-	player2->rBody = new RigidBody({ 250,180 }, RigidBodyType::DYNAMIC, 11, player2);
+	player2 = new Player("Player2", "Player", _app, 2);
+	player2->rBody = new RigidBody({ 660,180 }, RigidBodyType::DYNAMIC, 11, player2);
 	player2->rBody->SetGravityScale(2.0f);
 	player2->rBody->SetDragCoeficient(0.01f);
 	player2->rBody->SetRestitution(0.2f);
 	player2->rBody->SetHydrodynamicDragCoeficient(0.5f);
-	player2->rBody->SetFriction(5.0f);
-
-	//BombInit
-	bombP1 = new Bomb("Bomb", "Bomb", _app, BombType::BANANA);
-	bombP1->SetPosition(player1->rBody->GetPosition());
-
-	bombP2 = new Bomb("Bomb", "Bomb", _app, BombType::NORMAL);
-	bombP2->SetPosition(player2->rBody->GetPosition());
+	player2->rBody->SetFriction(6.0f);
 
 	// Init water
 	water = new Water({ 0,450 }, "water", "Water", _app);
@@ -117,6 +103,12 @@ bool SceneIntro::PreUpdate()
 			if (gameObjects[i]->rBody != nullptr)
 			{
 				world->DeleteRigidBody(gameObjects[i]->rBody);
+
+				if (gameObjects[i]->rBodyTrigger != nullptr)
+				{
+					world->DeleteRigidBody(gameObjects[i]->rBodyTrigger);
+				}
+
 			}
 			gameObjects[i]->CleanUp();
 			gameObjects.del(gameObjects.At(gameObjects.find(gameObjects[i])));
@@ -187,6 +179,17 @@ bool SceneIntro::Update()
 		_app->scene->DEBUGMODE = !_app->scene->DEBUGMODE;
 		if (_app->scene->DEBUGMODE) printf_s("DEBUG ON"); else printf_s("DEBUG OFF");
 	}
+
+
+	if (_app->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+	{
+		player1->health--;
+	}
+	if (_app->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		player2->health--;
+	}
+
 
 	/*if (_app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{

@@ -56,7 +56,6 @@ RigidBody::RigidBody(RigidBody& copy)
 void RigidBody::OnCollisionEnter(RigidBody* col)
 {
 	//printf("Col enter\n");
-
 	if (gObj != nullptr)
 	{
 		gObj->OnCollisionEnter(col);
@@ -88,7 +87,10 @@ void RigidBody::OnTriggerEnter(RigidBody* col)
 
 void RigidBody::OnTriggerStay(RigidBody* col)
 {
-	//printf("Trigger stay\n");
+	if (gObj != nullptr)
+	{
+		gObj->OnTriggerStay(col);
+	}
 }
 
 void RigidBody::OnTriggerExit(RigidBody* col)

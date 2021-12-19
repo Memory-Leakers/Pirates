@@ -38,6 +38,11 @@ void GameObject::OnTriggerEnter(RigidBody* col)
 
 }
 
+void GameObject::OnTriggerStay(RigidBody* col)
+{
+
+}
+
 void GameObject::OnTriggerExit(RigidBody* col)
 {
 }

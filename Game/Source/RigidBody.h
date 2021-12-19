@@ -210,6 +210,11 @@ public:
 	{
 		return type;
 	}
+
+	COL_TYPE getColType()
+	{
+		return colType;
+	}
 private:
 
 	void ResetForces();

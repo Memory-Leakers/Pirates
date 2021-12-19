@@ -15,7 +15,7 @@ void PhysCore::Update(float simulationTime)
 {
 	for (int i = 0; i < rigidBodies.count(); i++)
 	{
-		if (rigidBodies[i]->type == RigidBodyType::STATIC || rigidBodies[i]->type == RigidBodyType::WATER || rigidBodies[i] == nullptr) continue;
+		if (rigidBodies[i] == nullptr || rigidBodies[i]->type == RigidBodyType::STATIC || rigidBodies[i]->type == RigidBodyType::WATER ) continue;
 
 		// Step #0 Reset acceleration and forces
 		rigidBodies[i]->ResetForces();

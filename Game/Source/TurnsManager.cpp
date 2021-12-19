@@ -86,6 +86,7 @@ void TurnsManager::GetCurrentOption()
 				currentBomb->Start();
 				currentBomb->SetPosition(currentItem->gameObject->GetWorldPosition());
 				physCore->AddRigidBody(currentBomb->rBody);
+				physCore->AddRigidBody(currentBomb->rBodyTrigger);
 				scene->gameObjects.add(currentBomb);
 			}
 		}
@@ -106,6 +107,7 @@ void TurnsManager::GetCurrentOption()
 				currentBomb->Start();
 				currentBomb->SetPosition(currentItem->gameObject->GetWorldPosition());
 				physCore->AddRigidBody(currentBomb->rBody);
+				physCore->AddRigidBody(currentBomb->rBodyTrigger);
 				scene->gameObjects.add(currentBomb);
 			}
 		}
@@ -126,6 +128,7 @@ void TurnsManager::GetCurrentOption()
 				currentBomb->Start();
 				currentBomb->SetPosition(currentItem->gameObject->GetWorldPosition());
 				physCore->AddRigidBody(currentBomb->rBody);
+				physCore->AddRigidBody(currentBomb->rBodyTrigger);
 				scene->gameObjects.add(currentBomb);
 			}
 		}
@@ -164,6 +167,10 @@ void TurnsManager::SelectItem()
 				currentBomb->Start();
 				currentBomb->SetPosition(currentItem->gameObject->GetWorldPosition());
 				physCore->AddRigidBody(currentBomb->rBody);
+				if (currentBomb->rBodyTrigger != nullptr)
+				{
+					physCore->AddRigidBody(currentBomb->rBodyTrigger);
+				}
 				scene->gameObjects.add(currentBomb);
 			}
 			break;
@@ -178,6 +185,7 @@ void TurnsManager::DrawMouseItemLine()
 	if (_app->input->GetMouseButton(1) == KEY_REPEAT)	// Si estamos manteniendo el boton del ratón, dibujamos la linea
 	{
 		iPoint itemPos = { (int)currentItem->gameObject->GetScreenPosition().x, (int)currentItem->gameObject->GetScreenPosition().y };
+		
 		mousePos.x = _app->input->GetMouseX();
 		mousePos.y = _app->input->GetMouseY();
 
@@ -236,14 +244,34 @@ void TurnsManager::ApplyForceOnOption(fPoint dir)
 {
 	switch (playerCurrentOption[currentPlayer])
 	{
-	case 0:
-	case 1:
+	case 0://Normal
+	case 1://Banana
 	case 2:
 		if (currentBomb == nullptr) break;
 
+		if (playerCurrentOption[currentPlayer] == 2)
+		{
+			dir.x *= 4;
+			dir.y *= 6;
+		}
+		else if (playerCurrentOption[currentPlayer] == 0)
+		{
+			dir.x *= 1.4;
+			dir.y *= 1.4;
+		}
+		
 		currentBomb->rBody->AddForceToCenter(dir);
-
 		throwedGameObj = currentBomb;
+		
+		if (playerCurrentOption[currentPlayer] == 2)
+		{
+			throwedGameObj->rBody->SetGravityScale(0.8f);
+			
+		}
+		else
+		{
+			throwedGameObj->rBody->SetGravityScale(2.0f);
+		}
 		currentBomb = nullptr;
 
 		playerThrowedBomb[currentPlayer] = true;
@@ -319,6 +347,7 @@ void TurnsManager::ChangeCurrentBomb(int bombType)
 	currentBomb->Start();
 	currentBomb->SetPosition(currentItem->gameObject->GetWorldPosition());
 	physCore->AddRigidBody(currentBomb->rBody);
+	physCore->AddRigidBody(currentBomb->rBodyTrigger);
 	scene->gameObjects.add(currentBomb);
 
 }

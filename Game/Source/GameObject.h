@@ -25,6 +25,7 @@ public:
 	virtual void OnCollisionExit(RigidBody* col);
 
 	virtual void OnTriggerEnter(RigidBody* col);
+	virtual void OnTriggerStay(RigidBody* col);
 	virtual void OnTriggerExit(RigidBody* col);
 
 	virtual void Start();
@@ -97,6 +98,7 @@ public:
 	std::string tag;
 
 	RigidBody* rBody = nullptr;
+	RigidBody* rBodyTrigger = nullptr;
 
 	RenderObject renderObjects[MAX_GAMEOBJECT_TEXTURES];
 

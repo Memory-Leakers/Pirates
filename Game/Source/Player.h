@@ -16,6 +16,12 @@ public:
 
 	void OnCollisionEnter(RigidBody* col) override;
 
+	void OnTriggerEnter(RigidBody* col) override;
+
+	void OnTriggerStay(RigidBody* col) override;
+
+	void OnTriggerExit(RigidBody* col) override;
+
 	void Start() override;
 
 	void PreUpdate() override;
@@ -36,6 +42,8 @@ private:
 
 	SDL_Texture* tex_health;
 
+	SDL_Texture* tex_dead;
+
 	SDL_Rect player_bounds;
 
 	SDL_Rect player;
@@ -44,12 +52,16 @@ private:
 
 	Animation player_hit;
 
+	Animation anim_dead;
+
 	Animation* currentAnimation_player = nullptr;
 
 	Animation anim_health;
 
+
 public:
 	int health = MAX_HEALTH;
 	bool hurt = false;
+	bool dead = false;
 };
 
