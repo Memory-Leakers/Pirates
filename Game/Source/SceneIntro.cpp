@@ -37,21 +37,25 @@ bool SceneIntro::Start()
 	bombP2->SetPosition({ 450,100 });*/
 
 	//player Init
-	player1 = new Player("Player1", "player", _app,1);
-	player1->rBody = new RigidBody({ 230,180 }, RigidBodyType::DYNAMIC, 11, player1);
-	player1->rBody->SetGravityScale(2.0f);
-	player1->rBody->SetDragCoeficient(0.1f);
-	player1->rBody->SetRestitution(0.2f);
-	player1->rBody->SetHydrodynamicDragCoeficient(0.5f);
-	player1->rBody->SetFriction(5.0f);
 
-	player2 = new Player("Player2", "player", _app, 2);
-	player2->rBody = new RigidBody({ 250,180 }, RigidBodyType::DYNAMIC, 11, player2);
-	player2->rBody->SetGravityScale(2.0f);
-	player2->rBody->SetDragCoeficient(0.1f);
-	player2->rBody->SetRestitution(0.2f);
-	player2->rBody->SetHydrodynamicDragCoeficient(0.5f);
-	player2->rBody->SetFriction(5.0f);
+	for (int i = 0; i < 3; i++)
+	{
+		player1Characters[i] = new Player("Player1", "player", _app, 1);
+		player1Characters[i]->rBody = new RigidBody(player1Positions[i], RigidBodyType::DYNAMIC, 11, player1Characters[i]);
+		player1Characters[i]->rBody->SetGravityScale(2.0f);
+		player1Characters[i]->rBody->SetDragCoeficient(0.1f);
+		player1Characters[i]->rBody->SetRestitution(0.2f);
+		player1Characters[i]->rBody->SetHydrodynamicDragCoeficient(0.5f);
+		player1Characters[i]->rBody->SetFriction(5.0f);
+
+		player2Characters[i] = new Player("Player2", "player", _app, 2);
+		player2Characters[i]->rBody = new RigidBody(player2Positions[i], RigidBodyType::DYNAMIC, 11, player2Characters[i]);
+		player2Characters[i]->rBody->SetGravityScale(2.0f);
+		player2Characters[i]->rBody->SetDragCoeficient(0.1f);
+		player2Characters[i]->rBody->SetRestitution(0.2f);
+		player2Characters[i]->rBody->SetHydrodynamicDragCoeficient(0.5f);
+		player2Characters[i]->rBody->SetFriction(5.0f);
+	}
 
 	// Init water
 	water = new Water({ 0,450 }, "water", "Water", _app);
@@ -64,10 +68,12 @@ bool SceneIntro::Start()
 	gameUI = new GameUI(_app);
 	turnsManager = new TurnsManager(_app, this, _app->scene->world, gameUI);
 
-	//gameObjects.add(bombP1);
-	//gameObjects.add(bombP2);
-	gameObjects.add(player1);
-	gameObjects.add(player2);
+	for (int i = 0; i < 3; i++)
+	{
+		gameObjects.add(player1Characters[i]);
+		gameObjects.add(player2Characters[i]);
+	}
+
 	gameObjects.add(water);
 
 	for (int i = 0; i < gameObjects.count(); i++)
@@ -78,17 +84,18 @@ bool SceneIntro::Start()
 	for (int i = 0; i < 3; i++)
 	{
 		_app->scene->world->AddRigidBody(walls[i]);
+		_app->scene->world->AddRigidBody(player1Characters[i]->rBody);
+		_app->scene->world->AddRigidBody(player2Characters[i]->rBody);
 	}
 
-	//world->AddRigidBody(bombP1->rBody);
-	//world->AddRigidBody(bombP2->rBody);
-	_app->scene->world->AddRigidBody(player1->rBody);
-	_app->scene->world->AddRigidBody(player2->rBody);
 	_app->scene->world->AddRigidBody(water->rBody);
 
+	for (int i = 0; i < 3; i++)
+	{
+		turnsManager->AddGameObjectAsItem(player1Characters[i], PLAYER1);
+		turnsManager->AddGameObjectAsItem(player2Characters[i], PLAYER2);
+	}
 
-	turnsManager->AddGameObjectAsItem(player1, PLAYER1);
-	turnsManager->AddGameObjectAsItem(player2, PLAYER2);
 
 	return ret;
 }
