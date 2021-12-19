@@ -25,11 +25,12 @@ struct Item
 class Bomb;
 class Scene;
 class PhysCore;
+class GameUI;
 
 class TurnsManager
 {
 public:
-	TurnsManager(Application* app, Scene* currentScene, PhysCore* world);
+	TurnsManager(Application* app, Scene* currentScene, PhysCore* world, GameUI* ui);
 
 	void UpdateGameLogic();
 
@@ -81,6 +82,8 @@ private:
 	Scene* scene;
 
 	PhysCore* physCore;
+
+	GameUI* ui;
 
 	bool canInteract = true;	// Determina si se puede interactuar con los items o no
 								// Esta variable debe controlarla un script externo, ya que esta clase no conoce

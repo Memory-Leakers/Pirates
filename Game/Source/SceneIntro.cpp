@@ -4,6 +4,7 @@
 #include "PhysCore.h"
 #include "TurnsManager.h"
 #include "Water.h"
+#include "GameUI.h"
 
 SceneIntro::SceneIntro(Application* app) : Scene(app)
 {}
@@ -59,7 +60,9 @@ bool SceneIntro::Start()
 	walls[1] = new RigidBody({ 0,0 }, RigidBodyType::STATIC, 5, 1440);
 	walls[2] = new RigidBody({1550,0 }, RigidBodyType::STATIC, 5, 1440);
 
-	turnsManager = new TurnsManager(_app, this, _app->scene->world);
+
+	gameUI = new GameUI(_app);
+	turnsManager = new TurnsManager(_app, this, _app->scene->world, gameUI);
 
 	//gameObjects.add(bombP1);
 	//gameObjects.add(bombP2);
@@ -138,6 +141,11 @@ bool SceneIntro::CleanUp()
 		delete turnsManager;
 		turnsManager = nullptr;
 	}
+	if (gameUI != nullptr)
+	{
+		delete gameUI;
+		gameUI = nullptr;
+	}
 	for (int i = 0; i < 4; i++)
 	{
 		SDL_DestroyTexture(bg[i]);
@@ -155,6 +163,7 @@ bool SceneIntro::Update()
 	_app->scene->world->Update((1.0 / _app->fps));
 
 	turnsManager->UpdateGameLogic();
+	gameUI->Update();
 
 	for (int i = 0; i < gameObjects.count(); i++)
 	{
@@ -260,6 +269,7 @@ bool SceneIntro::Update()
 
 bool SceneIntro::PostUpdate()
 {
+	gameUI->PostUpdate();
 	_app->renderer->AddTextureRenderQueue(bg[0], { 0,0 }, { 0,0,0,0 },2.0f);
 	_app->renderer->AddTextureRenderQueue(bg[2], { 0,180 }, { 0,0,0,0 }, 2.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.4f);
 	_app->renderer->AddTextureRenderQueue(bg[1], { 100,100 }, { 0,0,0,0 }, 2.0f, 0, 0.0f, 0, SDL_FLIP_NONE, 0.5f);

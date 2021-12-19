@@ -2,12 +2,14 @@
 #include "Bomb.h"
 #include "Scene.h"
 #include "PhysCore.h"
+#include "GameUI.h"
 
-TurnsManager::TurnsManager(Application* app, Scene* currentScene, PhysCore* world)
+TurnsManager::TurnsManager(Application* app, Scene* currentScene, PhysCore* world, GameUI* ui)
 {
 	_app = app;
 	scene = currentScene;
 	physCore = world;
+	this->ui = ui;
 }
 
 /// <summary>
@@ -91,6 +93,7 @@ void TurnsManager::GetCurrentOption()
 			}
 		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB1;
+		ui->ChangeCurrentOption(0);
 	}
 	if (_app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
@@ -111,6 +114,7 @@ void TurnsManager::GetCurrentOption()
 			}
 		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB2;
+		ui->ChangeCurrentOption(1);
 	}
 	if (_app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 	{
@@ -131,6 +135,7 @@ void TurnsManager::GetCurrentOption()
 			}
 		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::BOMB3;
+		ui->ChangeCurrentOption(2);
 	}
 	if (_app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
 	{
@@ -140,6 +145,7 @@ void TurnsManager::GetCurrentOption()
 			currentBomb = nullptr;
 		}
 		playerCurrentOption[currentPlayer] = ThrowOptions::CURRENT_ITEM;
+		ui->ChangeCurrentOption(3);
 	}
 }
 
@@ -284,9 +290,13 @@ void TurnsManager::CheckPlayerTurn()
 		// Change to the other player
 		currentPlayer = currentPlayer == 0 ? 1 : 0;
 
+		ui->ChangeCurrentOption(playerCurrentOption[currentPlayer]);
+
 		//changingTurn = true;
 
 		printf("Turno player %d\n", currentPlayer);
+
+		ui->ShowChangeTurnMessage(currentPlayer);
 	}
 }
 

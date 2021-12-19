@@ -9,6 +9,7 @@ class PhysCore;
 class RigidBody;
 class TurnsManager;
 class Water;
+class GameUI;
 
 class SceneIntro : public Scene
 {
@@ -29,6 +30,7 @@ public:
 	Player* player1;
 	Player* player2;
 	Water* water;
+	GameUI* gameUI;
 
 	SDL_Texture* bg[4];
 
