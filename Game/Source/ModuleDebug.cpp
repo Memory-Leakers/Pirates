@@ -135,6 +135,8 @@ void ModuleDebug::ResetDebug()
 	force = 25;
 	App->fps = fps;
 	App->scene->currentScene->turnsManager->throwForce = force;
+	App->ui->DestroyUI(fpsUIPos);
+	App->ui->DestroyUI(forceUIPos);
 }
 
 bool ModuleDebug::CleanUp()
