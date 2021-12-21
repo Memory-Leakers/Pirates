@@ -200,92 +200,9 @@ bool SceneIntro::Update()
 	{
 		_app->renderer->camera->SetTarget(turnsManager->throwedGameObj);
 	}
-	/*else if (turnsManager->changingTurn)
-	{
-		float distance = (turnsManager->playerItems[turnsManager->currentPlayer][0]->gameObject->GetScreenPosition() - iPoint(_app->renderer->camera->x, _app->renderer->camera->y)).Module();
-
-		if (distance > 5.0f && !_app->renderer->camera->reachedMax)
-		{
-			_app->renderer->camera->SetTarget(turnsManager->playerItems[turnsManager->currentPlayer][0]->gameObject);
-		}
-		else
-		{
-			turnsManager->changingTurn = false;
-			_app->renderer->camera->SetTarget(nullptr);
-		}
-	}*/
 	else
 	{
 		_app->renderer->camera->SetTarget(nullptr);
-	}
-
-	// Debug
-	//if (_app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
-	//{
-	//	_app->scene->DEBUGMODE = !_app->scene->DEBUGMODE;
-	//	if (_app->scene->DEBUGMODE) printf_s("DEBUG ON"); else printf_s("DEBUG OFF");
-	//}
-
-	/*if (_app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
-	{
-		if (turnsManager->currentPlayer == PLAYER1)
-		{
-			bombP1->active = true;
-			bombP1->SetPosition(player1->GetDrawPosition());
-			bombP1->setType(BombType::NORMAL);
-		}
-		else if (turnsManager->currentPlayer == PLAYER2)
-		{
-			bombP2->active = true;
-			bombP2->SetPosition(player2->GetDrawPosition());
-			bombP2->setType(BombType::NORMAL);
-		}
-	}
-	if (_app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
-	{
-		if (turnsManager->currentPlayer == PLAYER1)
-		{
-			bombP1->active = true;
-			bombP1->SetPosition(player1->GetDrawPosition());
-			bombP1->setType(BombType::BANANA);
-		}
-		else if (turnsManager->currentPlayer == PLAYER2)
-		{
-			bombP2->active = true;
-			bombP2->SetPosition(player2->GetDrawPosition());
-			bombP2->setType(BombType::BANANA);
-		}
-	}
-	if (_app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-	{
-		if (turnsManager->currentPlayer == PLAYER1)
-		{
-			bombP1->active = true;
-			bombP1->SetPosition(player1->GetDrawPosition());
-			bombP1->setType(BombType::UMBRELLA);
-		}
-		else if (turnsManager->currentPlayer == PLAYER2)
-		{
-			bombP2->active = true;
-			bombP2->SetPosition(player2->GetDrawPosition());
-			bombP2->setType(BombType::UMBRELLA);
-		}
-	}
-	*/
-	/*if (turnsManager->currentPlayer == PLAYER1)
-	{
-		//bombP1->active = true;
-		bombP2->active = false;
-	}
-	else
-	{
-		//bombP2->active = true;
-		bombP1->active = false;
-	}*/
-
-	if (_app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-	{
-		_app->scene->ChangeCurrentScene(2, 0);
 	}
 
 	if (rectbgclouds.x >= 1200)
